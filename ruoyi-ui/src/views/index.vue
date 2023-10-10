@@ -2,7 +2,7 @@
   <div class="app-container home">
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>若依后台管理框架</h2>
+        <h2>工厂后台管理框架</h2>
         <p>
           一直想做一款后台管理系统，看了很多优秀的开源项目但是发现没有合适自己的。于是利用空闲休息时间开始自己写一套后台系统。如此有了xx管理系统，她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA等等，当然，您也可以对她进行深度定制，以做出更强系统。所有前端后台代码封装过后十分精简易上手，出错概率低。同时支持移动客户端访问。系统会陆续更新一些实用功能。
         </p>
@@ -54,10 +54,10 @@
           </div>
           <div class="body">
             <p>
-              <i class="el-icon-s-promotion"></i> 官网：<el-link
-                href="http://www.ruoyi.vip"
+              <i class="el-icon-s-promotion"></i> 百度一下：<el-link
+                href="https://www.baidu.com/"
                 target="_blank"
-                >http://www.ruoyi.vip</el-link
+                >https://www.baidu.com/</el-link
               >
             </p>
           </div>
@@ -104,10 +104,8 @@
                 <li>修复字典数据显示不全问题</li>
                 <li>修复操作日志查询类型条件为0时会查到所有数据</li>
                 <li>修复Excel注解prompt/combo同时使用不生效问题</li>
-                <li>其他细节优化</li>
               </ol>
             </el-collapse-item>
-            <li>其他细节优化</li>
             <el-collapse-item title="v1.1.0 - 2019-11-11">
               <ol>
                 <li>新增在线用户管理</li>
@@ -120,12 +118,11 @@
                 <li>去除菜单上级校验，默认为顶级</li>
                 <li>修复用户密码无法修改问题</li>
                 <li>修复菜单类型为按钮时不显示权限标识</li>
-                <li>其他细节优化</li>
               </ol>
             </el-collapse-item>
             <el-collapse-item title="v1.0.0 - 2019-10-08">
               <ol>
-                <li>若依前后端分离系统正式发布</li>
+                <li>工厂前后端分离系统正式发布</li>
               </ol>
             </el-collapse-item>
           </el-collapse>
