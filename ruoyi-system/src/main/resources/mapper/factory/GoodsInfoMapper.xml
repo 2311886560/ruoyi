@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.factory.mapper.GoodsInfoMapper">
+    
+    <resultMap type="GoodsInfo" id="GoodsInfoResult">
+        <result property="id"    column="id"    />
+        <result property="entId"    column="ent_id"    />
+        <result property="name"    column="name"    />
+        <result property="goodsType"    column="goods_type"    />
+        <result property="goodsBrand"    column="goods_brand"    />
+        <result property="costPrice"    column="cost_price"    />
+        <result property="salesPric"    column="sales_pric"    />
+        <result property="inventory"    column="inventory"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectGoodsInfoVo">
+        select id, ent_id, name, goods_type, goods_brand, cost_price, sales_pric, inventory, status, del_flag, create_by, create_time, update_by, update_time from goods_info
+    </sql>
+
+    <select id="selectGoodsInfoList" parameterType="GoodsInfo" resultMap="GoodsInfoResult">
+        <include refid="selectGoodsInfoVo"/>
+        <where>  
+            <if test="entId != null "> and ent_id = #{entId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="goodsType != null  and goodsType != ''"> and goods_type = #{goodsType}</if>
+            <if test="goodsBrand != null  and goodsBrand != ''"> and goods_brand = #{goodsBrand}</if>
+            <if test="costPrice != null "> and cost_price = #{costPrice}</if>
+            <if test="salesPric != null "> and sales_pric = #{salesPric}</if>
+            <if test="inventory != null "> and inventory = #{inventory}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsInfoById" parameterType="Long" resultMap="GoodsInfoResult">
+        <include refid="selectGoodsInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsInfo" parameterType="GoodsInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entId != null">ent_id,</if>
+            <if test="name != null">name,</if>
+            <if test="goodsType != null">goods_type,</if>
+            <if test="goodsBrand != null">goods_brand,</if>
+            <if test="costPrice != null">cost_price,</if>
+            <if test="salesPric != null">sales_pric,</if>
+            <if test="inventory != null">inventory,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entId != null">#{entId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="goodsType != null">#{goodsType},</if>
+            <if test="goodsBrand != null">#{goodsBrand},</if>
+            <if test="costPrice != null">#{costPrice},</if>
+            <if test="salesPric != null">#{salesPric},</if>
+            <if test="inventory != null">#{inventory},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsInfo" parameterType="GoodsInfo">
+        update goods_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entId != null">ent_id = #{entId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="goodsType != null">goods_type = #{goodsType},</if>
+            <if test="goodsBrand != null">goods_brand = #{goodsBrand},</if>
+            <if test="costPrice != null">cost_price = #{costPrice},</if>
+            <if test="salesPric != null">sales_pric = #{salesPric},</if>
+            <if test="inventory != null">inventory = #{inventory},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsInfoById" parameterType="Long">
+        delete from goods_info where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsInfoByIds" parameterType="String">
+        delete from goods_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
