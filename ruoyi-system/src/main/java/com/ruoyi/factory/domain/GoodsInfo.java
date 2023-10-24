@@ -7,7 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 商品信息对象 goods_info
- * 
+ *
  * @author ruoyi
  * @date 2023-10-23
  */
@@ -18,8 +18,8 @@ public class GoodsInfo extends BaseEntity
     /** id */
     private Long id;
 
-    /** 企业工厂id */
-    @Excel(name = "企业工厂id")
+    /** 工厂工厂id */
+    @Excel(name = "工厂工厂id")
     private Long entId;
 
     /** 名称 */
@@ -53,93 +53,93 @@ public class GoodsInfo extends BaseEntity
     /** 删除状态：0=未删除，1=已删除 */
     private String delFlag;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setEntId(Long entId) 
+    public void setEntId(Long entId)
     {
         this.entId = entId;
     }
 
-    public Long getEntId() 
+    public Long getEntId()
     {
         return entId;
     }
-    public void setName(String name) 
+    public void setName(String name)
     {
         this.name = name;
     }
 
-    public String getName() 
+    public String getName()
     {
         return name;
     }
-    public void setGoodsType(String goodsType) 
+    public void setGoodsType(String goodsType)
     {
         this.goodsType = goodsType;
     }
 
-    public String getGoodsType() 
+    public String getGoodsType()
     {
         return goodsType;
     }
-    public void setGoodsBrand(String goodsBrand) 
+    public void setGoodsBrand(String goodsBrand)
     {
         this.goodsBrand = goodsBrand;
     }
 
-    public String getGoodsBrand() 
+    public String getGoodsBrand()
     {
         return goodsBrand;
     }
-    public void setCostPrice(Long costPrice) 
+    public void setCostPrice(Long costPrice)
     {
         this.costPrice = costPrice;
     }
 
-    public Long getCostPrice() 
+    public Long getCostPrice()
     {
         return costPrice;
     }
-    public void setSalesPric(Long salesPric) 
+    public void setSalesPric(Long salesPric)
     {
         this.salesPric = salesPric;
     }
 
-    public Long getSalesPric() 
+    public Long getSalesPric()
     {
         return salesPric;
     }
-    public void setInventory(Long inventory) 
+    public void setInventory(Long inventory)
     {
         this.inventory = inventory;
     }
 
-    public Long getInventory() 
+    public Long getInventory()
     {
         return inventory;
     }
-    public void setStatus(String status) 
+    public void setStatus(String status)
     {
         this.status = status;
     }
 
-    public String getStatus() 
+    public String getStatus()
     {
         return status;
     }
-    public void setDelFlag(String delFlag) 
+    public void setDelFlag(String delFlag)
     {
         this.delFlag = delFlag;
     }
 
-    public String getDelFlag() 
+    public String getDelFlag()
     {
         return delFlag;
     }

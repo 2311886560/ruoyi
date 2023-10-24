@@ -1,9 +1,9 @@
 CREATE TABLE `enterprise_base`
 (
     `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `ent_code`     varchar(45)           DEFAULT NULL COMMENT '企业编号',
+    `ent_code`     varchar(45)           DEFAULT NULL COMMENT '工厂编号',
     `credit_code`  varchar(45)           DEFAULT NULL COMMENT '统一信用代码',
-    `ent_name`     varchar(512) NOT NULL COMMENT '企业名称',
+    `ent_name`     varchar(512) NOT NULL COMMENT '工厂名称',
     `legal_person` varchar(45)           DEFAULT NULL COMMENT '法人',
     `legal_phone`  varchar(12)           DEFAULT NULL COMMENT '法人手机号',
     `linker_man`   varchar(45)           DEFAULT NULL COMMENT '联系人',
@@ -21,5 +21,5 @@ CREATE TABLE `enterprise_base`
     `update_by`    varchar(50)           DEFAULT NULL COMMENT '更新人',
     `update_time`  datetime              DEFAULT NULL COMMENT '更新日期',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='企业基本信息';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='工厂基本信息';
 -- 程序目录和数据最后再一起导出

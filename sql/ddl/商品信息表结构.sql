@@ -1,7 +1,7 @@
 CREATE TABLE `goods_info`
 (
     `id`          bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `ent_id`      bigint(20) DEFAULT NULL COMMENT '企业工厂id',
+    `ent_id`      bigint(20) DEFAULT NULL COMMENT '工厂工厂id',
     `name`        varchar(100)        DEFAULT NULL COMMENT '名称',
     `goods_type`  varchar(2)          DEFAULT NULL COMMENT '类型：0-五金，1-化工，2-食品，3-水产',
     `goods_brand` varchar(100)        DEFAULT NULL COMMENT '品牌',
