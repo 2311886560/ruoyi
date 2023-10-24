@@ -1,3 +1,19 @@
+## 环境配置
+jdk 1.8.0_152
+maven 3.6.1
+node v16.13.0
+npm 9.8.1
+## 首次启动
+
+###  进入项目目录，进入ruoyi-ui目录
+cd ruoyi-ui
+### 安装依赖
+npm install
+### 建议不要直接使用 cnpm 安装依赖，会有各种诡异的 bug。可以通过如下操作解决 npm 下载速度慢的问题
+npm install --registry=https://registry.npmmirror.com
+### 启动服务
+npm run dev
+
 ## 平台简介
 
 工厂是一套全部开源的快速开发平台。
