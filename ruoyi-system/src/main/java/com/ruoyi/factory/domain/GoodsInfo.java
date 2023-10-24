@@ -40,7 +40,7 @@ public class GoodsInfo extends BaseEntity
 
     /** 销售价（默认售价） */
     @Excel(name = "销售价", readConverterExp = "默=认售价")
-    private Long salesPric;
+    private Long salesPrice;
 
     /** 库存量 */
     @Excel(name = "库存量")
@@ -107,14 +107,14 @@ public class GoodsInfo extends BaseEntity
     {
         return costPrice;
     }
-    public void setSalesPric(Long salesPric)
+    public void setsalesPrice(Long salesPrice)
     {
-        this.salesPric = salesPric;
+        this.salesPrice = salesPrice;
     }
 
-    public Long getSalesPric()
+    public Long getsalesPrice()
     {
-        return salesPric;
+        return salesPrice;
     }
     public void setInventory(Long inventory)
     {
@@ -153,7 +153,7 @@ public class GoodsInfo extends BaseEntity
             .append("goodsType", getGoodsType())
             .append("goodsBrand", getGoodsBrand())
             .append("costPrice", getCostPrice())
-            .append("salesPric", getSalesPric())
+            .append("salesPrice", getsalesPrice())
             .append("inventory", getInventory())
             .append("status", getStatus())
             .append("delFlag", getDelFlag())

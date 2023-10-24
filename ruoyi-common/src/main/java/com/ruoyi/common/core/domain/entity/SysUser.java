@@ -14,7 +14,7 @@ import com.ruoyi.common.xss.Xss;
 
 /**
  * 用户对象 sys_user
- * 
+ *
  * @author ruoyi
  */
 public class SysUser extends BaseEntity
@@ -88,6 +88,15 @@ public class SysUser extends BaseEntity
 
     /** 角色ID */
     private Long roleId;
+
+    /** 身份证号码 */
+    private String idCard;
+
+    /** 生日 */
+    private Date birthdayDate;
+
+    /** 工厂ID */
+    private Long entId;
 
     public SysUser()
     {
@@ -295,6 +304,30 @@ public class SysUser extends BaseEntity
     public void setRoleId(Long roleId)
     {
         this.roleId = roleId;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public Date getBirthdayDate() {
+        return birthdayDate;
+    }
+
+    public void setBirthdayDate(Date birthdayDate) {
+        this.birthdayDate = birthdayDate;
+    }
+
+    public Long getEntId() {
+        return entId;
+    }
+
+    public void setEntId(Long entId) {
+        this.entId = entId;
     }
 
     @Override

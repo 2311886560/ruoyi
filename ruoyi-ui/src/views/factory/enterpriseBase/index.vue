@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="工厂编号" prop="entCode">
         <el-input v-model="queryParams.entCode" placeholder="请输入工厂编号" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
@@ -31,9 +31,9 @@
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple"
           @click="handleDelete">删除</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>
-      </el-col>
+      </el-col> -->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -206,8 +206,8 @@ export default {
         licensePic: null,
         remark: null,
         busScope: null,
-        status: null,
-        delFlag: 0,
+        status: "1",
+        delFlag: "0",
         createBy: null,
         createTime: null,
         updateBy: null,

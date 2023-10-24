@@ -2,6 +2,13 @@ package com.ruoyi.factory.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.factory.domain.vo.GoodsInfoVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +49,7 @@ public class GoodsInfoController extends BaseController
     public TableDataInfo list(GoodsInfo goodsInfo)
     {
         startPage();
-        List<GoodsInfo> list = goodsInfoService.selectGoodsInfoList(goodsInfo);
+        List<GoodsInfoVo> list = goodsInfoService.selectGoodsInfoList(goodsInfo);
         return getDataTable(list);
     }
 
@@ -54,8 +61,8 @@ public class GoodsInfoController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, GoodsInfo goodsInfo)
     {
-        List<GoodsInfo> list = goodsInfoService.selectGoodsInfoList(goodsInfo);
-        ExcelUtil<GoodsInfo> util = new ExcelUtil<GoodsInfo>(GoodsInfo.class);
+        List<GoodsInfoVo> list = goodsInfoService.selectGoodsInfoList(goodsInfo);
+        ExcelUtil<GoodsInfoVo> util = new ExcelUtil<GoodsInfoVo>(GoodsInfoVo.class);
         util.exportExcel(response, list, "商品信息数据");
     }
 

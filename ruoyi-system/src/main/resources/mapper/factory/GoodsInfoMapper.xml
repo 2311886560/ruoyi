@@ -3,15 +3,15 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.factory.mapper.GoodsInfoMapper">
-    
-    <resultMap type="GoodsInfo" id="GoodsInfoResult">
+
+    <resultMap type="GoodsInfoVo" id="GoodsInfoResult">
         <result property="id"    column="id"    />
         <result property="entId"    column="ent_id"    />
         <result property="name"    column="name"    />
         <result property="goodsType"    column="goods_type"    />
         <result property="goodsBrand"    column="goods_brand"    />
         <result property="costPrice"    column="cost_price"    />
-        <result property="salesPric"    column="sales_pric"    />
+        <result property="salesPrice"    column="sales_price"    />
         <result property="inventory"    column="inventory"    />
         <result property="status"    column="status"    />
         <result property="delFlag"    column="del_flag"    />
@@ -22,28 +22,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectGoodsInfoVo">
-        select id, ent_id, name, goods_type, goods_brand, cost_price, sales_pric, inventory, status, del_flag, create_by, create_time, update_by, update_time from goods_info
+        select id, ent_id, name, goods_type, goods_brand, cost_price, sales_price, inventory, status, del_flag, create_by, create_time, update_by, update_time from goods_info
     </sql>
 
-    <select id="selectGoodsInfoList" parameterType="GoodsInfo" resultMap="GoodsInfoResult">
-        <include refid="selectGoodsInfoVo"/>
-        <where>  
-            <if test="entId != null "> and ent_id = #{entId}</if>
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="goodsType != null  and goodsType != ''"> and goods_type = #{goodsType}</if>
-            <if test="goodsBrand != null  and goodsBrand != ''"> and goods_brand = #{goodsBrand}</if>
-            <if test="costPrice != null "> and cost_price = #{costPrice}</if>
-            <if test="salesPric != null "> and sales_pric = #{salesPric}</if>
-            <if test="inventory != null "> and inventory = #{inventory}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+    <select id="selectGoodsInfoList" parameterType="com.ruoyi.factory.domain.vo.GoodsInfoVo" resultMap="GoodsInfoResult">
+        select goods.*,ent.ent_name as entName
+        from goods_info goods
+        left join enterprise_base ent on ent.id = goods.ent_id
+        <where>
+            <if test="entId != null "> and goods.ent_id = #{entId}</if>
+            <if test="name != null  and name != ''"> and goods.name like concat('%', #{name}, '%')</if>
+            <if test="goodsType != null  and goodsType != ''"> and goods.goods_type = #{goodsType}</if>
+            <if test="goodsBrand != null  and goodsBrand != ''"> and goods.goods_brand = #{goodsBrand}</if>
+            <if test="costPrice != null "> and goods.cost_price = #{costPrice}</if>
+            <if test="salesPrice != null "> and goods.sales_price = #{salesPrice}</if>
+            <if test="inventory != null "> and goods.inventory = #{inventory}</if>
+            <if test="status != null  and status != ''"> and goods.status = #{status}</if>
         </where>
     </select>
-    
+
     <select id="selectGoodsInfoById" parameterType="Long" resultMap="GoodsInfoResult">
         <include refid="selectGoodsInfoVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertGoodsInfo" parameterType="GoodsInfo" useGeneratedKeys="true" keyProperty="id">
         insert into goods_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -52,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="goodsType != null">goods_type,</if>
             <if test="goodsBrand != null">goods_brand,</if>
             <if test="costPrice != null">cost_price,</if>
-            <if test="salesPric != null">sales_pric,</if>
+            <if test="salesPrice != null">sales_price,</if>
             <if test="inventory != null">inventory,</if>
             <if test="status != null">status,</if>
             <if test="delFlag != null and delFlag != ''">del_flag,</if>
@@ -67,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="goodsType != null">#{goodsType},</if>
             <if test="goodsBrand != null">#{goodsBrand},</if>
             <if test="costPrice != null">#{costPrice},</if>
-            <if test="salesPric != null">#{salesPric},</if>
+            <if test="salesPrice != null">#{salesPrice},</if>
             <if test="inventory != null">#{inventory},</if>
             <if test="status != null">#{status},</if>
             <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
@@ -86,7 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="goodsType != null">goods_type = #{goodsType},</if>
             <if test="goodsBrand != null">goods_brand = #{goodsBrand},</if>
             <if test="costPrice != null">cost_price = #{costPrice},</if>
-            <if test="salesPric != null">sales_pric = #{salesPric},</if>
+            <if test="salesPrice != null">sales_price = #{salesPrice},</if>
             <if test="inventory != null">inventory = #{inventory},</if>
             <if test="status != null">status = #{status},</if>
             <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
@@ -103,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteGoodsInfoByIds" parameterType="String">
-        delete from goods_info where id in 
+        delete from goods_info where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -28,17 +28,20 @@
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple"
           @click="handleDelete">删除</el-button>
       </el-col>
+      <!-- <el-col :span="1.5">
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>
+      </el-col> -->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="goodsInfoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="工厂名称" align="center" prop="entId" />
+      <el-table-column label="工厂名称" align="center" prop="entName" />
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="类型" align="center" prop="goodsType" />
       <el-table-column label="品牌" align="center" prop="goodsBrand" />
       <el-table-column label="成本价" align="center" prop="costPrice" />
-      <el-table-column label="销售价" align="center" prop="salesPric" />
+      <el-table-column label="销售价" align="center" prop="salesPrice" />
       <el-table-column label="库存量" align="center" prop="inventory" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -66,8 +69,8 @@
         <el-form-item label="成本价" prop="costPrice">
           <el-input v-model="form.costPrice" placeholder="请输入成本价" />
         </el-form-item>
-        <el-form-item label="销售价" prop="salesPric">
-          <el-input v-model="form.salesPric" placeholder="请输入销售价" />
+        <el-form-item label="销售价" prop="salesPrice">
+          <el-input v-model="form.salesPrice" placeholder="请输入销售价" />
         </el-form-item>
         <el-form-item label="库存量" prop="inventory">
           <el-input v-model="form.inventory" placeholder="请输入库存量" />
@@ -115,7 +118,7 @@ export default {
         goodsType: null,
         goodsBrand: null,
         costPrice: null,
-        salesPric: null,
+        salesPrice: null,
         inventory: null,
         status: null,
       },
@@ -156,10 +159,10 @@ export default {
         goodsType: null,
         goodsBrand: null,
         costPrice: null,
-        salesPric: null,
+        salesPrice: null,
         inventory: null,
-        status: null,
-        delFlag: null,
+        status: "1",
+        delFlag: "0",
         createBy: null,
         createTime: null,
         updateBy: null,
