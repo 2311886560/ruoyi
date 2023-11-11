@@ -1,6 +1,7 @@
 package com.ruoyi.factory.controller;
 
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
@@ -38,7 +39,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 @RequestMapping("/factory/goodsInfo")
 public class GoodsInfoController extends BaseController
 {
-    @Autowired
+    @Resource
     private IGoodsInfoService goodsInfoService;
 
     /**

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.factory.mapper.GoodsOrderMapper">
+
+    <resultMap type="com.ruoyi.factory.domain.vo.GoodsOrderVo" id="GoodsOrderResult">
+        <result property="id" column="id"/>
+        <result property="orderCode" column="order_code"/>
+        <result property="orderTitle" column="order_title"/>
+        <result property="salerEntId" column="saler_ent_id"/>
+        <result property="buyerUserId" column="buyer_user_id"/>
+        <result property="salerUserId" column="saler_user_id"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="confirmTime" column="confirm_time"/>
+        <result property="logisticsCode" column="logistics_code"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap id="GoodsOrderGoodsOrderSubResult" type="com.ruoyi.factory.domain.vo.GoodsOrderVo" extends="GoodsOrderResult">
+        <collection property="goodsOrderSubList" notNullColumn="sub_id" javaType="java.util.List"
+                    resultMap="GoodsOrderSubResult"/>
+    </resultMap>
+
+    <resultMap type="com.ruoyi.factory.domain.GoodsOrderSub" id="GoodsOrderSubResult">
+        <result property="id" column="sub_id"/>
+        <result property="orderId" column="sub_order_id"/>
+        <result property="goodsId" column="sub_goods_id"/>
+        <result property="orderAmount" column="sub_order_amount"/>
+        <result property="salesPrice" column="sub_sales_price"/>
+        <result property="totalPrice" column="sub_total_price"/>
+        <result property="status" column="sub_status"/>
+        <result property="delFlag" column="sub_del_flag"/>
+        <result property="createBy" column="sub_create_by"/>
+        <result property="createTime" column="sub_create_time"/>
+        <result property="updateBy" column="sub_update_by"/>
+        <result property="updateTime" column="sub_update_time"/>
+    </resultMap>
+
+    <sql id="selectGoodsOrderVo">
+        select id,
+               order_code,
+               order_title,
+               saler_ent_id,
+               buyer_user_id,
+               saler_user_id,
+               order_time,
+               confirm_time,
+               logistics_code,
+               status,
+               del_flag,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from goods_order
+    </sql>
+
+    <select id="selectGoodsOrderList" parameterType="com.ruoyi.factory.domain.vo.GoodsOrderVo" resultMap="GoodsOrderResult">
+        select goods_order.*,
+        buyer_user.nick_name as buyerUserName, saler_user.nick_name as salerUserName, enterprise_base.ent_name as salerEntName
+        from goods_order
+        left join sys_user buyer_user on buyer_user.user_id = goods_order.buyer_user_id
+        left join sys_user saler_user on saler_user.user_id = goods_order.saler_user_id
+        left join enterprise_base on enterprise_base.id = goods_order.saler_ent_id
+        <where>
+            <if test="orderCode != null  and orderCode != ''">
+                and goods_order.order_code like concat('%', #{orderCode}, '%')
+            </if>
+            <if test="orderTitle != null  and orderTitle != ''">
+                and goods_order.order_title like concat('%', #{orderTitle}, '%')
+            </if>
+            <if test="salerEntId != null ">
+                and goods_order.saler_ent_id = #{salerEntId}
+            </if>
+            <if test="buyerUserId != null ">
+                and goods_order.buyer_user_id = #{buyerUserId}
+            </if>
+            <if test="salerUserId != null ">
+                and goods_order.saler_user_id = #{salerUserId}
+            </if>
+            <if test="orderTime != null ">
+                and goods_order.order_time = #{orderTime}
+            </if>
+            <if test="confirmTime != null ">
+                and goods_order.confirm_time = #{confirmTime}
+            </if>
+            <if test="logisticsCode != null  and logisticsCode != ''">
+                and logistics_code = #{logisticsCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectGoodsOrderById" parameterType="Long" resultMap="GoodsOrderGoodsOrderSubResult">
+        select a.id,
+               a.order_code,
+               a.order_title,
+               a.saler_ent_id,
+               a.buyer_user_id,
+               a.saler_user_id,
+               a.order_time,
+               a.confirm_time,
+               a.logistics_code,
+               a.status,
+               a.del_flag,
+               a.create_by,
+               a.create_time,
+               a.update_by,
+               a.update_time,
+               b.id           as sub_id,
+               b.order_id     as sub_order_id,
+               b.goods_id     as sub_goods_id,
+               b.order_amount as sub_order_amount,
+               b.sales_price  as sub_sales_price,
+               b.total_price  as sub_total_price,
+               b.status       as sub_status,
+               b.del_flag     as sub_del_flag,
+               b.create_by    as sub_create_by,
+               b.create_time  as sub_create_time,
+               b.update_by    as sub_update_by,
+               b.update_time  as sub_update_time
+        from goods_order a
+                 left join goods_order_sub b on b.order_id = a.id
+        where a.id = #{id}
+    </select>
+
+    <insert id="insertGoodsOrder" parameterType="com.ruoyi.factory.domain.vo.GoodsOrderVo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into goods_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderCode != null">order_code,</if>
+            <if test="orderTitle != null">order_title,</if>
+            <if test="salerEntId != null">saler_ent_id,</if>
+            <if test="buyerUserId != null">buyer_user_id,</if>
+            <if test="salerUserId != null">saler_user_id,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="confirmTime != null">confirm_time,</if>
+            <if test="logisticsCode != null">logistics_code,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderCode != null">#{orderCode},</if>
+            <if test="orderTitle != null">#{orderTitle},</if>
+            <if test="salerEntId != null">#{salerEntId},</if>
+            <if test="buyerUserId != null">#{buyerUserId},</if>
+            <if test="salerUserId != null">#{salerUserId},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="confirmTime != null">#{confirmTime},</if>
+            <if test="logisticsCode != null">#{logisticsCode},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGoodsOrder" parameterType="com.ruoyi.factory.domain.vo.GoodsOrderVo">
+        update goods_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderCode != null">order_code = #{orderCode},</if>
+            <if test="orderTitle != null">order_title = #{orderTitle},</if>
+            <if test="salerEntId != null">saler_ent_id = #{salerEntId},</if>
+            <if test="buyerUserId != null">buyer_user_id = #{buyerUserId},</if>
+            <if test="salerUserId != null">saler_user_id = #{salerUserId},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="confirmTime != null">confirm_time = #{confirmTime},</if>
+            <if test="logisticsCode != null">logistics_code = #{logisticsCode},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsOrderById" parameterType="Long">
+        delete
+        from goods_order
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsOrderByIds" parameterType="String">
+        delete from goods_order where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteGoodsOrderSubByOrderIds" parameterType="String">
+        delete from goods_order_sub where order_id in
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteGoodsOrderSubByOrderId" parameterType="Long">
+        delete
+        from goods_order_sub
+        where order_id = #{orderId}
+    </delete>
+
+    <insert id="batchGoodsOrderSub">
+        insert into goods_order_sub( id, order_id, goods_id, order_amount, sales_price, total_price, status, del_flag,
+        create_by, create_time, update_by, update_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.orderId}, #{item.goodsId}, #{item.orderAmount}, #{item.salesPrice}, #{item.totalPrice},
+            #{item.status}, #{item.delFlag}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+        </foreach>
+    </insert>
+</mapper>

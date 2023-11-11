@@ -1,43 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.factory.mapper.GoodsInfoMapper">
 
-    <resultMap type="GoodsInfoVo" id="GoodsInfoResult">
-        <result property="id"    column="id"    />
-        <result property="entId"    column="ent_id"    />
-        <result property="name"    column="name"    />
-        <result property="goodsType"    column="goods_type"    />
-        <result property="goodsBrand"    column="goods_brand"    />
-        <result property="costPrice"    column="cost_price"    />
-        <result property="salesPrice"    column="sales_price"    />
-        <result property="inventory"    column="inventory"    />
-        <result property="status"    column="status"    />
-        <result property="delFlag"    column="del_flag"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateBy"    column="update_by"    />
-        <result property="updateTime"    column="update_time"    />
+    <resultMap type="com.ruoyi.factory.domain.vo.GoodsInfoVo" id="GoodsInfoResult">
+        <result property="id" column="id"/>
+        <result property="entId" column="ent_id"/>
+        <result property="name" column="name"/>
+        <result property="goodsType" column="goods_type"/>
+        <result property="goodsBrand" column="goods_brand"/>
+        <result property="costPrice" column="cost_price"/>
+        <result property="salesPrice" column="sales_price"/>
+        <result property="inventory" column="inventory"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <sql id="selectGoodsInfoVo">
-        select id, ent_id, name, goods_type, goods_brand, cost_price, sales_price, inventory, status, del_flag, create_by, create_time, update_by, update_time from goods_info
+        select id,
+               ent_id,
+               name,
+               goods_type,
+               goods_brand,
+               cost_price,
+               sales_price,
+               inventory,
+               status,
+               del_flag,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from goods_info
     </sql>
 
-    <select id="selectGoodsInfoList" parameterType="com.ruoyi.factory.domain.vo.GoodsInfoVo" resultMap="GoodsInfoResult">
+    <select id="selectGoodsInfoList" parameterType="com.ruoyi.factory.domain.vo.GoodsInfoVo"
+            resultMap="GoodsInfoResult">
         select goods.*,ent.ent_name as entName
         from goods_info goods
         left join enterprise_base ent on ent.id = goods.ent_id
         <where>
-            <if test="entId != null "> and goods.ent_id = #{entId}</if>
-            <if test="name != null  and name != ''"> and goods.name like concat('%', #{name}, '%')</if>
-            <if test="goodsType != null  and goodsType != ''"> and goods.goods_type = #{goodsType}</if>
-            <if test="goodsBrand != null  and goodsBrand != ''"> and goods.goods_brand = #{goodsBrand}</if>
-            <if test="costPrice != null "> and goods.cost_price = #{costPrice}</if>
-            <if test="salesPrice != null "> and goods.sales_price = #{salesPrice}</if>
-            <if test="inventory != null "> and goods.inventory = #{inventory}</if>
-            <if test="status != null  and status != ''"> and goods.status = #{status}</if>
+            <if test="entId != null ">and goods.ent_id = #{entId}</if>
+            <if test="name != null  and name != ''">and goods.name like concat('%', #{name}, '%')</if>
+            <if test="goodsType != null  and goodsType != ''">and goods.goods_type = #{goodsType}</if>
+            <if test="goodsBrand != null  and goodsBrand != ''">and goods.goods_brand = #{goodsBrand}</if>
+            <if test="costPrice != null ">and goods.cost_price = #{costPrice}</if>
+            <if test="salesPrice != null ">and goods.sales_price = #{salesPrice}</if>
+            <if test="inventory != null ">and goods.inventory = #{inventory}</if>
+            <if test="status != null  and status != ''">and goods.status = #{status}</if>
         </where>
     </select>
 
@@ -46,7 +61,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
-    <insert id="insertGoodsInfo" parameterType="GoodsInfo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertGoodsInfo" parameterType="com.ruoyi.factory.domain.GoodsInfo" useGeneratedKeys="true"
+            keyProperty="id">
         insert into goods_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="entId != null">ent_id,</if>
@@ -62,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="entId != null">#{entId},</if>
             <if test="name != null">#{name},</if>
@@ -77,10 +93,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
-         </trim>
+        </trim>
     </insert>
 
-    <update id="updateGoodsInfo" parameterType="GoodsInfo">
+    <update id="updateGoodsInfo" parameterType="com.ruoyi.factory.domain.GoodsInfo">
         update goods_info
         <trim prefix="SET" suffixOverrides=",">
             <if test="entId != null">ent_id = #{entId},</if>
@@ -101,7 +117,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteGoodsInfoById" parameterType="Long">
-        delete from goods_info where id = #{id}
+        delete
+        from goods_info
+        where id = #{id}
     </delete>
 
     <delete id="deleteGoodsInfoByIds" parameterType="String">

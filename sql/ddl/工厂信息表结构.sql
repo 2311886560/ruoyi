@@ -1,6 +1,6 @@
 CREATE TABLE `enterprise_base`
 (
-    `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT 'id',
     `ent_code`     varchar(45)           DEFAULT NULL COMMENT '工厂编号',
     `credit_code`  varchar(45)           DEFAULT NULL COMMENT '统一信用代码',
     `ent_name`     varchar(512) NOT NULL COMMENT '工厂名称',
@@ -21,5 +21,7 @@ CREATE TABLE `enterprise_base`
     `update_by`    varchar(50)           DEFAULT NULL COMMENT '更新人',
     `update_time`  datetime              DEFAULT NULL COMMENT '更新日期',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='工厂基本信息';
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4 COMMENT ='工厂基本信息';
 -- 程序目录和数据最后再一起导出

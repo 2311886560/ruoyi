@@ -1,6 +1,7 @@
 package com.ruoyi.factory.controller;
 
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 @RequestMapping("/factory/enterpriseBase")
 public class EnterpriseBaseController extends BaseController
 {
-    @Autowired
+    @Resource
     private IEnterpriseBaseService enterpriseBaseService;
 
     /**
