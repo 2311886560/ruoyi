@@ -4,6 +4,10 @@ maven 3.6.1
 node v16.13.0
 npm 9.8.1
 ## 首次启动
+依次导入数据库
+quartz.sql
+ddl文件夹中所以sql
+
 
 ###  进入项目目录，进入ruoyi-ui目录
 cd ruoyi-ui
