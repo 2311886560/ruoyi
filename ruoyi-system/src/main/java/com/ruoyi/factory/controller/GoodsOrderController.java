@@ -25,7 +25,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 商品订单主Controller
+ * 商品订单Controller
  *
  * @author ruoyi
  * @date 2023-11-11
@@ -37,7 +37,7 @@ public class GoodsOrderController extends BaseController {
     private IGoodsOrderService goodsOrderService;
 
     /**
-     * 查询商品订单主列表
+     * 查询商品订单列表
      */
 //    @PreAuthorize("@ss.hasPermi('factory:order:list')")
     @GetMapping("/list")
@@ -48,19 +48,19 @@ public class GoodsOrderController extends BaseController {
     }
 
     /**
-     * 导出商品订单主列表
+     * 导出商品订单列表
      */
 //    @PreAuthorize("@ss.hasPermi('factory:order:export')")
-    @Log(title = "商品订单主", businessType = BusinessType.EXPORT)
+    @Log(title = "商品订单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, GoodsOrderVo goodsOrder) {
         List<GoodsOrderVo> list = goodsOrderService.selectGoodsOrderList(goodsOrder);
         ExcelUtil<GoodsOrderVo> util = new ExcelUtil<GoodsOrderVo>(GoodsOrderVo.class);
-        util.exportExcel(response, list, "商品订单主数据");
+        util.exportExcel(response, list, "商品订单数据");
     }
 
     /**
-     * 获取商品订单主详细信息
+     * 获取商品订单详细信息
      */
 //    @PreAuthorize("@ss.hasPermi('factory:order:query')")
     @GetMapping(value = "/{id}")
@@ -69,30 +69,30 @@ public class GoodsOrderController extends BaseController {
     }
 
     /**
-     * 新增商品订单主
+     * 新增商品订单
      */
 //    @PreAuthorize("@ss.hasPermi('factory:order:add')")
-    @Log(title = "商品订单主", businessType = BusinessType.INSERT)
+    @Log(title = "商品订单", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody GoodsOrder goodsOrder) {
         return toAjax(goodsOrderService.insertGoodsOrder(goodsOrder));
     }
 
     /**
-     * 修改商品订单主
+     * 修改商品订单
      */
 //    @PreAuthorize("@ss.hasPermi('factory:order:edit')")
-    @Log(title = "商品订单主", businessType = BusinessType.UPDATE)
+    @Log(title = "商品订单", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody GoodsOrder goodsOrder) {
         return toAjax(goodsOrderService.updateGoodsOrder(goodsOrder));
     }
 
     /**
-     * 删除商品订单主
+     * 删除商品订单
      */
 //    @PreAuthorize("@ss.hasPermi('factory:order:remove')")
-    @Log(title = "商品订单主", businessType = BusinessType.DELETE)
+    @Log(title = "商品订单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(goodsOrderService.deleteGoodsOrderByIds(ids));

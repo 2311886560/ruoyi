@@ -34,6 +34,10 @@
             <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable style="width: 240px"
               @keyup.enter.native="handleQuery" />
           </el-form-item>
+          <el-form-item label="用户昵称" prop="nickName">
+            <el-input v-model="queryParams.nickName" placeholder="请输入用户昵称" clearable style="width: 240px"
+              @keyup.enter.native="handleQuery" />
+          </el-form-item>
           <el-form-item label="手机号码" prop="phonenumber">
             <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" clearable style="width: 240px"
               @keyup.enter.native="handleQuery" />
@@ -67,15 +71,7 @@
             <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
               v-hasPermi="['system:user:remove']">删除</el-button>
           </el-col>
-          <el-col :span="1.5">
-            <el-button type="info" plain icon="el-icon-upload2" size="mini" @click="handleImport"
-              v-hasPermi="['system:user:import']">导入</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-              v-hasPermi="['system:user:export']">导出</el-button>
-          </el-col>
-          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+          <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar> -->
         </el-row>
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
@@ -85,9 +81,19 @@
             :show-overflow-tooltip="true" />
           <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
             :show-overflow-tooltip="true" />
+          <el-table-column label="用户类型" align="center" prop="userType">
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.sys_user_type" :value="scope.row.userType" />
+            </template>
+          </el-table-column>
           <!-- <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" /> -->
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
             width="120" />
+          <el-table-column label="生日" align="center" prop="birthdayDate" width="160">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.birthdayDate, '{y}-{m}-{d}') }}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
@@ -101,18 +107,12 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
-              <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-                v-hasPermi="['system:user:edit']">修改</el-button>
-              <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-                v-hasPermi="['system:user:remove']">删除</el-button>
-              <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)"
-                v-hasPermi="['system:user:resetPwd', 'system:user:edit']">
+              <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
+              <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
+              <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)">
                 <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="handleResetPwd" icon="el-icon-key"
-                    v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
-                  <el-dropdown-item command="handleAuthRole" icon="el-icon-circle-check"
-                    v-hasPermi="['system:user:edit']">分配角色</el-dropdown-item>
+                  <el-dropdown-item command="handleResetPwd" icon="el-icon-key">重置密码</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -175,9 +175,19 @@
           <el-col :span="12">
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
-                <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value"
-                  :label="dict.value">{{ dict.label }}</el-radio>
+                <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value">{{ dict.label
+                }}</el-radio>
               </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="用户类型">
+              <el-select style="width: 100%;" v-model="form.userType" placeholder="请选择用户类型">
+                <el-option v-for="item in dict.type.sys_user_type" v-if="item.value !== '00'" :key="item.value" :label="item.label"
+                  :value="item.value"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -270,13 +280,14 @@
 <script>
 import { listEnterpriseBase } from "@/api/factory/enterpriseBase";
 import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, deptTreeSelect } from "@/api/system/user";
+import { getInfo } from '@/api/login'
 import { getToken } from "@/utils/auth";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "User",
-  dicts: ['sys_normal_disable', 'sys_user_sex'],
+  dicts: ['sys_normal_disable', 'sys_user_sex', 'sys_user_type'],
   components: { Treeselect },
   data() {
     return {
@@ -380,6 +391,10 @@ export default {
       },
       // 企业选项
       entOptions: [],
+      // 用户信息
+      userInfo: {
+        userType: '00'
+      },
     };
   },
   watch: {
@@ -395,8 +410,16 @@ export default {
       this.initPassword = response.msg;
     });
     this.getEntOption();
+    this.getUserInfo();
   },
   methods: {
+    // 查询登录用户信息
+    getUserInfo() {
+      getInfo().then(response => {
+        this.userInfo = response.user;
+        console.log(this.userInfo)
+      })
+    },
     // 查询企业列表
     getEntOption() {
       listEnterpriseBase({ pageNum: 1, pageSize: 999 }).then(response => {

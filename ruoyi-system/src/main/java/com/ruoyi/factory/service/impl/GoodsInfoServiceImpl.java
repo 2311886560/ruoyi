@@ -22,8 +22,7 @@ import com.ruoyi.factory.service.IGoodsInfoService;
  * @date 2023-10-23
  */
 @Service
-public class GoodsInfoServiceImpl implements IGoodsInfoService
-{
+public class GoodsInfoServiceImpl implements IGoodsInfoService {
     @Autowired
     private GoodsInfoMapper goodsInfoMapper;
 
@@ -34,8 +33,7 @@ public class GoodsInfoServiceImpl implements IGoodsInfoService
      * @return 商品信息
      */
     @Override
-    public GoodsInfo selectGoodsInfoById(Long id)
-    {
+    public GoodsInfo selectGoodsInfoById(Long id) {
         return goodsInfoMapper.selectGoodsInfoById(id);
     }
 
@@ -46,8 +44,7 @@ public class GoodsInfoServiceImpl implements IGoodsInfoService
      * @return 商品信息
      */
     @Override
-    public List<GoodsInfoVo> selectGoodsInfoList(GoodsInfo goodsInfo)
-    {
+    public List<GoodsInfoVo> selectGoodsInfoList(GoodsInfo goodsInfo) {
         return goodsInfoMapper.selectGoodsInfoList(goodsInfo);
     }
 
@@ -58,14 +55,14 @@ public class GoodsInfoServiceImpl implements IGoodsInfoService
      * @return 结果
      */
     @Override
-    public int insertGoodsInfo(GoodsInfo goodsInfo)
-    {
+    public int insertGoodsInfo(GoodsInfo goodsInfo) {
         // 获取当前登录用户信息
         SysUser user = SecurityUtils.getLoginUser().getUser();
         if (StringUtils.isNull(user.getEntId())) {
             throw new ServiceException("当前用户未分配企业！");
         }
         goodsInfo.setEntId(user.getEntId());
+        goodsInfo.setCreateBy(user.getUserName());
         goodsInfo.setCreateTime(DateUtils.getNowDate());
         return goodsInfoMapper.insertGoodsInfo(goodsInfo);
     }
@@ -77,8 +74,10 @@ public class GoodsInfoServiceImpl implements IGoodsInfoService
      * @return 结果
      */
     @Override
-    public int updateGoodsInfo(GoodsInfo goodsInfo)
-    {
+    public int updateGoodsInfo(GoodsInfo goodsInfo) {
+        // 获取当前登录用户信息
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        goodsInfo.setCreateBy(user.getUserName());
         goodsInfo.setUpdateTime(DateUtils.getNowDate());
         return goodsInfoMapper.updateGoodsInfo(goodsInfo);
     }
@@ -90,8 +89,7 @@ public class GoodsInfoServiceImpl implements IGoodsInfoService
      * @return 结果
      */
     @Override
-    public int deleteGoodsInfoByIds(Long[] ids)
-    {
+    public int deleteGoodsInfoByIds(Long[] ids) {
         return goodsInfoMapper.deleteGoodsInfoByIds(ids);
     }
 
@@ -102,8 +100,7 @@ public class GoodsInfoServiceImpl implements IGoodsInfoService
      * @return 结果
      */
     @Override
-    public int deleteGoodsInfoById(Long id)
-    {
+    public int deleteGoodsInfoById(Long id) {
         return goodsInfoMapper.deleteGoodsInfoById(id);
     }
 }

@@ -16,7 +16,7 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
+    <el-row :gutter="10" class="mb8" v-if="userInfo.userType !== '21'">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">新增
         </el-button>
@@ -37,7 +37,7 @@
       <el-table-column label="订单编号" align="center" prop="orderCode" />
       <el-table-column label="订单标题" align="center" prop="orderTitle" />
       <el-table-column label="卖方企业" align="center" prop="salerEntName" />
-      <el-table-column label="买方员工" align="center" prop="buyerUserName" />
+      <el-table-column label="购买客户" align="center" prop="buyerUserName" />
       <el-table-column label="卖方员工" align="center" prop="salerUserName" />
       <el-table-column label="订单时间" align="center" prop="orderTime" width="180">
         <template slot-scope="scope">
@@ -52,9 +52,13 @@
       <el-table-column label="物流编号" align="center" prop="logisticsCode" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row)">详情
           </el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除
+          <el-button v-if="userInfo.userType !== '21'" size="mini" type="text" icon="el-icon-edit"
+            @click="handleUpdate(scope.row)">修改
+          </el-button>
+          <el-button v-if="userInfo.userType !== '21'" size="mini" type="text" icon="el-icon-delete"
+            @click="handleDelete(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -79,6 +83,11 @@
         <el-form-item label="卖方企业" prop="salerEntId">
           <el-select style="width: 100%;" v-model="form.salerEntId" placeholder="请选择卖方企业">
             <el-option v-for="item in entOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="购买客户" prop="buyerUserId">
+          <el-select style="width: 100%;" v-model="form.buyerUserId" placeholder="请选择购买客户">
+            <el-option v-for="item in userOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="确认时间" prop="confirmTime">
@@ -128,7 +137,7 @@
           </el-table-column>
         </el-table>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" v-if="openType !== 'details'">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
@@ -140,7 +149,8 @@
 import { listOrder, getOrder, delOrder, addOrder, updateOrder } from "@/api/factory/order";
 import { listGoodsInfo } from "@/api/factory/goodsInfo";
 import { listEnterpriseBase } from "@/api/factory/enterpriseBase";
-
+import { listUser } from "@/api/system/user";
+import { getInfo } from '@/api/login'
 export default {
   name: "Order",
   data() {
@@ -167,6 +177,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 是否显示弹出层
+      openType: 'details',
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -188,14 +200,37 @@ export default {
       goodsInfoOptions: {},
       // 企业选项
       entOptions: [],
+      // 用户选项
+      userOptions: [],
+      // 用户信息
+      userInfo: {
+        userType: '00'
+      },
     };
   },
   created() {
     this.getList();
     this.getGoodsInfoOption();
     this.getEntOption();
+    this.getUserOption();
+    this.getUserInfo();
   },
   methods: {
+    // 查询登录用户信息
+    getUserInfo() {
+      getInfo().then(response => {
+        this.userInfo = response.user;
+      })
+    },
+    // 查询用户列表
+    getUserOption() {
+      listUser({ pageNum: 1, pageSize: 999, userType: '21' }).then(response => {
+        this.userOptions = response.rows.map((item, index, arr) => {
+          let c = { label: item.nickName, value: item.userId }
+          return c;
+        })
+      })
+    },
     // 查询企业列表
     getEntOption() {
       listEnterpriseBase({ pageNum: 1, pageSize: 999 }).then(response => {
@@ -270,6 +305,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
+      this.openType = 'add';
       this.title = "添加商品订单";
     },
     /** 修改按钮操作 */
@@ -280,7 +316,20 @@ export default {
         this.form = response.data;
         this.goodsOrderSubList = response.data.goodsOrderSubList;
         this.open = true;
+        this.openType = 'update';
         this.title = "修改商品订单";
+      });
+    },
+    /** 详情按钮操作 */
+    handleDetails(row) {
+      this.reset();
+      const id = row.id || this.ids
+      getOrder(id).then(response => {
+        this.form = response.data;
+        this.goodsOrderSubList = response.data.goodsOrderSubList;
+        this.open = true;
+        this.openType = 'details';
+        this.title = "商品订单信息";
       });
     },
     /** 提交按钮 */

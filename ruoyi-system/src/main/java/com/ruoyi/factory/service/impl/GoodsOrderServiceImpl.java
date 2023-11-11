@@ -2,7 +2,10 @@ package com.ruoyi.factory.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.enums.UserType;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.factory.domain.vo.GoodsOrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +49,12 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
      */
     @Override
     public List<GoodsOrderVo> selectGoodsOrderList(GoodsOrderVo goodsOrder) {
+        // 获取当前登录用户信息
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        if (UserType.FACTORY_USER.getCode().equals(user.getUserType())) {
+            // 用户为工厂客户，只允许查询自己购买的订单
+            goodsOrder.setBuyerUserId(user.getUserId());
+        }
         return goodsOrderMapper.selectGoodsOrderList(goodsOrder);
     }
 
@@ -58,6 +67,11 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
     @Transactional
     @Override
     public int insertGoodsOrder(GoodsOrder goodsOrder) {
+        // 获取当前登录用户信息
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        // 卖方用户采用当前登录者的用户
+        goodsOrder.setSalerUserId(user.getUserId());
+        goodsOrder.setCreateBy(user.getUserName());
         goodsOrder.setCreateTime(DateUtils.getNowDate());
         int rows = goodsOrderMapper.insertGoodsOrder(goodsOrder);
         insertGoodsOrderSub(goodsOrder);
@@ -73,6 +87,9 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
     @Transactional
     @Override
     public int updateGoodsOrder(GoodsOrder goodsOrder) {
+        // 获取当前登录用户信息
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        goodsOrder.setUpdateBy(user.getUserName());
         goodsOrder.setUpdateTime(DateUtils.getNowDate());
         goodsOrderMapper.deleteGoodsOrderSubByOrderId(goodsOrder.getId());
         insertGoodsOrderSub(goodsOrder);
