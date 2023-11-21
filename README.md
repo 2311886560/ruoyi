@@ -5,7 +5,7 @@ node v16.13.0
 npm 9.8.1
 ## 首次启动
 依次导入数据库
-quartz.sql
+首次表结构.sql
 ddl文件夹中所以sql
 
 
@@ -22,7 +22,6 @@ npm run dev
 admin/admin123
 ry/admin123
 测试南宁工厂负责人/admin123
-测试南宁工厂订单管理员/admin123
 测试南宁工厂订单管理员/admin123
 ## 平台简介
 

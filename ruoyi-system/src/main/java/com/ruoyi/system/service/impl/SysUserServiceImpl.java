@@ -75,7 +75,7 @@ public class SysUserServiceImpl implements ISysUserService
     {
         // 获取当前登录用户信息
         SysUser loginUser = SecurityUtils.getLoginUser().getUser();
-        if (!UserType.SYSTEM_USER.getCode().equals(user.getUserType())) {
+        if (!UserType.SYSTEM_USER.getCode().equals(loginUser.getUserType())) {
             // 用户为不为系统管理员用户，只允许查询自己相关的用户
             List<String> userTypeList = new ArrayList<>();
             userTypeList.add(UserType.FACTORY_ADMIN.getCode());
