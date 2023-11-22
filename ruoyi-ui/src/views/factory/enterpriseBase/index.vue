@@ -2,16 +2,16 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="工厂编号" prop="entCode">
-        <el-input v-model="queryParams.entCode" placeholder="请输入工厂编号" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.entCode" placeholder="请输入工厂编号" maxlength="30" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="统一信用代码" prop="creditCode">
-        <el-input v-model="queryParams.creditCode" placeholder="请输入统一信用代码" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.creditCode" placeholder="请输入统一信用代码" maxlength="30" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="联系人" prop="linkerMan">
-        <el-input v-model="queryParams.linkerMan" placeholder="请输入联系人" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.linkerMan" placeholder="请输入联系人" maxlength="30" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="联系电话" prop="linkerPhone">
-        <el-input v-model="queryParams.linkerPhone" placeholder="请输入联系电话" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.linkerPhone" placeholder="请输入联系电话" maxlength="30" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -71,43 +71,43 @@
     <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="工厂编号" prop="entCode">
-          <el-input v-model="form.entCode" placeholder="请输入工厂编号" />
+          <el-input v-model="form.entCode" placeholder="请输入工厂编号" maxlength="30" />
         </el-form-item>
         <el-form-item label="统一信用代码" prop="creditCode">
-          <el-input v-model="form.creditCode" placeholder="请输入统一信用代码" />
+          <el-input v-model="form.creditCode" placeholder="请输入统一信用代码" maxlength="30" />
         </el-form-item>
         <el-form-item label="工厂名称" prop="entName">
-          <el-input v-model="form.entName" placeholder="请输入内容" />
+          <el-input v-model="form.entName" placeholder="请输入工厂名称" maxlength="30" />
         </el-form-item>
         <el-form-item label="法人" prop="legalPerson">
-          <el-input v-model="form.legalPerson" placeholder="请输入法人" />
+          <el-input v-model="form.legalPerson" placeholder="请输入法人" maxlength="30" />
         </el-form-item>
         <el-form-item label="法人手机号" prop="legalPhone">
-          <el-input v-model="form.legalPhone" placeholder="请输入法人手机号" />
+          <el-input v-model="form.legalPhone" placeholder="请输入法人手机号" maxlength="30" />
         </el-form-item>
         <el-form-item label="联系人" prop="linkerMan">
-          <el-input v-model="form.linkerMan" placeholder="请输入联系人" />
+          <el-input v-model="form.linkerMan" placeholder="请输入联系人" maxlength="30" />
         </el-form-item>
         <el-form-item label="联系电话" prop="linkerPhone">
-          <el-input v-model="form.linkerPhone" placeholder="请输入联系电话" />
+          <el-input v-model="form.linkerPhone" placeholder="请输入联系电话" maxlength="30" />
         </el-form-item>
         <el-form-item label="单位联系电话" prop="workPhone">
-          <el-input v-model="form.workPhone" placeholder="请输入单位联系电话" />
+          <el-input v-model="form.workPhone" placeholder="请输入单位联系电话" maxlength="30" />
         </el-form-item>
         <el-form-item label="详细地址" prop="entAddress">
-          <el-input v-model="form.entAddress" placeholder="请输入详细地址" />
+          <el-input v-model="form.entAddress" placeholder="请输入详细地址" maxlength="30" />
         </el-form-item>
         <el-form-item label="营业执照号" prop="license">
-          <el-input v-model="form.license" placeholder="请输入营业执照号" />
+          <el-input v-model="form.license" placeholder="请输入营业执照号" maxlength="30" />
         </el-form-item>
         <el-form-item label="营业执照" prop="licensePic">
           <image-upload v-model="form.licensePic" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
+          <el-input v-model="form.remark" placeholder="请输入备注" maxlength="30" />
         </el-form-item>
         <el-form-item label="经营范围" prop="busScope">
-          <el-input v-model="form.busScope" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.busScope" type="textarea" placeholder="请输入经营范围" maxlength="100" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

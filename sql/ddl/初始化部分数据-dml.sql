@@ -28,6 +28,51 @@ INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict
 VALUES (5, '系统用户', '99', 'sys_user_type', NULL, 'default', 'N', '1', 'admin', '2023-11-11 18:29:12', 'admin',
         '2023-11-11 18:29:17', '系统用户（暂不使用）');
 
+INSERT INTO `factory_database`.`sys_dict_type` (`dict_name`, `dict_type`, `status`, `create_by`, `create_time`,
+                                                `update_by`, `update_time`, `remark`)
+VALUES ('商品类型', 'sys_goods_type', '0', 'admin', '2023-11-11 18:28:13', 'admin', '2023-11-11 18:28:22',
+        '商品类型列表');
+INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
+                                                `css_class`, `list_class`, `is_default`, `status`, `create_by`,
+                                                `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (1, '五金', '0', 'sys_goods_type', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+        '2023-11-11 18:29:17', '五金');
+INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
+                                                `css_class`, `list_class`, `is_default`, `status`, `create_by`,
+                                                `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (2, '化工', '1', 'sys_goods_type', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+        '2023-11-11 18:29:17', '化工');
+INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
+                                                `css_class`, `list_class`, `is_default`, `status`, `create_by`,
+                                                `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (3, '食品', '2', 'sys_goods_type', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+        '2023-11-11 18:29:17', '食品');
+INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
+                                                `css_class`, `list_class`, `is_default`, `status`, `create_by`,
+                                                `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (4, '水产', '3', 'sys_goods_type', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+        '2023-11-11 18:29:17', '水产');
+
+INSERT INTO `factory_database`.`sys_dict_type` (`dict_name`, `dict_type`, `status`, `create_by`, `create_time`,
+                                                `update_by`, `update_time`, `remark`)
+VALUES ('订单状态', 'sys_goods_order_status', '0', 'admin', '2023-11-11 18:28:13', 'admin', '2023-11-11 18:28:22',
+        '订单状态列表');
+INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
+                                                `css_class`, `list_class`, `is_default`, `status`, `create_by`,
+                                                `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (1, '待完成', '0', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+        '2023-11-11 18:29:17', '');
+INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
+                                                `css_class`, `list_class`, `is_default`, `status`, `create_by`,
+                                                `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (2, '已完成', '1', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+        '2023-11-11 18:29:17', '');
+INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
+                                                `css_class`, `list_class`, `is_default`, `status`, `create_by`,
+                                                `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (3, '拒绝', '9', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+        '2023-11-11 18:29:17', '');
+
 -- 程序目录和数据最后再一起导出
 INSERT INTO `factory_database`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`,
                                            `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`,

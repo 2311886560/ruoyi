@@ -2,13 +2,10 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="名称" prop="name">
-        <el-input v-model="queryParams.name" placeholder="请输入名称" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.name" placeholder="请输入名称" maxlength="30" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="品牌" prop="goodsBrand">
-        <el-input v-model="queryParams.goodsBrand" placeholder="请输入品牌" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item>
-      <el-form-item label="库存量" prop="inventory">
-        <el-input v-model="queryParams.inventory" placeholder="请输入库存量" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.goodsBrand" placeholder="请输入品牌" maxlength="30" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -38,7 +35,12 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="工厂名称" align="center" prop="entName" />
       <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="类型" align="center" prop="goodsType" />
+<!--      <el-table-column label="类型" align="center" prop="goodsType" />-->
+      <el-table-column label="类型" align="center" prop="goodsType">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_goods_type" :value="scope.row.goodsType" />
+        </template>
+      </el-table-column>
       <el-table-column label="品牌" align="center" prop="goodsBrand" />
       <el-table-column label="成本价" align="center" prop="costPrice" />
       <el-table-column label="销售价" align="center" prop="salesPrice" />
@@ -58,22 +60,24 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入名称" />
+          <el-input v-model="form.name" placeholder="请输入名称" maxlength="30" />
         </el-form-item>
-        <el-form-item label="类型" prop="goodsType">
-          <el-input v-model="form.goodsType" placeholder="请输入类型" />
+        <el-form-item label="类型">
+          <el-select v-model="form.goodsType" placeholder="请选择类型">
+            <el-option v-for="item in dict.type.sys_goods_type" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="品牌" prop="goodsBrand">
-          <el-input v-model="form.goodsBrand" placeholder="请输入品牌" />
+          <el-input v-model="form.goodsBrand" placeholder="请输入品牌" maxlength="30" />
         </el-form-item>
         <el-form-item label="成本价" prop="costPrice">
-          <el-input v-model="form.costPrice" placeholder="请输入成本价" />
+          <el-input v-model="form.costPrice" @input="onChangeInput(form, 'costPrice')" placeholder="请输入成本价" maxlength="8" />
         </el-form-item>
         <el-form-item label="销售价" prop="salesPrice">
-          <el-input v-model="form.salesPrice" placeholder="请输入销售价" />
+          <el-input v-model="form.salesPrice" @input="onChangeInput(form, 'salesPrice')" placeholder="请输入销售价" maxlength="8" />
         </el-form-item>
         <el-form-item label="库存量" prop="inventory">
-          <el-input v-model="form.inventory" placeholder="请输入库存量" />
+          <el-input v-model="form.inventory" @input="onChangeInput(form, 'inventory')" placeholder="请输入库存量" maxlength="8" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -86,9 +90,11 @@
 
 <script>
 import { listGoodsInfo, getGoodsInfo, delGoodsInfo, addGoodsInfo, updateGoodsInfo } from "@/api/factory/goodsInfo";
+import { formatNumber } from "@/utils/util";
 
 export default {
   name: "GoodsInfo",
+  dicts: ['sys_goods_type'],
   data() {
     return {
       // 遮罩层
@@ -136,6 +142,10 @@ export default {
     this.getList();
   },
   methods: {
+    /** 限制输入框输入两位小数 */
+    onChangeInput(form, name){
+      form[name] = formatNumber(form[name]);
+    },
     /** 查询商品信息列表 */
     getList() {
       this.loading = true;
