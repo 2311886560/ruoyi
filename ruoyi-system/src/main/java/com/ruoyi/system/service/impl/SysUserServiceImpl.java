@@ -293,8 +293,8 @@ public class SysUserServiceImpl implements ISysUserService
         if (b) {
             // 为注册用户分配默认角色
             Long[] idList = new Long[1];
-            // 对应sys_role表中的客户id
-            idList[0] = 4l;
+            // 对应sys_role表中的普通角色（客户）对应id
+            idList[0] = 2l;
             this.insertUserAuth(user.getUserId(), idList);
         }
         return b;
