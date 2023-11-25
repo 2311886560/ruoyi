@@ -22,7 +22,8 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <resultMap id="GoodsOrderGoodsOrderSubResult" type="com.ruoyi.factory.domain.vo.GoodsOrderVo" extends="GoodsOrderResult">
+    <resultMap id="GoodsOrderGoodsOrderSubResult" type="com.ruoyi.factory.domain.vo.GoodsOrderVo"
+               extends="GoodsOrderResult">
         <collection property="goodsOrderSubList" notNullColumn="sub_id" javaType="java.util.List"
                     resultMap="GoodsOrderSubResult"/>
     </resultMap>
@@ -61,9 +62,11 @@
         from goods_order
     </sql>
 
-    <select id="selectGoodsOrderList" parameterType="com.ruoyi.factory.domain.vo.GoodsOrderVo" resultMap="GoodsOrderResult">
+    <select id="selectGoodsOrderList" parameterType="com.ruoyi.factory.domain.vo.GoodsOrderVo"
+            resultMap="GoodsOrderResult">
         select goods_order.*,
-        buyer_user.nick_name as buyerUserName, saler_user.nick_name as salerUserName, enterprise_base.ent_name as salerEntName
+        buyer_user.nick_name as buyerUserName, saler_user.nick_name as salerUserName, enterprise_base.ent_name as
+        salerEntName
         from goods_order
         left join sys_user buyer_user on buyer_user.user_id = goods_order.buyer_user_id
         left join sys_user saler_user on saler_user.user_id = goods_order.saler_user_id
@@ -221,4 +224,32 @@
             #{item.status}, #{item.delFlag}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
         </foreach>
     </insert>
+
+    <select id="selectGoodsOrderFormList" resultType="com.ruoyi.factory.domain.vo.GoodsOrderFormVo">
+        select DATE_FORMAT( goods_order.order_time, '%Y-%m' ) as orderTime,
+        sum(order_sub.total_price) as salesPriceTotal, sum(goods_info.cost_price) as orderCodeTotal,
+        sum(order_sub.total_price) - sum(goods_info.cost_price) as profitPriceTotal
+        from goods_order
+        left join goods_order_sub order_sub on order_sub.order_id = goods_order.id
+        left join goods_info on order_sub.goods_id = goods_info.id
+        <where>
+            <if test="salerEntId != null ">
+                and goods_order.saler_ent_id = #{salerEntId}
+            </if>
+            <if test="buyerUserId != null ">
+                and goods_order.buyer_user_id = #{buyerUserId}
+            </if>
+            <if test="salerUserId != null ">
+                and goods_order.saler_user_id = #{salerUserId}
+            </if>
+            <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(goods_order.order_time,'%y%m') &gt;= date_format(#{beginTime},'%y%m')
+            </if>
+            <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(goods_order.order_time,'%y%m') &lt;= date_format(#{endTime},'%y%m')
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT( goods_order.order_time, '%Y-%m' )
+        ORDER BY DATE_FORMAT( goods_order.order_time, '%Y-%m' )
+    </select>
 </mapper>

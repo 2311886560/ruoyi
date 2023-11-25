@@ -104,4 +104,14 @@ INSERT INTO `factory_database`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, 
                                            `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
 VALUES (1066, '订单列表', 1065, 1, 'goodsOrder', 'factory/goodsOrder/index', NULL, 1, 0, 'C', '0', '0', '',
         'list', 'admin', '2023-10-24 00:05:12', 'admin', '2023-10-24 00:12:35', '');
+INSERT INTO `factory_database`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`,
+                                           `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`,
+                                           `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (1067, '订单财务报表', 1065, 1, 'goodsOrderForm', 'factory/goodsOrderForm/index', NULL, 1, 0, 'C', '0', '0', '',
+        'list', 'admin', '2023-10-24 00:05:12', 'admin', '2023-10-24 00:12:35', '');
+INSERT INTO `factory_database`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`,
+                                           `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`,
+                                           `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (1068, '订单统计', 1065, 1, 'goodsOrderInfo', 'factory/statistics/goodsOrderInfo/index', NULL, 1, 0, 'C', '0', '0', '',
+        'list', 'admin', '2023-10-24 00:05:12', 'admin', '2023-10-24 00:12:35', '');
 

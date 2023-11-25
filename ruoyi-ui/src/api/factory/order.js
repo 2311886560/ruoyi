@@ -9,6 +9,24 @@ export function listOrder(query) {
   })
 }
 
+// 查询商品订单财务报表列表
+export function listOrderForm(query) {
+  return request({
+    url: '/factory/orderForm/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 统计商品订单
+export function statisticsOrder(query) {
+  return request({
+    url: '/factory/orderForm/statisticsOrder',
+    method: 'get',
+    params: query
+  })
+}
+statisticsOrder
 // 查询商品订单详细
 export function getOrder(id) {
   return request({

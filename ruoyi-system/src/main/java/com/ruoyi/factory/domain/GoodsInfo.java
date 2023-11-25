@@ -1,9 +1,12 @@
 package com.ruoyi.factory.domain;
 
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.math.BigDecimal;
 
 /**
  * 商品信息对象 goods_info
@@ -11,6 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2023-10-23
  */
+@Data
 public class GoodsInfo extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -36,15 +40,15 @@ public class GoodsInfo extends BaseEntity
 
     /** 成本价 */
     @Excel(name = "成本价")
-    private Long costPrice;
+    private BigDecimal costPrice;
 
     /** 销售价（默认售价） */
     @Excel(name = "销售价", readConverterExp = "默=认售价")
-    private Long salesPrice;
+    private BigDecimal salesPrice;
 
     /** 库存量 */
     @Excel(name = "库存量")
-    private Long inventory;
+    private BigDecimal inventory;
 
     /** 状态：0=失效，1=有效 */
     @Excel(name = "状态：0=失效，1=有效")
@@ -53,114 +57,4 @@ public class GoodsInfo extends BaseEntity
     /** 删除状态：0=未删除，1=已删除 */
     private String delFlag;
 
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-    public void setEntId(Long entId)
-    {
-        this.entId = entId;
-    }
-
-    public Long getEntId()
-    {
-        return entId;
-    }
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-    public void setGoodsType(String goodsType)
-    {
-        this.goodsType = goodsType;
-    }
-
-    public String getGoodsType()
-    {
-        return goodsType;
-    }
-    public void setGoodsBrand(String goodsBrand)
-    {
-        this.goodsBrand = goodsBrand;
-    }
-
-    public String getGoodsBrand()
-    {
-        return goodsBrand;
-    }
-    public void setCostPrice(Long costPrice)
-    {
-        this.costPrice = costPrice;
-    }
-
-    public Long getCostPrice()
-    {
-        return costPrice;
-    }
-    public void setsalesPrice(Long salesPrice)
-    {
-        this.salesPrice = salesPrice;
-    }
-
-    public Long getsalesPrice()
-    {
-        return salesPrice;
-    }
-    public void setInventory(Long inventory)
-    {
-        this.inventory = inventory;
-    }
-
-    public Long getInventory()
-    {
-        return inventory;
-    }
-    public void setStatus(String status)
-    {
-        this.status = status;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-    public void setDelFlag(String delFlag)
-    {
-        this.delFlag = delFlag;
-    }
-
-    public String getDelFlag()
-    {
-        return delFlag;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("entId", getEntId())
-            .append("name", getName())
-            .append("goodsType", getGoodsType())
-            .append("goodsBrand", getGoodsBrand())
-            .append("costPrice", getCostPrice())
-            .append("salesPrice", getsalesPrice())
-            .append("inventory", getInventory())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
-    }
 }

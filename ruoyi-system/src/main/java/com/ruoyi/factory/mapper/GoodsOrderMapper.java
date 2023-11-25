@@ -3,6 +3,7 @@ package com.ruoyi.factory.mapper;
 import java.util.List;
 import com.ruoyi.factory.domain.GoodsOrder;
 import com.ruoyi.factory.domain.GoodsOrderSub;
+import com.ruoyi.factory.domain.vo.GoodsOrderFormVo;
 import com.ruoyi.factory.domain.vo.GoodsOrderVo;
 
 /**
@@ -85,4 +86,6 @@ public interface GoodsOrderMapper
      * @return 结果
      */
     public int deleteGoodsOrderSubByOrderId(Long id);
+
+    public List<GoodsOrderFormVo> selectGoodsOrderFormList(GoodsOrderFormVo goodsOrder);
 }

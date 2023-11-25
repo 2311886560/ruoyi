@@ -3,6 +3,8 @@ package com.ruoyi.factory.service.impl;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.enums.CommonDelFlag;
+import com.ruoyi.common.enums.CommonStatus;
 import com.ruoyi.common.enums.UserType;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -19,6 +21,8 @@ import com.ruoyi.factory.mapper.GoodsOrderMapper;
 import com.ruoyi.factory.domain.GoodsOrder;
 import com.ruoyi.factory.service.IGoodsOrderService;
 
+import javax.annotation.Resource;
+
 /**
  * 商品订单主Service业务层处理
  *
@@ -27,7 +31,7 @@ import com.ruoyi.factory.service.IGoodsOrderService;
  */
 @Service
 public class GoodsOrderServiceImpl implements IGoodsOrderService {
-    @Autowired
+    @Resource
     private GoodsOrderMapper goodsOrderMapper;
 
     /**
@@ -71,6 +75,13 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
         SysUser user = SecurityUtils.getLoginUser().getUser();
         // 卖方用户采用当前登录者的用户
         goodsOrder.setSalerUserId(user.getUserId());
+        // 设置默认值
+        if (StringUtils.isEmpty(goodsOrder.getStatus())) {
+            goodsOrder.setStatus(CommonStatus.NORMAL.getCode());
+        }
+        if (StringUtils.isEmpty(goodsOrder.getDelFlag())) {
+            goodsOrder.setDelFlag(CommonDelFlag.UNDELETED.getCode());
+        }
         goodsOrder.setCreateBy(user.getUserName());
         goodsOrder.setCreateTime(DateUtils.getNowDate());
         int rows = goodsOrderMapper.insertGoodsOrder(goodsOrder);

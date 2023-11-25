@@ -412,6 +412,8 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (4, 1005);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (4, 1006);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (4, 1065);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (4, 1066);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (4, 1067);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (4, 1068);
 
 
 -- ----------------------------

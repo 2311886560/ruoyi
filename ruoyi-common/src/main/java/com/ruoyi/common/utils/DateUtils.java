@@ -8,12 +8,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * 时间工具类
- * 
+ *
  * @author ruoyi
  */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils
@@ -29,13 +33,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
     private static String[] parsePatterns = {
-            "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM", 
+            "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM",
             "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM",
             "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
 
     /**
      * 获取当前Date型日期
-     * 
+     *
      * @return Date() 当前日期
      */
     public static Date getNowDate()
@@ -45,7 +49,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
 
     /**
      * 获取当前日期, 默认格式为yyyy-MM-dd
-     * 
+     *
      * @return String
      */
     public static String getDate()
@@ -187,5 +191,32 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
+    }
+
+
+    /**
+     * 获取起始的日期数组（年月）
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @return 日期数组
+     */
+    public static List<String> getYearMonthArray(Date startDate, Date endDate) {
+        List<String> yearMonthList = new ArrayList<>();
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.setTime(startDate);
+        int startYear = startCalendar.get(Calendar.YEAR);
+        int startMonth = startCalendar.get(Calendar.MONTH);
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTime(endDate);
+        int endYear = endCalendar.get(Calendar.YEAR);
+        int endMonth = endCalendar.get(Calendar.MONTH);
+        for (int year = startYear; year <= endYear; year++) {
+            int monthStart = (year == startYear) ? startMonth : 0;
+            int monthEnd = (year == endYear) ? endMonth : 11;
+            for (int month = monthStart; month <= monthEnd; month++) {
+                yearMonthList.add(year + "-" + String.format("%02d", (month + 1)));
+            }
+        }
+        return yearMonthList;
     }
 }

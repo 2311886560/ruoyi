@@ -1,12 +1,18 @@
 package com.ruoyi.factory.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.enums.CommonDelFlag;
+import com.ruoyi.common.enums.CommonStatus;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.factory.mapper.EnterpriseBaseMapper;
 import com.ruoyi.factory.domain.EnterpriseBase;
 import com.ruoyi.factory.service.IEnterpriseBaseService;
+
+import javax.annotation.Resource;
 
 /**
  * 工厂基本信息Service业务层处理
@@ -17,7 +23,7 @@ import com.ruoyi.factory.service.IEnterpriseBaseService;
 @Service
 public class EnterpriseBaseServiceImpl implements IEnterpriseBaseService
 {
-    @Autowired
+    @Resource
     private EnterpriseBaseMapper enterpriseBaseMapper;
 
     /**
@@ -53,6 +59,13 @@ public class EnterpriseBaseServiceImpl implements IEnterpriseBaseService
     @Override
     public int insertEnterpriseBase(EnterpriseBase enterpriseBase)
     {
+        // 设置默认值
+        if (StringUtils.isEmpty(enterpriseBase.getStatus())) {
+            enterpriseBase.setStatus(CommonStatus.NORMAL.getCode());
+        }
+        if (StringUtils.isEmpty(enterpriseBase.getDelFlag())) {
+            enterpriseBase.setDelFlag(CommonDelFlag.UNDELETED.getCode());
+        }
         enterpriseBase.setCreateTime(DateUtils.getNowDate());
         return enterpriseBaseMapper.insertEnterpriseBase(enterpriseBase);
     }
