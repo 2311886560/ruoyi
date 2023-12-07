@@ -38,5 +38,8 @@ public class GoodsOrderFormVo {
     @Excel(name = "销售价")
     private BigDecimal salesPriceTotal;
 
+    /** 订单数量 */
+    private BigDecimal orderNumberTotal;
+
 
 }

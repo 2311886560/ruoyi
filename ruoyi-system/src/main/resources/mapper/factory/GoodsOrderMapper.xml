@@ -228,7 +228,8 @@
     <select id="selectGoodsOrderFormList" resultType="com.ruoyi.factory.domain.vo.GoodsOrderFormVo">
         select DATE_FORMAT( goods_order.order_time, '%Y-%m' ) as orderTime,
         sum(order_sub.total_price) as salesPriceTotal, sum(goods_info.cost_price) as orderCodeTotal,
-        sum(order_sub.total_price) - sum(goods_info.cost_price) as profitPriceTotal
+        sum(order_sub.total_price) - sum(goods_info.cost_price) as profitPriceTotal,
+        COUNT(1) as orderNumberTotal
         from goods_order
         left join goods_order_sub order_sub on order_sub.order_id = goods_order.id
         left join goods_info on order_sub.goods_id = goods_info.id
