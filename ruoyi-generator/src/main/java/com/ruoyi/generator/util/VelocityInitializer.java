@@ -5,8 +5,8 @@ import org.apache.velocity.app.Velocity;
 import com.ruoyi.common.constant.Constants;
 
 /**
- * VelocityEngine工厂
- * 
+ * VelocityEngine体检
+ *
  * @author ruoyi
  */
 public class VelocityInitializer
