@@ -109,8 +109,8 @@ public class DruidConfig
                 // 获取common.js
                 String text = Utils.readFromResource(filePath);
                 // 正则替换banner, 除去底部的广告信息
-                text = text.replaceAll("<a.*?banner\"></a><br/>", "");
-                text = text.replaceAll("powered.*?shrek.wang</a>", "");
+//                text = text.replaceAll("<a.*?banner\"></a><br/>", "");
+//                text = text.replaceAll("powered.*?shrek.wang</a>", "");
                 response.getWriter().write(text);
             }
             @Override
