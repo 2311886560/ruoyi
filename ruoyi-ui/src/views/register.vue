@@ -60,9 +60,9 @@
       </el-form-item>
     </el-form>
     <!--  底部  -->
-    <div class="el-register-footer">
-      <span>Welcome to the real world.</span>
-    </div>
+<!--    <div class="el-register-footer">-->
+<!--      <span>Welcome to the real world.</span>-->
+<!--    </div>-->
   </div>
 </template>
 
