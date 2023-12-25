@@ -8,9 +8,9 @@ import lombok.Data;
 public class GoodsInfoVo extends GoodsInfo {
 
     /**
-     * 卖方企业名称
+     * 企业名称
      */
-    private String salerEntName;
+    private String entName;
 
 
 }
