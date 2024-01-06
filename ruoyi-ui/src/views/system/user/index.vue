@@ -42,16 +42,22 @@
             <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" maxlength="11" clearable style="width: 240px"
               @keyup.enter.native="handleQuery" />
           </el-form-item>
-          <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="用户状态" clearable style="width: 240px">
-              <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
+          <el-form-item label="用户类型" prop="status">
+            <el-select v-model="queryParams.userType" placeholder="用户类型" clearable style="width: 240px">
+              <el-option v-for="dict in dict.type.sys_user_type" :key="dict.value" :label="dict.label"
                 :value="dict.value" />
             </el-select>
           </el-form-item>
-          <el-form-item label="创建时间">
-            <el-date-picker v-model="dateRange" style="width: 240px" value-format="yyyy-MM-dd" type="daterange"
-              range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-          </el-form-item>
+<!--          <el-form-item label="状态" prop="status">-->
+<!--            <el-select v-model="queryParams.status" placeholder="用户状态" clearable style="width: 240px">-->
+<!--              <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"-->
+<!--                :value="dict.value" />-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="创建时间">-->
+<!--            <el-date-picker v-model="dateRange" style="width: 240px" value-format="yyyy-MM-dd" type="daterange"-->
+<!--              range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>-->
+<!--          </el-form-item>-->
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -234,7 +240,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="生日">
-              <el-date-picker v-model="form.birthdayDate" value-format="yyyy-MM-dd" type="datetime"
+              <el-date-picker v-model="form.birthdayDate" value-format="yyyy-MM-dd" type="date"
                 placeholder="请选择生日"></el-date-picker>
             </el-form-item>
           </el-col>
@@ -349,7 +355,8 @@ export default {
         userName: undefined,
         phonenumber: undefined,
         status: undefined,
-        deptId: undefined
+        deptId: undefined,
+        userType: undefined
       },
       // 列信息
       columns: [

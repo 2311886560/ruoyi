@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="queryParams.name" placeholder="请输入名称" maxlength="30" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item label="商品" prop="name">
+        <el-input v-model="queryParams.name" placeholder="请输入商品" maxlength="30" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="品牌" prop="goodsBrand">
-        <el-input v-model="queryParams.goodsBrand" placeholder="请输入品牌" maxlength="30" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item>
+<!--      <el-form-item label="品牌" prop="goodsBrand">-->
+<!--        <el-input v-model="queryParams.goodsBrand" placeholder="请输入品牌" maxlength="30" clearable @keyup.enter.native="handleQuery" />-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -33,15 +33,15 @@
 
     <el-table v-loading="loading" :data="goodsInfoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="工厂名称" align="center" prop="entName" />
-      <el-table-column label="名称" align="center" prop="name" />
+<!--      <el-table-column label="工厂名称" align="center" prop="entName" />-->
+      <el-table-column label="商品" align="center" prop="name" />
 <!--      <el-table-column label="类型" align="center" prop="goodsType" />-->
       <el-table-column label="类型" align="center" prop="goodsType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_goods_type" :value="scope.row.goodsType" />
         </template>
       </el-table-column>
-      <el-table-column label="品牌" align="center" prop="goodsBrand" />
+<!--      <el-table-column label="品牌" align="center" prop="goodsBrand" />-->
       <el-table-column label="成本价" align="center" prop="costPrice" />
       <el-table-column label="销售价" align="center" prop="salesPrice" />
       <el-table-column label="库存量" align="center" prop="inventory" />
@@ -59,17 +59,17 @@
     <!-- 添加或修改商品信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入名称" maxlength="30" />
+        <el-form-item label="商品" prop="name">
+          <el-input v-model="form.name" placeholder="请输入商品" maxlength="30" />
         </el-form-item>
-        <el-form-item label="类型">
+        <el-form-item label="类型" prop="goodsType">
           <el-select v-model="form.goodsType" placeholder="请选择类型">
             <el-option v-for="item in dict.type.sys_goods_type" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="品牌" prop="goodsBrand">
-          <el-input v-model="form.goodsBrand" placeholder="请输入品牌" maxlength="30" />
-        </el-form-item>
+<!--        <el-form-item label="品牌" prop="goodsBrand">-->
+<!--          <el-input v-model="form.goodsBrand" placeholder="请输入品牌" maxlength="30" />-->
+<!--        </el-form-item>-->
         <el-form-item label="成本价" prop="costPrice">
           <el-input v-model="form.costPrice" @input="onChangeInput(form, 'costPrice')" placeholder="请输入成本价" maxlength="8" />
         </el-form-item>
@@ -132,9 +132,21 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        // delFlag: [
-        //   { required: true, message: "删除状态：0=未删除，1=已删除不能为空", trigger: "blur" }
-        // ],
+        name: [
+          { required: true, message: "商品不能为空", trigger: "blur" }
+        ],
+        goodsType: [
+          { required: true, message: "类型不能为空", trigger: "change" }
+        ],
+        costPrice: [
+          { required: true, message: "成本价不能为空", trigger: "change" }
+        ],
+        salesPrice: [
+          { required: true, message: "销售价不能为空", trigger: "change" }
+        ],
+        inventory: [
+          { required: true, message: "库存量不能为空", trigger: "change" }
+        ],
       }
     };
   },

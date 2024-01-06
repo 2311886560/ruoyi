@@ -36,20 +36,25 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="订单编号" align="center" prop="orderCode" />
       <el-table-column label="订单标题" align="center" prop="orderTitle" />
-      <el-table-column label="卖方企业" align="center" prop="salerEntName" />
+<!--      <el-table-column label="卖方企业" align="center" prop="salerEntName" />-->
       <el-table-column label="购买客户" align="center" prop="buyerUserName" />
-      <el-table-column label="卖方员工" align="center" prop="salerUserName" />
+      <el-table-column label="员工" align="center" prop="salerUserName" />
       <el-table-column label="订单时间" align="center" prop="orderTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.orderTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="确认时间" align="center" prop="confirmTime" width="180">
+      <el-table-column label="截止时间" align="center" prop="confirmTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.confirmTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="物流编号" align="center" prop="logisticsCode" />
+      <el-table-column label="订单状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_goods_order_status" :value="scope.row.status" />
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row)">详情
@@ -85,11 +90,11 @@
           <el-date-picker :disabled="openType === 'details'" clearable v-model="form.orderTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择订单时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="卖方企业" prop="salerEntId">
-          <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.salerEntId" placeholder="请选择卖方企业">
-            <el-option v-for="item in entOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="卖方企业" prop="salerEntId">-->
+<!--          <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.salerEntId" placeholder="请选择卖方企业">-->
+<!--            <el-option v-for="item in entOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="购买客户" prop="buyerUserId">
           <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.buyerUserId" placeholder="请选择购买客户">
             <el-option v-for="item in userOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -103,7 +108,7 @@
         <el-form-item label="物流编号" prop="logisticsCode">
           <el-input :disabled="openType === 'details'" v-model="form.logisticsCode" placeholder="请输入物流编号" maxlength="30" />
         </el-form-item>
-        <el-divider content-position="center">商品订单详细信息</el-divider>
+        <el-divider content-position="center">商品信息</el-divider>
         <el-row :gutter="10" class="mb8" v-if="openType !== 'details'">
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAddGoodsOrderSub">添加</el-button>
@@ -119,24 +124,27 @@
           <el-table-column label="序号" align="center" prop="index" width="50" />
           <el-table-column label="商品">
             <template slot-scope="scope">
-              <el-select style="width: 100%;" v-model="scope.row.goodsId" placeholder="请选择商品">
+              <el-select style="width: 100%;" v-model="scope.row.goodsId" placeholder="请选择商品"
+                         clearable filterable @change="(e) => onChangeGoods(e, scope.row)">
                 <el-option :disabled="openType === 'details'" v-for="item in goodsInfoOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </template>
           </el-table-column>
           <el-table-column label="数量" prop="orderAmount" width="150">
             <template slot-scope="scope">
-              <el-input :disabled="openType === 'details'" v-model="scope.row.orderAmount" @input="onChangeInput(scope.row, 'orderAmount')" placeholder="请输入数量" />
+              <el-input :disabled="openType === 'details'" v-model="scope.row.orderAmount" @input="onChangeInput(scope.row, 'orderAmount')" maxlength="8" placeholder="请输入数量" />
             </template>
           </el-table-column>
           <el-table-column label="销售价" prop="salesPrice" width="150">
             <template slot-scope="scope">
-              <el-input :disabled="openType === 'details'" v-model="scope.row.salesPrice" @input="onChangeInput(scope.row, 'salesPrice')" placeholder="请输入销售价" />
+              <span>{{scope.row.salesPrice}}</span>
+<!--              <el-input :disabled="openType === 'details'" v-model="scope.row.salesPrice" @input="onChangeInput(scope.row, 'salesPrice')" placeholder="请输入销售价" />-->
             </template>
           </el-table-column>
           <el-table-column label="总价" prop="totalPrice" width="150">
             <template slot-scope="scope">
-              <el-input :disabled="openType === 'details'" v-model="scope.row.totalPrice" @input="onChangeInput(scope.row, 'totalPrice')" placeholder="请输入总价" />
+              <span>{{scope.row.totalPrice}}</span>
+<!--              <el-input :disabled="openType === 'details'" v-model="scope.row.totalPrice" @input="onChangeInput(scope.row, 'totalPrice')" placeholder="请输入总价" />-->
             </template>
           </el-table-column>
         </el-table>
@@ -223,9 +231,27 @@ export default {
     this.getUserInfo();
   },
   methods: {
+    onChangeGoods(e, row){
+      let goods = this.goodsInfoOptions.find((item) => item.value === e)
+      row.orderAmount = 0
+      row.salesPrice = goods.salesPrice
+      row.totalPrice = 0
+    },
     /** 限制输入框输入两位小数 */
-    onChangeInput(form, name){
-      form[name] = formatNumber(form[name]);
+    onChangeInput(row, name){
+      row[name] = formatNumber(row[name]);
+      if(name === 'orderAmount') {
+        let unitPrice = row.salesPrice;
+        let number = row.orderAmount;
+        if (unitPrice == null || isNaN(unitPrice)) {
+          unitPrice = 0;
+        }
+        if (number == null || isNaN(number)|| !number) {
+          number = 0;
+        }
+        let rowTotal = (unitPrice * number).toFixed(2);
+        row.totalPrice = rowTotal;
+      }
     },
     // 查询登录用户信息
     getUserInfo() {
@@ -255,7 +281,7 @@ export default {
     getGoodsInfoOption() {
       listGoodsInfo({ pageNum: 1, pageSize: 999, entId: this.form.salerEntId }).then(response => {
         this.goodsInfoOptions = response.rows.map((item, index, arr) => {
-          let c = { label: item.name, value: item.id }
+          let c = { label: item.name, value: item.id, ...item }
           return c;
         })
       })

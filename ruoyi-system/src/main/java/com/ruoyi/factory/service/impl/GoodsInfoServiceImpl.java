@@ -63,9 +63,12 @@ public class GoodsInfoServiceImpl implements IGoodsInfoService {
         // 获取当前登录用户信息
         SysUser user = SecurityUtils.getLoginUser().getUser();
         if (StringUtils.isNull(user.getEntId())) {
-            throw new ServiceException("当前用户未分配企业！");
+//            throw new ServiceException("当前用户未分配企业！");
+            // 取系统默认的企业id
+            goodsInfo.setEntId(1l);
+        } else {
+            goodsInfo.setEntId(user.getEntId());
         }
-        goodsInfo.setEntId(user.getEntId());
         // 设置默认值
         if (StringUtils.isEmpty(goodsInfo.getStatus())) {
             goodsInfo.setStatus(CommonStatus.NORMAL.getCode());
