@@ -72,11 +72,14 @@
         left join sys_user saler_user on saler_user.user_id = goods_order.saler_user_id
         left join enterprise_base on enterprise_base.id = goods_order.saler_ent_id
         <where>
-            <if test="orderCode != null  and orderCode != ''">
+            <if test="orderCode != null and orderCode != ''">
                 and goods_order.order_code like concat('%', #{orderCode}, '%')
             </if>
-            <if test="orderTitle != null  and orderTitle != ''">
+            <if test="orderTitle != null and orderTitle != ''">
                 and goods_order.order_title like concat('%', #{orderTitle}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                and goods_order.status = #{status}
             </if>
             <if test="salerEntId != null ">
                 and goods_order.saler_ent_id = #{salerEntId}
@@ -93,7 +96,7 @@
             <if test="confirmTime != null ">
                 and goods_order.confirm_time = #{confirmTime}
             </if>
-            <if test="logisticsCode != null  and logisticsCode != ''">
+            <if test="logisticsCode != null and logisticsCode != ''">
                 and logistics_code = #{logisticsCode}
             </if>
         </where>
@@ -229,7 +232,20 @@
         select DATE_FORMAT( goods_order.order_time, '%Y-%m' ) as orderTime,
         sum(order_sub.total_price) as salesPriceTotal, sum(goods_info.cost_price) as orderCodeTotal,
         sum(order_sub.total_price) - sum(goods_info.cost_price) as profitPriceTotal,
-        COUNT(1) as orderNumberTotal
+        (select COUNT(1) from goods_order t1
+            <where>
+                <if test="salerEntId != null ">
+                    and t1.saler_ent_id = #{salerEntId}
+                </if>
+                <if test="buyerUserId != null ">
+                    and t1.buyer_user_id = #{buyerUserId}
+                </if>
+                <if test="salerUserId != null ">
+                    and t1.saler_user_id = #{salerUserId}
+                </if>
+                AND date_format(t1.order_time,'%Y-%m') = DATE_FORMAT( goods_order.order_time, '%Y-%m' )
+            </where>
+        ) as orderNumberTotal
         from goods_order
         left join goods_order_sub order_sub on order_sub.order_id = goods_order.id
         left join goods_info on order_sub.goods_id = goods_info.id

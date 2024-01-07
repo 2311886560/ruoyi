@@ -110,7 +110,7 @@ export default {
               // 设置滚动条显示位置
               left: "center",
               // dataZoom-slider组件离容器下侧的距离
-              bottom: 3,
+              bottom: 5,
             },
             {
               // 没有下面这块的话，只能拖动滚动条，

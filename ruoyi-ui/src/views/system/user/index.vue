@@ -95,11 +95,11 @@
           <!-- <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" /> -->
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
             width="120" />
-          <el-table-column label="生日" align="center" prop="birthdayDate" width="160">
-            <template slot-scope="scope">
-              <span>{{ parseTime(scope.row.birthdayDate, '{y}-{m}-{d}') }}</span>
-            </template>
-          </el-table-column>
+<!--          <el-table-column label="生日" align="center" prop="birthdayDate" width="160">-->
+<!--            <template slot-scope="scope">-->
+<!--              <span>{{ parseTime(scope.row.birthdayDate, '{y}-{m}-{d}') }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"

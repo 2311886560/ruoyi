@@ -87,7 +87,7 @@ public class GoodsOrderFormServiceImpl implements IGoodsOrderFormService {
                                 .filter(item -> StringUtils.equals(item.getOrderTime(), time))
                                 .findFirst();
                         if (result.isPresent()) {
-                            itemDataByNumberList.add(result.get().getProfitPriceTotal());
+                            itemDataByNumberList.add(result.get().getOrderNumberTotal());
                             itemDataByOrderCodeList.add(result.get().getOrderCodeTotal());
                             itemDataBySalesPriceList.add(result.get().getSalesPriceTotal());
                         } else {
@@ -106,7 +106,7 @@ public class GoodsOrderFormServiceImpl implements IGoodsOrderFormService {
                 dataJsonByOrderCode.put("name", data.get("name"));
                 dataJsonByOrderCode.put("type", data.get("type"));
                 dataJsonByOrderCode.put("data", itemDataByOrderCodeList);
-                dataByOrderCodeList.add(dataJsonByNumber);
+                dataByOrderCodeList.add(dataJsonByOrderCode);
                 JSONObject dataJsonBySalesPrice = new JSONObject();
                 dataJsonBySalesPrice.put("name", data.get("name"));
                 dataJsonBySalesPrice.put("type", data.get("type"));

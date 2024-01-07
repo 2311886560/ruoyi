@@ -7,16 +7,27 @@
       <el-form-item label="订单标题" prop="orderTitle">
         <el-input v-model="queryParams.orderTitle" placeholder="请输入订单标题" maxlength="30" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="物流编号" prop="logisticsCode">
-        <el-input v-model="queryParams.logisticsCode" placeholder="请输入物流编号" maxlength="30" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择订单状态" clearable style="width: 240px">
+          <el-option v-for="dict in dict.type.sys_goods_order_status" :key="dict.value" :label="dict.label"
+                     :value="dict.value" />
+        </el-select>
       </el-form-item>
+      <el-form-item label="购买客户" prop="buyerUserId">
+        <el-select v-model="queryParams.buyerUserId" placeholder="请选择购买客户" clearable style="width: 240px">
+          <el-option v-for="item in userOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+<!--      <el-form-item label="物流编号" prop="logisticsCode">-->
+<!--        <el-input v-model="queryParams.logisticsCode" placeholder="请输入物流编号" maxlength="30" clearable @keyup.enter.native="handleQuery" />-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8" v-if="userInfo.userType !== '21'">
+    <el-row :gutter="10" class="mb8" v-if="userInfo.userType !== '10'">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">新增
         </el-button>
@@ -59,10 +70,10 @@
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row)">详情
           </el-button>
-          <el-button v-if="userInfo.userType !== '21'" size="mini" type="text" icon="el-icon-edit"
+          <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-edit"
             @click="handleUpdate(scope.row)">修改
           </el-button>
-          <el-button v-if="userInfo.userType !== '21'" size="mini" type="text" icon="el-icon-delete"
+          <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-delete"
             @click="handleDelete(scope.row)">删除
           </el-button>
         </template>
@@ -75,7 +86,7 @@
     <!-- 添加或修改商品订单主对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="订单状态">
+        <el-form-item label="订单状态" prop="status">
           <el-select :disabled="openType === 'details'" v-model="form.status" placeholder="请选择订单状态">
             <el-option v-for="item in dict.type.sys_goods_order_status" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
@@ -124,9 +135,9 @@
           <el-table-column label="序号" align="center" prop="index" width="50" />
           <el-table-column label="商品">
             <template slot-scope="scope">
-              <el-select style="width: 100%;" v-model="scope.row.goodsId" placeholder="请选择商品"
+              <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="scope.row.goodsId" placeholder="请选择商品"
                          clearable filterable @change="(e) => onChangeGoods(e, scope.row)">
-                <el-option :disabled="openType === 'details'" v-for="item in goodsInfoOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="item in goodsInfoOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </template>
           </el-table-column>
@@ -206,11 +217,34 @@ export default {
         orderTime: null,
         confirmTime: null,
         logisticsCode: null,
+        status: null,
       },
       // 表单参数
       form: {},
       // 表单校验
-      rules: {},
+      rules: {
+        status: [
+          { required: true, message: "订单状态不能为空", trigger: "change" }
+        ],
+        orderCode: [
+          { required: true, message: "订单编号不能为空", trigger: "change" }
+        ],
+        orderTitle: [
+          { required: true, message: "订单标题不能为空", trigger: "change" }
+        ],
+        orderTime: [
+          { required: true, message: "订单时间不能为空", trigger: "change" }
+        ],
+        buyerUserId: [
+          { required: true, message: "购买客户不能为空", trigger: "change" }
+        ],
+        confirmTime: [
+          { required: true, message: "确认时间不能为空", trigger: "change" }
+        ],
+        logisticsCode: [
+          { required: true, message: "物流编号不能为空", trigger: "change" }
+        ],
+      },
       // 可选的商品列表
       goodsInfoOptions: {},
       // 企业选项

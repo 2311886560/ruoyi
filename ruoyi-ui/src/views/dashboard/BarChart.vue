@@ -23,11 +23,27 @@ export default {
     height: {
       type: String,
       default: '300px'
-    }
+    },
+    propSeriesData: {
+      type: Object,
+      default: {
+        xAxis: [],
+        data: []
+      },
+      require: false
+    },
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      barData: this.propSeriesData
+    }
+  },
+  watch: {
+    propSeriesData: function (newValue, oldValue) {
+      this.barData = newValue;
+      // console.log(this.barData, "-------barData")
+      this.initChart();
     }
   },
   mounted() {
@@ -45,6 +61,7 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
+      // console.log(this.barData, "-------barData")
 
       this.chart.setOption({
         tooltip: {
@@ -56,45 +73,49 @@ export default {
         grid: {
           top: 10,
           left: '2%',
-          right: '2%',
+          right: '5%',
           bottom: '3%',
           containLabel: true
         },
         xAxis: [{
+          // name: this.barData.xAxisName,
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.barData.xAxis,
+          // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           axisTick: {
             alignWithLabel: true
           }
         }],
         yAxis: [{
+          name: this.barData.yAxisName,
           type: 'value',
           axisTick: {
             show: false
           }
         }],
-        series: [{
-          name: 'pageA',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageB',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageC',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }]
+        series: this.barData.data
+        // series: [{
+        //   name: 'pageA',
+        //   type: 'bar',
+        //   stack: 'vistors',
+        //   barWidth: '60%',
+        //   data: [79, 52, 200, 334, 390, 330, 220],
+        //   animationDuration
+        // }, {
+        //   name: 'pageB',
+        //   type: 'bar',
+        //   stack: 'vistors',
+        //   barWidth: '60%',
+        //   data: [80, 52, 200, 334, 390, 330, 220],
+        //   animationDuration
+        // }, {
+        //   name: 'pageC',
+        //   type: 'bar',
+        //   stack: 'vistors',
+        //   barWidth: '60%',
+        //   data: [30, 52, 200, 334, 390, 330, 220],
+        //   animationDuration
+        // }]
       })
     }
   }

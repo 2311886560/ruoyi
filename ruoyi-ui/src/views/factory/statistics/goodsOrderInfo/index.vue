@@ -4,7 +4,7 @@
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="68px">
         <el-form-item label-width="auto">
           <el-date-picker @change="handleQuery" v-model="fieldDate" type="monthrange" align="right" format="yyyy-MM"
-            value-format="yyyy-MM-dd" unlink-panels range-separator="至" start-placeholder="开始月份" end-placeholder="结束月份">
+            value-format="yyyy/MM/dd" unlink-panels range-separator="至" start-placeholder="开始月份" end-placeholder="结束月份">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -14,28 +14,30 @@
       </el-form>
       <div class="chart-container">
         <el-row :gutter="20">
-          <el-card shadow="never" class="chart-card">
-            <template #header>
-              <div class="card-header">
-                订单统计(时间-订单数量)
+          <el-col :span="16">
+            <el-card shadow="never" class="chart-card">
+              <template #header>
+                <div class="card-header">
+                  销售统计(时间-订单销售额)
+                </div>
+              </template>
+              <div v-loading="loading">
+                <LineChart height="300px" :propSeriesData="patrolChartDataByOrderCode" />
               </div>
-            </template>
-            <div v-loading="loading">
-              <BarChart height="300px" :propSeriesData="patrolChartDataByNumber" :queryParams="queryParams" />
-            </div>
-          </el-card>
-        </el-row>
-        <el-row :gutter="20">
-          <el-card shadow="never" class="chart-card">
-            <template #header>
-              <div class="card-header">
-                销售统计(时间-订单销售额)
+            </el-card>
+          </el-col>
+          <el-col :span="8">
+            <el-card shadow="never" class="chart-card">
+              <template #header>
+                <div class="card-header">
+                  订单统计(时间-订单数量)
+                </div>
+              </template>
+              <div v-loading="loading">
+                <PieChart height="300px" :propSeriesData="patrolChartDataByNumber" />
               </div>
-            </template>
-            <div v-loading="loading">
-              <BarChart height="300px" :propSeriesData="patrolChartDataByOrderCode" :queryParams="queryParams" />
-            </div>
-          </el-card>
+            </el-card>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-card shadow="never" class="chart-card">
@@ -45,7 +47,7 @@
               </div>
             </template>
             <div v-loading="loading">
-              <BarChart height="300px" :propSeriesData="patrolChartDataBySalesPrice" :queryParams="queryParams" />
+              <BarChart height="300px" :propSeriesData="patrolChartDataBySalesPrice" />
             </div>
           </el-card>
         </el-row>
@@ -58,8 +60,11 @@
 import { statisticsOrder } from "@/api/factory/order";
 
 require('echarts/theme/macarons')
-import PieChart from '../components/PieChart'
-import BarChart from '../components/BarChart'
+import BarChart from '@/views/dashboard/BarChart'
+import PieChart from '@/views/dashboard/PieChart'
+import LineChart from '@/views/dashboard/LineChart'
+// import PieChart from '../components/PieChart'
+// import BarChart from '../components/BarChart'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
@@ -67,6 +72,7 @@ export default {
   components: {
     PieChart,
     BarChart,
+    LineChart,
   },
   data() {
     return {
@@ -77,9 +83,21 @@ export default {
         yAxisName: '数量'
       },
       // 销售统计(时间-订单销售额)统计图数据
-      patrolChartDataByOrderCode: {},
+      patrolChartDataByOrderCode: {
+        xAxis: [],
+        data: [{
+          name: '',
+          data: []
+        }]
+      },
       // 资金统计(时间-订单的成本价)统计图数据
-      patrolChartDataBySalesPrice: {},
+      patrolChartDataBySalesPrice: {
+        xAxis: [],
+        data: [{
+          name: '',
+          data: []
+        }]
+      },
       // 日期范围
       fieldDate: [],
       loading: false,
@@ -107,6 +125,7 @@ export default {
     },
     getList() {
       this.loading = true
+      console.log("-----", this.fieldDate)
       if (this.fieldDate && this.fieldDate[0] && this.fieldDate[1]) {
         this.queryParams.beginTime = this.fieldDate[0];
         this.queryParams.endTime = this.fieldDate[1];
@@ -121,12 +140,14 @@ export default {
         var lastDayOfYear = new Date(currentYear, 11, 31);
         this.$set(this, "fieldDate", [])
         // this.fieldDate = []
-        this.fieldDate[0] = firstDayOfYear.toLocaleDateString()
-        this.fieldDate[1] = lastDayOfYear.toLocaleDateString()
+        let date = []
+        date[0] = firstDayOfYear.toLocaleDateString()
+        date[1] = lastDayOfYear.toLocaleDateString()
         this.queryParams.beginTime = firstDayOfYear.toLocaleDateString();
         this.queryParams.endTime = lastDayOfYear.toLocaleDateString();
+        this.$set(this, "fieldDate", date)
+        console.log("-----", this.fieldDate)
       }
-      this.$set(this, "fieldDate", this.fieldDate)
       statisticsOrder(this.queryParams).then(response => {
         this.patrolChartDataByNumber = { ...response.data.patrolChartDataByNumber };
         this.patrolChartDataByOrderCode = { ...response.data.patrolChartDataByOrderCode };

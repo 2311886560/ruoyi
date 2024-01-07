@@ -145,6 +145,13 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
             List<GoodsOrderSub> list = new ArrayList<GoodsOrderSub>();
             for (GoodsOrderSub goodsOrderSub : goodsOrderSubList) {
                 goodsOrderSub.setOrderId(id);
+                // 设置默认值
+                if (StringUtils.isEmpty(goodsOrderSub.getStatus())) {
+                    goodsOrderSub.setStatus(CommonStatus.NORMAL.getCode());
+                }
+                if (StringUtils.isEmpty(goodsOrderSub.getDelFlag())) {
+                    goodsOrderSub.setDelFlag(CommonDelFlag.UNDELETED.getCode());
+                }
                 list.add(goodsOrderSub);
             }
             if (list.size() > 0) {

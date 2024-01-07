@@ -21,11 +21,27 @@ export default {
     height: {
       type: String,
       default: '300px'
-    }
+    },
+    propSeriesData: {
+      type: Object,
+      default: {
+        xAxis: [],
+        data: []
+      },
+      require: false
+    },
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      barData: this.propSeriesData
+    }
+  },
+  watch: {
+    propSeriesData: function (newValue, oldValue) {
+      this.barData = newValue;
+      // console.log(this.barData, "-------barData")
+      this.initChart();
     }
   },
   mounted() {
@@ -43,7 +59,15 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-
+      let seriesName = this.barData.data[0].name
+      let actualData = this.barData.data[0].data
+      let data = []
+      for (let i = 0; i < this.barData.xAxis.length; i++) {
+        data.push({
+          value: actualData[i],
+          name: this.barData.xAxis[i]
+        })
+      }
       this.chart.setOption({
         tooltip: {
           trigger: 'item',
@@ -52,22 +76,24 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: this.barData.xAxis,
+          // data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: seriesName,
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
-            data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
-            ],
+            data: data,
+            // data: [
+            //   { value: 320, name: 'Industries' },
+            //   { value: 240, name: 'Technology' },
+            //   { value: 149, name: 'Forex' },
+            //   { value: 100, name: 'Gold' },
+            //   { value: 59, name: 'Forecasts' }
+            // ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }

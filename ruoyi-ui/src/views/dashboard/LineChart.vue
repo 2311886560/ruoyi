@@ -26,22 +26,29 @@ export default {
       type: Boolean,
       default: true
     },
-    chartData: {
+    propSeriesData: {
       type: Object,
-      required: true
-    }
+      default: {
+        xAxis: [],
+        data: [{
+          name: '',
+          data: []
+        }]
+      },
+      require: false
+    },
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      barData: this.propSeriesData
     }
   },
   watch: {
-    chartData: {
-      deep: true,
-      handler(val) {
-        this.setOptions(val)
-      }
+    propSeriesData: function (newValue, oldValue) {
+      this.barData = newValue;
+      // console.log(this.barData, "-------barData")
+      this.initChart();
     }
   },
   mounted() {
@@ -59,12 +66,18 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-      this.setOptions(this.chartData)
+      this.setOptions()
     },
     setOptions({ expectedData, actualData } = {}) {
+      let seriesName = ""
+      actualData = this.barData.data[0].data
+      if (this.barData.data){
+        seriesName = this.barData.data[0].name
+      }
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.barData.xAxis,
+          // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           boundaryGap: false,
           axisTick: {
             show: false
@@ -72,7 +85,7 @@ export default {
         },
         grid: {
           left: 10,
-          right: 10,
+          right: 30,
           bottom: 20,
           top: 30,
           containLabel: true
@@ -92,24 +105,10 @@ export default {
         legend: {
           data: ['expected', 'actual']
         },
-        series: [{
-          name: 'expected', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
-                color: '#FF005A',
-                width: 2
-              }
-            }
-          },
-          smooth: true,
-          type: 'line',
-          data: expectedData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
+        // series: this.barData.data,
+        series: [
         {
-          name: 'actual',
+          name: seriesName,
           smooth: true,
           type: 'line',
           itemStyle: {
