@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.examine.mapper.ExaminePhysicalDetailMapper">
+
+    <resultMap type="com.ruoyi.examine.domain.ExaminePhysicalDetail" id="ExaminePhysicalDetailResult">
+        <result property="id" column="id"/>
+        <result property="examineId" column="examine_id"/>
+        <result property="itemId" column="item_id"/>
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="referenceValue" column="reference_value"/>
+        <result property="examineTime" column="examine_time"/>
+        <result property="remark" column="remark"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectExaminePhysicalDetailVo">
+        select id,
+               examine_id,
+               item_id,
+               name,
+               value,
+               reference_value,
+               examine_time,
+               remark,
+               status,
+               del_flag,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from examine_physical_detail
+    </sql>
+
+    <select id="selectExaminePhysicalDetailList" parameterType="com.ruoyi.examine.domain.ExaminePhysicalDetail"
+            resultMap="ExaminePhysicalDetailResult">
+        <include refid="selectExaminePhysicalDetailVo"/>
+        <where>
+            <if test="examineId != null ">and examine_id = #{examineId}</if>
+            <if test="itemId != null  and itemId != ''">and item_id = #{itemId}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="value != null  and value != ''">and value = #{value}</if>
+            <if test="referenceValue != null  and referenceValue != ''">and reference_value = #{referenceValue}</if>
+            <if test="examineTime != null ">and examine_time = #{examineTime}</if>
+            <if test="status != null  and status != ''">and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectExaminePhysicalDetailById" parameterType="Long" resultMap="ExaminePhysicalDetailResult">
+        <include refid="selectExaminePhysicalDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertExaminePhysicalDetail" parameterType="com.ruoyi.examine.domain.ExaminePhysicalDetail"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into examine_physical_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="examineId != null">examine_id,</if>
+            <if test="itemId != null">item_id,</if>
+            <if test="name != null">name,</if>
+            <if test="value != null">value,</if>
+            <if test="referenceValue != null">reference_value,</if>
+            <if test="examineTime != null">examine_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="examineId != null">#{examineId},</if>
+            <if test="itemId != null">#{itemId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="value != null">#{value},</if>
+            <if test="referenceValue != null">#{referenceValue},</if>
+            <if test="examineTime != null">#{examineTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateExaminePhysicalDetail" parameterType="com.ruoyi.examine.domain.ExaminePhysicalDetail">
+        update examine_physical_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="examineId != null">examine_id = #{examineId},</if>
+            <if test="itemId != null">item_id = #{itemId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="value != null">value = #{value},</if>
+            <if test="referenceValue != null">reference_value = #{referenceValue},</if>
+            <if test="examineTime != null">examine_time = #{examineTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteExaminePhysicalDetailById" parameterType="Long">
+        delete
+        from examine_physical_detail
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteExaminePhysicalDetailByIds" parameterType="String">
+        delete from examine_physical_detail where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
