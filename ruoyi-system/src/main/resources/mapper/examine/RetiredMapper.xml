@@ -41,10 +41,10 @@
         <include refid="selectRetiredVo"/>
         <where>
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
-            <if test="address != null  and address != ''">and address = #{address}</if>
+            <if test="address != null  and address != ''">and address like concat('%', #{address}, '%')</if>
             <if test="unit != null  and unit != ''">and unit = #{unit}</if>
             <if test="phone != null  and phone != ''">and phone = #{phone}</if>
-            <if test="head != null  and head != ''">and head = #{head}</if>
+            <if test="head != null  and head != ''">and head like concat('%', #{head}, '%')</if>
             <if test="status != null  and status != ''">and status = #{status}</if>
         </where>
     </select>

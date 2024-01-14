@@ -1,29 +1,14 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="干休所名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="请输入干休所名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.name" placeholder="请输入干休所名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="地址" prop="address">
-        <el-input
-          v-model="queryParams.address"
-          placeholder="请输入地址"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.address" placeholder="请输入地址" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="负责单位" prop="unit">
-        <el-input
-          v-model="queryParams.unit"
-          placeholder="请输入负责单位"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.unit" placeholder="请输入负责单位" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -33,108 +18,66 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-        >新增
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-        >修改
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">修改
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-        >删除
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-        >导出
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">删除
         </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="retiredList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="干休所ID" align="center" prop="id"/>
-      <el-table-column label="干休所名称" align="center" prop="name"/>
-      <el-table-column label="地址" align="center" prop="address"/>
-      <el-table-column label="负责单位" align="center" prop="unit"/>
-      <el-table-column label="联系电话" align="center" prop="phone"/>
-      <el-table-column label="负责人" align="center" prop="head"/>
-      <el-table-column label="备注" align="center" prop="remark"/>
-      <el-table-column label="状态：0=失效，1=有效" align="center" prop="status"/>
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="干休所名称" align="center" prop="name" />
+      <el-table-column label="地址" align="center" prop="address" />
+      <el-table-column label="负责单位" align="center" prop="unit" />
+      <el-table-column label="联系电话" align="center" prop="phone" />
+      <el-table-column label="负责人" align="center" prop="head" />
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-          >修改
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改
           </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-          >删除
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改干休所信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="干休所名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入干休所名称"/>
+          <el-input v-model="form.name" placeholder="请输入干休所名称" maxlength="50" />
         </el-form-item>
         <el-form-item label="地址" prop="address">
-          <el-input v-model="form.address" placeholder="请输入地址"/>
+          <el-input v-model="form.address" placeholder="请输入地址" maxlength="50" />
         </el-form-item>
         <el-form-item label="负责单位" prop="unit">
-          <el-input v-model="form.unit" placeholder="请输入负责单位"/>
+          <el-input v-model="form.unit" placeholder="请输入负责单位" maxlength="50" />
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入联系电话"/>
+          <el-input v-model="form.phone" placeholder="请输入联系电话" maxlength="12" />
         </el-form-item>
         <el-form-item label="负责人" prop="head">
-          <el-input v-model="form.head" placeholder="请输入负责人"/>
+          <el-input v-model="form.head" placeholder="请输入负责人" maxlength="30" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"/>
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" maxlength="100" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -146,7 +89,7 @@
 </template>
 
 <script>
-import {listRetired, getRetired, delRetired, addRetired, updateRetired} from "@/api/examine/retired";
+import { listRetired, getRetired, delRetired, addRetired, updateRetired } from "@/api/examine/retired";
 
 export default {
   name: "Retired",
@@ -184,7 +127,23 @@ export default {
       // 表单参数
       form: {},
       // 表单校验
-      rules: {}
+      rules: {
+        name: [
+          { required: true, message: "医院名称不能为空", trigger: "change" }
+        ],
+        address: [
+          { required: true, message: "地址不能为空", trigger: "change" }
+        ],
+        unit: [
+          { required: true, message: "负责单位不能为空", trigger: "change" }
+        ],
+        phone: [
+          { required: true, message: "联系电话不能为空", trigger: "change" }
+        ],
+        head: [
+          { required: true, message: "负责人不能为空", trigger: "change" }
+        ],
+      }
     };
   },
   created() {

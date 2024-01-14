@@ -39,7 +39,7 @@
         <include refid="selectHospitalVo"/>
         <where>
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
-            <if test="number != null  and number != ''">and number = #{number}</if>
+            <if test="number != null  and number != ''">and number like concat('%', #{number}, '%')</if>
             <if test="address != null  and address != ''">and address = #{address}</if>
             <if test="phone != null  and phone != ''">and phone = #{phone}</if>
             <if test="status != null  and status != ''">and status = #{status}</if>

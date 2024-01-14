@@ -9,7 +9,7 @@ create table sys_user
     user_name      varchar(30) not null comment '用户账号',
     password       varchar(100) default '' comment '密码',
     nick_name      varchar(30) not null comment '用户昵称',
-    user_type      varchar(2)   default '01' comment '用户类型（00系统用户，01老干部，02医务人员，03医务数据助理）',
+    user_type      varchar(2)   default '21' comment '用户类型（00：系统用户，10：医务人员，11：医务数据管理人员，21：退休老干部）',
     status         char(1)      default '0' comment '帐号状态（0正常 1停用）',
     email          varchar(50)  default '' comment '用户邮箱',
     phonenumber    varchar(11)  default '' comment '手机号码',

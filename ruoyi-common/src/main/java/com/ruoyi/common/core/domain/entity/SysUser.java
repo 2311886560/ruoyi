@@ -3,6 +3,8 @@ package com.ruoyi.common.core.domain.entity;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.*;
+
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -14,9 +16,10 @@ import com.ruoyi.common.xss.Xss;
 
 /**
  * 用户对象 sys_user
- * 
+ *
  * @author ruoyi
  */
+@Data
 public class SysUser extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -36,6 +39,12 @@ public class SysUser extends BaseEntity
     /** 用户昵称 */
     @Excel(name = "用户名称")
     private String nickName;
+
+    /**
+     * 用户类型（00：系统用户，10：医务人员，11：医务数据管理人员，21：退休老干部）
+     */
+    @Excel(name = "用户类型", readConverterExp = "00=系统用户,10=医务人员,11=医务数据管理人员,21=退休老干部,99=系统用户）")
+    private String userType;
 
     /** 用户邮箱 */
     @Excel(name = "用户邮箱")
@@ -88,6 +97,34 @@ public class SysUser extends BaseEntity
 
     /** 角色ID */
     private Long roleId;
+
+    /**
+     * 干休所ID
+     */
+    private Long retiredId;
+
+    /**
+     * 医院ID
+     */
+    private Long hospitalId;
+
+    /** 紧急联系人电话 */
+    private String pressingPhone;
+
+    /** 身份证号码 */
+    private String idCard;
+
+    /** 年龄 */
+    private String age;
+
+    /** 医龄 */
+    private String medicalAge;
+
+    /** 职务 */
+    private String posts;
+
+    /** 家庭住址 */
+    private String address;
 
     public SysUser()
     {

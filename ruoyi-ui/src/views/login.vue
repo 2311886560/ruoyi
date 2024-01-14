@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">体检后台管理系统</h3>
+      <h3 class="title">老干部体检信息管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -55,9 +55,9 @@
       </el-form-item>
     </el-form>
     <!--  底部  -->
-    <div class="el-login-footer">
-      <span>Welcome to the real world.</span>
-    </div>
+<!--    <div class="el-login-footer">-->
+<!--      <span>Welcome to the real world.</span>-->
+<!--    </div>-->
   </div>
 </template>
 
