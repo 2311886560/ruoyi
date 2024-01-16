@@ -8,6 +8,7 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="referenceValue" column="reference_value"/>
+        <result property="sexStatus" column="sex_status"/>
         <result property="defaultStatus" column="default_status"/>
         <result property="showUser" column="show_user"/>
         <result property="remark" column="remark"/>
@@ -23,6 +24,7 @@
         select id,
                name,
                reference_value,
+               sex_status,
                default_status,
                show_user,
                remark,
@@ -42,6 +44,7 @@
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
             <if test="referenceValue != null  and referenceValue != ''">and reference_value = #{referenceValue}</if>
             <if test="defaultStatus != null  and defaultStatus != ''">and default_status = #{defaultStatus}</if>
+            <if test="sexStatus != null  and sexStatus != ''">and sex_status = #{sexStatus}</if>
             <if test="showUser != null  and showUser != ''">and show_user = #{showUser}</if>
             <if test="status != null  and status != ''">and status = #{status}</if>
         </where>
@@ -58,6 +61,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">name,</if>
             <if test="referenceValue != null">reference_value,</if>
+            <if test="sexStatus != null">sex_status,</if>
             <if test="defaultStatus != null">default_status,</if>
             <if test="showUser != null">show_user,</if>
             <if test="remark != null">remark,</if>
@@ -71,6 +75,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">#{name},</if>
             <if test="referenceValue != null">#{referenceValue},</if>
+            <if test="sexStatus != null">#{sexStatus},</if>
             <if test="defaultStatus != null">#{defaultStatus},</if>
             <if test="showUser != null">#{showUser},</if>
             <if test="remark != null">#{remark},</if>
@@ -88,6 +93,7 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="name != null">name = #{name},</if>
             <if test="referenceValue != null">reference_value = #{referenceValue},</if>
+            <if test="sexStatus != null">sex_status = #{sexStatus},</if>
             <if test="defaultStatus != null">default_status = #{defaultStatus},</if>
             <if test="showUser != null">show_user = #{showUser},</if>
             <if test="remark != null">remark = #{remark},</if>

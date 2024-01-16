@@ -29,6 +29,10 @@ public class ExamineItem extends BaseEntity
     private String referenceValue;
 
     /** 是否为默认：0=默认，1=不默认 */
+    @Excel(name = "性别限制：0=男，1=女，2=不限制")
+    private String sexStatus;
+
+    /** 是否为默认：0=默认，1=不默认 */
     @Excel(name = "是否为默认：0=默认，1=不默认")
     private String defaultStatus;
 
