@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.HospitalMapper;
 import com.ruoyi.examine.domain.Hospital;
 import com.ruoyi.examine.service.IHospitalService;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -60,6 +61,7 @@ public class HospitalServiceImpl implements IHospitalService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insertHospital(Hospital hospital)
     {
         LoginUser loginUser = SecurityUtils.getLoginUser();
@@ -86,6 +88,7 @@ public class HospitalServiceImpl implements IHospitalService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateHospital(Hospital hospital)
     {
         LoginUser loginUser = SecurityUtils.getLoginUser();
@@ -103,6 +106,7 @@ public class HospitalServiceImpl implements IHospitalService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteHospitalByIds(Long[] ids)
     {
         return hospitalMapper.deleteHospitalByIds(ids);
@@ -115,6 +119,7 @@ public class HospitalServiceImpl implements IHospitalService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteHospitalById(Long id)
     {
         return hospitalMapper.deleteHospitalById(id);

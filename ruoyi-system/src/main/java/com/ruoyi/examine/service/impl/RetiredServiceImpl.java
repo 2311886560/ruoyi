@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.RetiredMapper;
 import com.ruoyi.examine.domain.Retired;
 import com.ruoyi.examine.service.IRetiredService;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -60,6 +61,7 @@ public class RetiredServiceImpl implements IRetiredService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insertRetired(Retired retired)
     {
         LoginUser loginUser = SecurityUtils.getLoginUser();
@@ -86,6 +88,7 @@ public class RetiredServiceImpl implements IRetiredService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateRetired(Retired retired)
     {
         LoginUser loginUser = SecurityUtils.getLoginUser();
@@ -103,6 +106,7 @@ public class RetiredServiceImpl implements IRetiredService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteRetiredByIds(Long[] ids)
     {
         return retiredMapper.deleteRetiredByIds(ids);
@@ -115,6 +119,7 @@ public class RetiredServiceImpl implements IRetiredService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteRetiredById(Long id)
     {
         return retiredMapper.deleteRetiredById(id);

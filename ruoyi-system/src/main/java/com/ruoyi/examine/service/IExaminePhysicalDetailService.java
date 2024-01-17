@@ -2,6 +2,7 @@ package com.ruoyi.examine.service;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.examine.domain.ExaminePhysicalDetail;
 
 /**
@@ -10,7 +11,7 @@ import com.ruoyi.examine.domain.ExaminePhysicalDetail;
  * @author ruoyi
  * @date 2024-01-13
  */
-public interface IExaminePhysicalDetailService
+public interface IExaminePhysicalDetailService extends IService<ExaminePhysicalDetail>
 {
     /**
      * 查询数据明细

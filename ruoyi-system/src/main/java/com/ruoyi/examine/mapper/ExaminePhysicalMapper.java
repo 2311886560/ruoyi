@@ -2,6 +2,7 @@ package com.ruoyi.examine.mapper;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.examine.domain.ExaminePhysical;
 import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
 
@@ -11,7 +12,7 @@ import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
  * @author ruoyi
  * @date 2024-01-13
  */
-public interface ExaminePhysicalMapper
+public interface ExaminePhysicalMapper extends BaseMapper<ExaminePhysical>
 {
     /**
      * 查询数据信息

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.ExamineItemMapper;
 import com.ruoyi.examine.domain.ExamineItem;
 import com.ruoyi.examine.service.IExamineItemService;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -60,6 +61,7 @@ public class ExamineItemServiceImpl implements IExamineItemService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insertExamineItem(ExamineItem examineItem)
     {
         LoginUser loginUser = SecurityUtils.getLoginUser();
@@ -86,6 +88,7 @@ public class ExamineItemServiceImpl implements IExamineItemService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateExamineItem(ExamineItem examineItem)
     {
         LoginUser loginUser = SecurityUtils.getLoginUser();
@@ -103,6 +106,7 @@ public class ExamineItemServiceImpl implements IExamineItemService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteExamineItemByIds(Long[] ids)
     {
         return examineItemMapper.deleteExamineItemByIds(ids);
@@ -115,6 +119,7 @@ public class ExamineItemServiceImpl implements IExamineItemService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteExamineItemById(Long id)
     {
         return examineItemMapper.deleteExamineItemById(id);

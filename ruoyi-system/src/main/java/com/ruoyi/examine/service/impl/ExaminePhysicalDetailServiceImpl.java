@@ -1,6 +1,8 @@
 package com.ruoyi.examine.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.ExaminePhysicalDetailMapper;
@@ -16,7 +18,7 @@ import javax.annotation.Resource;
  * @date 2024-01-13
  */
 @Service
-public class ExaminePhysicalDetailServiceImpl implements IExaminePhysicalDetailService
+public class ExaminePhysicalDetailServiceImpl extends ServiceImpl<ExaminePhysicalDetailMapper, ExaminePhysicalDetail> implements IExaminePhysicalDetailService
 {
     @Resource
     private ExaminePhysicalDetailMapper examinePhysicalDetailMapper;
