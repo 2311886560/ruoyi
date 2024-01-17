@@ -5,7 +5,7 @@ import java.util.List;
 import com.ruoyi.examine.domain.ExamineItem;
 
 /**
- * 项Service接口
+ * 体检项Service接口
  *
  * @author ruoyi
  * @date 2024-01-13
@@ -13,49 +13,49 @@ import com.ruoyi.examine.domain.ExamineItem;
 public interface IExamineItemService
 {
     /**
-     * 查询项
+     * 查询体检项
      *
-     * @param id 项主键
-     * @return 项
+     * @param id 体检项主键
+     * @return 体检项
      */
     public ExamineItem selectExamineItemById(Long id);
 
     /**
-     * 查询项列表
+     * 查询体检项列表
      *
-     * @param examineItem 项
-     * @return 项集合
+     * @param examineItem 体检项
+     * @return 体检项集合
      */
     public List<ExamineItem> selectExamineItemList(ExamineItem examineItem);
 
     /**
-     * 新增项
+     * 新增体检项
      *
-     * @param examineItem 项
+     * @param examineItem 体检项
      * @return 结果
      */
     public int insertExamineItem(ExamineItem examineItem);
 
     /**
-     * 修改项
+     * 修改体检项
      *
-     * @param examineItem 项
+     * @param examineItem 体检项
      * @return 结果
      */
     public int updateExamineItem(ExamineItem examineItem);
 
     /**
-     * 批量删除项
+     * 批量删除体检项
      *
-     * @param ids 需要删除的项主键集合
+     * @param ids 需要删除的体检项主键集合
      * @return 结果
      */
     public int deleteExamineItemByIds(Long[] ids);
 
     /**
-     * 删除项信息
+     * 删除体检项信息
      *
-     * @param id 项主键
+     * @param id 体检项主键
      * @return 结果
      */
     public int deleteExamineItemById(Long id);

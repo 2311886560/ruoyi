@@ -21,7 +21,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 项Controller
+ * 体检项Controller
  *
  * @author ruoyi
  * @date 2024-01-13
@@ -34,7 +34,7 @@ public class ExamineItemController extends BaseController
     private IExamineItemService examineItemService;
 
     /**
-     * 查询项列表
+     * 查询体检项列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:examineItem:list')")
     @GetMapping("/list")
@@ -46,20 +46,20 @@ public class ExamineItemController extends BaseController
     }
 
     /**
-     * 导出项列表
+     * 导出体检项列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:examineItem:export')")
-    @Log(title = "项", businessType = BusinessType.EXPORT)
+    @Log(title = "体检项", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ExamineItem examineItem)
     {
         List<ExamineItem> list = examineItemService.selectExamineItemList(examineItem);
         ExcelUtil<ExamineItem> util = new ExcelUtil<ExamineItem>(ExamineItem.class);
-        util.exportExcel(response, list, "项数据");
+        util.exportExcel(response, list, "体检项数据");
     }
 
     /**
-     * 获取项详细信息
+     * 获取体检项详细信息
      */
 //    @PreAuthorize("@ss.hasPermi('system:examineItem:query')")
     @GetMapping(value = "/{id}")
@@ -69,10 +69,10 @@ public class ExamineItemController extends BaseController
     }
 
     /**
-     * 新增项
+     * 新增体检项
      */
 //    @PreAuthorize("@ss.hasPermi('system:examineItem:add')")
-    @Log(title = "项", businessType = BusinessType.INSERT)
+    @Log(title = "体检项", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ExamineItem examineItem)
     {
@@ -80,10 +80,10 @@ public class ExamineItemController extends BaseController
     }
 
     /**
-     * 修改项
+     * 修改体检项
      */
 //    @PreAuthorize("@ss.hasPermi('system:examineItem:edit')")
-    @Log(title = "项", businessType = BusinessType.UPDATE)
+    @Log(title = "体检项", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ExamineItem examineItem)
     {
@@ -91,10 +91,10 @@ public class ExamineItemController extends BaseController
     }
 
     /**
-     * 删除项
+     * 删除体检项
      */
 //    @PreAuthorize("@ss.hasPermi('system:examineItem:remove')")
-    @Log(title = "项", businessType = BusinessType.DELETE)
+    @Log(title = "体检项", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

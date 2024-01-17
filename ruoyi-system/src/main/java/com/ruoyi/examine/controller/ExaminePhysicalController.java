@@ -3,6 +3,8 @@ package com.ruoyi.examine.controller;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,10 +40,10 @@ public class ExaminePhysicalController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:examinePhysical:list')")
     @GetMapping("/list")
-    public TableDataInfo list(ExaminePhysical examinePhysical)
+    public TableDataInfo list(ExaminePhysicalVo examinePhysicalVo)
     {
         startPage();
-        List<ExaminePhysical> list = examinePhysicalService.selectExaminePhysicalList(examinePhysical);
+        List<ExaminePhysicalVo> list = examinePhysicalService.selectExaminePhysicalList(examinePhysicalVo);
         return getDataTable(list);
     }
 
@@ -51,10 +53,10 @@ public class ExaminePhysicalController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('system:examinePhysical:export')")
     @Log(title = "数据信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, ExaminePhysical examinePhysical)
+    public void export(HttpServletResponse response, ExaminePhysicalVo examinePhysicalVo)
     {
-        List<ExaminePhysical> list = examinePhysicalService.selectExaminePhysicalList(examinePhysical);
-        ExcelUtil<ExaminePhysical> util = new ExcelUtil<ExaminePhysical>(ExaminePhysical.class);
+        List<ExaminePhysicalVo> list = examinePhysicalService.selectExaminePhysicalList(examinePhysicalVo);
+        ExcelUtil<ExaminePhysicalVo> util = new ExcelUtil<ExaminePhysicalVo>(ExaminePhysicalVo.class);
         util.exportExcel(response, list, "数据信息数据");
     }
 
@@ -74,9 +76,9 @@ public class ExaminePhysicalController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('system:examinePhysical:add')")
     @Log(title = "数据信息", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody ExaminePhysical examinePhysical)
+    public AjaxResult add(@RequestBody ExaminePhysicalVo examinePhysicalVo)
     {
-        return toAjax(examinePhysicalService.insertExaminePhysical(examinePhysical));
+        return toAjax(examinePhysicalService.insertExaminePhysical(examinePhysicalVo));
     }
 
     /**
@@ -85,9 +87,9 @@ public class ExaminePhysicalController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('system:examinePhysical:edit')")
     @Log(title = "数据信息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody ExaminePhysical examinePhysical)
+    public AjaxResult edit(@RequestBody ExaminePhysicalVo examinePhysicalVo)
     {
-        return toAjax(examinePhysicalService.updateExaminePhysical(examinePhysical));
+        return toAjax(examinePhysicalService.updateExaminePhysical(examinePhysicalVo));
     }
 
     /**

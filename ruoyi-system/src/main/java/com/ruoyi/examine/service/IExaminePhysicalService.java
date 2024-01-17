@@ -3,6 +3,7 @@ package com.ruoyi.examine.service;
 import java.util.List;
 
 import com.ruoyi.examine.domain.ExaminePhysical;
+import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
 
 /**
  * 数据信息Service接口
@@ -18,31 +19,31 @@ public interface IExaminePhysicalService
      * @param id 数据信息主键
      * @return 数据信息
      */
-    public ExaminePhysical selectExaminePhysicalById(Long id);
+    public ExaminePhysicalVo selectExaminePhysicalById(Long id);
 
     /**
      * 查询数据信息列表
      *
-     * @param examinePhysical 数据信息
+     * @param examinePhysicalVo 数据信息
      * @return 数据信息集合
      */
-    public List<ExaminePhysical> selectExaminePhysicalList(ExaminePhysical examinePhysical);
+    public List<ExaminePhysicalVo> selectExaminePhysicalList(ExaminePhysicalVo examinePhysicalVo);
 
     /**
      * 新增数据信息
      *
-     * @param examinePhysical 数据信息
+     * @param examinePhysicalVo 数据信息
      * @return 结果
      */
-    public int insertExaminePhysical(ExaminePhysical examinePhysical);
+    public int insertExaminePhysical(ExaminePhysicalVo examinePhysicalVo);
 
     /**
      * 修改数据信息
      *
-     * @param examinePhysical 数据信息
+     * @param examinePhysicalVo 数据信息
      * @return 结果
      */
-    public int updateExaminePhysical(ExaminePhysical examinePhysical);
+    public int updateExaminePhysical(ExaminePhysicalVo examinePhysicalVo);
 
     /**
      * 批量删除数据信息

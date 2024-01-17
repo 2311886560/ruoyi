@@ -2,6 +2,7 @@ package com.ruoyi.examine.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
 import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.ExaminePhysicalMapper;
 import com.ruoyi.examine.domain.ExaminePhysical;
@@ -28,47 +29,51 @@ public class ExaminePhysicalServiceImpl implements IExaminePhysicalService
      * @return 数据信息
      */
     @Override
-    public ExaminePhysical selectExaminePhysicalById(Long id)
+    public ExaminePhysicalVo selectExaminePhysicalById(Long id)
     {
-        return examinePhysicalMapper.selectExaminePhysicalById(id);
+        ExaminePhysicalVo examinePhysicalVo = examinePhysicalMapper.selectExaminePhysicalById(id);
+        return examinePhysicalVo;
     }
 
     /**
      * 查询数据信息列表
      *
-     * @param examinePhysical 数据信息
+     * @param examinePhysicalVo 数据信息
      * @return 数据信息
      */
     @Override
-    public List<ExaminePhysical> selectExaminePhysicalList(ExaminePhysical examinePhysical)
+    public List<ExaminePhysicalVo> selectExaminePhysicalList(ExaminePhysicalVo examinePhysicalVo)
     {
-        return examinePhysicalMapper.selectExaminePhysicalList(examinePhysical);
+        List<ExaminePhysicalVo> examinePhysicalVoList = examinePhysicalMapper.selectExaminePhysicalList(examinePhysicalVo);
+        return examinePhysicalVoList;
     }
 
     /**
      * 新增数据信息
      *
-     * @param examinePhysical 数据信息
+     * @param examinePhysicalVo 数据信息
      * @return 结果
      */
     @Override
-    public int insertExaminePhysical(ExaminePhysical examinePhysical)
+    public int insertExaminePhysical(ExaminePhysicalVo examinePhysicalVo)
     {
-        examinePhysical.setCreateTime(DateUtils.getNowDate());
-        return examinePhysicalMapper.insertExaminePhysical(examinePhysical);
+        examinePhysicalVo.setCreateTime(DateUtils.getNowDate());
+        int i = examinePhysicalMapper.insertExaminePhysical(examinePhysicalVo);
+        return i;
     }
 
     /**
      * 修改数据信息
      *
-     * @param examinePhysical 数据信息
+     * @param examinePhysicalVo 数据信息
      * @return 结果
      */
     @Override
-    public int updateExaminePhysical(ExaminePhysical examinePhysical)
+    public int updateExaminePhysical(ExaminePhysicalVo examinePhysicalVo)
     {
-        examinePhysical.setUpdateTime(DateUtils.getNowDate());
-        return examinePhysicalMapper.updateExaminePhysical(examinePhysical);
+        examinePhysicalVo.setUpdateTime(DateUtils.getNowDate());
+        int i = examinePhysicalMapper.updateExaminePhysical(examinePhysicalVo);
+        return i;
     }
 
     /**

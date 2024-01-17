@@ -1,7 +1,15 @@
 package com.ruoyi.examine.service.impl;
 
+import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.enums.CommonDelFlag;
+import com.ruoyi.common.enums.CommonStatus;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.HospitalMapper;
 import com.ruoyi.examine.domain.Hospital;
@@ -54,7 +62,20 @@ public class HospitalServiceImpl implements IHospitalService
     @Override
     public int insertHospital(Hospital hospital)
     {
-        hospital.setCreateTime(DateUtils.getNowDate());
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        SysUser user = loginUser.getUser();
+        Date nowDate = DateUtils.getNowDate();
+        // 初始化
+        if (StringUtils.isEmpty(hospital.getStatus())) {
+            hospital.setStatus(CommonStatus.NORMAL.getCode());
+        }
+        if (StringUtils.isEmpty(hospital.getDelFlag())) {
+            hospital.setDelFlag(CommonDelFlag.UNDELETED.getCode());
+        }
+        hospital.setCreateBy(user.getNickName());
+        hospital.setCreateTime(nowDate);
+        hospital.setUpdateBy(user.getNickName());
+        hospital.setUpdateTime(nowDate);
         return hospitalMapper.insertHospital(hospital);
     }
 
@@ -67,7 +88,11 @@ public class HospitalServiceImpl implements IHospitalService
     @Override
     public int updateHospital(Hospital hospital)
     {
-        hospital.setUpdateTime(DateUtils.getNowDate());
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        SysUser user = loginUser.getUser();
+        Date nowDate = DateUtils.getNowDate();
+        hospital.setUpdateBy(user.getNickName());
+        hospital.setUpdateTime(nowDate);
         return hospitalMapper.updateHospital(hospital);
     }
 
