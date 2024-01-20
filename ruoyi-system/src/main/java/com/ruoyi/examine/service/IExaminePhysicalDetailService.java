@@ -11,7 +11,7 @@ import com.ruoyi.examine.domain.ExaminePhysicalDetail;
  * @author ruoyi
  * @date 2024-01-13
  */
-public interface IExaminePhysicalDetailService extends IService<ExaminePhysicalDetail>
+public interface IExaminePhysicalDetailService
 {
     /**
      * 查询数据明细

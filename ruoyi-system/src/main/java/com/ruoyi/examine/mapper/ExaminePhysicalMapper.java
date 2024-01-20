@@ -12,7 +12,7 @@ import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
  * @author ruoyi
  * @date 2024-01-13
  */
-public interface ExaminePhysicalMapper extends BaseMapper<ExaminePhysical>
+public interface ExaminePhysicalMapper
 {
     /**
      * 查询数据信息

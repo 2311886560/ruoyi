@@ -8,19 +8,46 @@
         </p>
       </el-col>
     </el-row>
+    <el-row :gutter="20">
+      <el-col :sm="24" :lg="12" style="padding-left: 20px">
+        <h2>欢迎“{{ userInfo.nickName }}”</h2>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :sm="24" :lg="12" style="padding-left: 20px">
+        <h2>个人体检数据</h2>
+        <p>
+          <b>最近体检记录</b>
+        </p>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+import { getInfo } from '@/api/login'
 export default {
   name: "Index",
   data() {
     return {
       // 版本号
-      version: "3.8.6"
+      version: "3.8.6",
+      // 用户信息
+      userInfo: {
+        userType: '00'
+      },
     };
   },
+  created() {
+    this.getUserInfo();
+  },
   methods: {
+    // 查询登录用户信息
+    getUserInfo() {
+      getInfo().then(response => {
+        this.userInfo = response.user;
+      })
+    },
     goTarget(href) {
       window.open(href, "_blank");
     }
@@ -36,12 +63,14 @@ export default {
     font-size: 17.5px;
     border-left: 5px solid #eee;
   }
+
   hr {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
     border-top: 1px solid #eee;
   }
+
   .col-item {
     margin-bottom: 20px;
   }
@@ -51,7 +80,11 @@ export default {
     margin: 0;
   }
 
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "open sans",
+  "Helvetica Neue",
+  Helvetica,
+  Arial,
+  sans-serif;
   font-size: 13px;
   color: #676a6c;
   overflow-x: hidden;

@@ -15,6 +15,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.examine.domain.ExaminePhysicalDetail;
 import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
+import com.ruoyi.examine.mapper.ExaminePhysicalDetailMapper;
 import com.ruoyi.examine.service.IExaminePhysicalDetailService;
 import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.ExaminePhysicalMapper;
@@ -31,12 +32,12 @@ import javax.annotation.Resource;
  * @date 2024-01-13
  */
 @Service
-public class ExaminePhysicalServiceImpl extends ServiceImpl<ExaminePhysicalMapper, ExaminePhysical> implements IExaminePhysicalService
+public class ExaminePhysicalServiceImpl implements IExaminePhysicalService
 {
     @Resource
     private ExaminePhysicalMapper examinePhysicalMapper;
     @Resource
-    private IExaminePhysicalDetailService iExaminePhysicalDetailService;
+    private ExaminePhysicalDetailMapper examinePhysicalDetailMapper;
 
     /**
      * 查询数据信息
@@ -48,10 +49,10 @@ public class ExaminePhysicalServiceImpl extends ServiceImpl<ExaminePhysicalMappe
     public ExaminePhysicalVo selectExaminePhysicalById(Long id)
     {
         ExaminePhysicalVo examinePhysicalVo = examinePhysicalMapper.selectExaminePhysicalById(id);
-        LambdaQueryWrapper<ExaminePhysicalDetail> physicalDetailLambdaQueryWrapper = Wrappers.lambdaQuery();
-        physicalDetailLambdaQueryWrapper.eq(ExaminePhysicalDetail::getExamineId, examinePhysicalVo.getId());
-        physicalDetailLambdaQueryWrapper.eq(ExaminePhysicalDetail::getDelFlag, CommonDelFlag.UNDELETED.getCode());
-        List<ExaminePhysicalDetail> examinePhysicalDetailList = iExaminePhysicalDetailService.list(physicalDetailLambdaQueryWrapper);
+        ExaminePhysicalDetail examinePhysicalDetail = new ExaminePhysicalDetail();
+        examinePhysicalDetail.setExamineId(examinePhysicalVo.getId());
+        examinePhysicalDetail.setDelFlag(CommonDelFlag.UNDELETED.getCode());
+        List<ExaminePhysicalDetail> examinePhysicalDetailList = examinePhysicalDetailMapper.selectExaminePhysicalDetailList(examinePhysicalDetail);
         examinePhysicalVo.setExaminePhysicalDetailList(examinePhysicalDetailList);
         return examinePhysicalVo;
     }
@@ -95,16 +96,19 @@ public class ExaminePhysicalServiceImpl extends ServiceImpl<ExaminePhysicalMappe
         examinePhysicalVo.setUpdateTime(nowDate);
         int i = examinePhysicalMapper.insertExaminePhysical(examinePhysicalVo);
         // 先删除旧子表数据再更新
-        LambdaQueryWrapper<ExaminePhysicalDetail> physicalDetailLambdaQueryWrapper = Wrappers.lambdaQuery();
-        physicalDetailLambdaQueryWrapper.eq(ExaminePhysicalDetail::getExamineId, examinePhysicalVo.getId());
-        iExaminePhysicalDetailService.remove(physicalDetailLambdaQueryWrapper);
+        examinePhysicalDetailMapper.deleteExaminePhysicalDetailByExamineId(examinePhysicalVo.getId());
 
         List<ExaminePhysicalDetail> examinePhysicalDetailList = examinePhysicalVo.getExaminePhysicalDetailList();
         if (StringUtils.isNotEmpty(examinePhysicalDetailList)) {
             for (ExaminePhysicalDetail examinePhysicalDetail : examinePhysicalDetailList) {
+                examinePhysicalDetail.setId(null);
                 examinePhysicalDetail.setExamineId(examinePhysicalVo.getId());
+                examinePhysicalDetail.setCreateBy(user.getNickName());
+                examinePhysicalDetail.setCreateTime(nowDate);
+                examinePhysicalDetail.setUpdateBy(user.getNickName());
+                examinePhysicalDetail.setUpdateTime(nowDate);
+                examinePhysicalDetailMapper.insertExaminePhysicalDetail(examinePhysicalDetail);
             }
-            iExaminePhysicalDetailService.saveBatch(examinePhysicalDetailList);
         }
 
         return i;
@@ -127,16 +131,19 @@ public class ExaminePhysicalServiceImpl extends ServiceImpl<ExaminePhysicalMappe
         examinePhysicalVo.setUpdateTime(nowDate);
         int i = examinePhysicalMapper.updateExaminePhysical(examinePhysicalVo);
         // 先删除旧子表数据再更新
-        LambdaQueryWrapper<ExaminePhysicalDetail> physicalDetailLambdaQueryWrapper = Wrappers.lambdaQuery();
-        physicalDetailLambdaQueryWrapper.eq(ExaminePhysicalDetail::getExamineId, examinePhysicalVo.getId());
-        iExaminePhysicalDetailService.remove(physicalDetailLambdaQueryWrapper);
+        examinePhysicalDetailMapper.deleteExaminePhysicalDetailByExamineId(examinePhysicalVo.getId());
 
         List<ExaminePhysicalDetail> examinePhysicalDetailList = examinePhysicalVo.getExaminePhysicalDetailList();
         if (StringUtils.isNotEmpty(examinePhysicalDetailList)) {
             for (ExaminePhysicalDetail examinePhysicalDetail : examinePhysicalDetailList) {
+                examinePhysicalDetail.setId(null);
                 examinePhysicalDetail.setExamineId(examinePhysicalVo.getId());
+                examinePhysicalDetail.setCreateBy(user.getNickName());
+                examinePhysicalDetail.setCreateTime(nowDate);
+                examinePhysicalDetail.setUpdateBy(user.getNickName());
+                examinePhysicalDetail.setUpdateTime(nowDate);
+                examinePhysicalDetailMapper.insertExaminePhysicalDetail(examinePhysicalDetail);
             }
-            iExaminePhysicalDetailService.saveBatch(examinePhysicalDetailList);
         }
         return i;
     }

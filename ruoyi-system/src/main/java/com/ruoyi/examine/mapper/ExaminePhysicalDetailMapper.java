@@ -11,7 +11,7 @@ import com.ruoyi.examine.domain.ExaminePhysicalDetail;
  * @author ruoyi
  * @date 2024-01-13
  */
-public interface ExaminePhysicalDetailMapper extends BaseMapper<ExaminePhysicalDetail>
+public interface ExaminePhysicalDetailMapper
 {
     /**
      * 查询数据明细
@@ -52,6 +52,14 @@ public interface ExaminePhysicalDetailMapper extends BaseMapper<ExaminePhysicalD
      * @return 结果
      */
     public int deleteExaminePhysicalDetailById(Long id);
+
+    /**
+     * 删除数据明细
+     *
+     * @param examineId 数据主键
+     * @return 结果
+     */
+    public int deleteExaminePhysicalDetailByExamineId(Long examineId);
 
     /**
      * 批量删除数据明细

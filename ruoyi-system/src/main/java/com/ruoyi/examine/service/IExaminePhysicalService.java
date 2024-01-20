@@ -12,7 +12,7 @@ import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
  * @author ruoyi
  * @date 2024-01-13
  */
-public interface IExaminePhysicalService extends IService<ExaminePhysical>
+public interface IExaminePhysicalService
 {
     /**
      * 查询数据信息

@@ -43,8 +43,8 @@ public class ExaminePhysicalDetail extends BaseEntity
     private String referenceValue;
 
     /** 体检时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "体检时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "体检时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date examineTime;
 
     /** 状态：0=失效，1=有效 */

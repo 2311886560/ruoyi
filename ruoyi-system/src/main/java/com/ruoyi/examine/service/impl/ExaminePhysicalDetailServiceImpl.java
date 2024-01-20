@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  * @date 2024-01-13
  */
 @Service
-public class ExaminePhysicalDetailServiceImpl extends ServiceImpl<ExaminePhysicalDetailMapper, ExaminePhysicalDetail> implements IExaminePhysicalDetailService
+public class ExaminePhysicalDetailServiceImpl implements IExaminePhysicalDetailService
 {
     @Resource
     private ExaminePhysicalDetailMapper examinePhysicalDetailMapper;
