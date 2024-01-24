@@ -3,6 +3,8 @@ package com.ruoyi.examine.controller;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.examine.domain.vo.ExaminePhysicalDetailVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,10 +40,10 @@ public class ExaminePhysicalDetailController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:examinePhysicalDetail:list')")
     @GetMapping("/list")
-    public TableDataInfo list(ExaminePhysicalDetail examinePhysicalDetail)
+    public TableDataInfo list(ExaminePhysicalDetailVo examinePhysicalDetailVo)
     {
         startPage();
-        List<ExaminePhysicalDetail> list = examinePhysicalDetailService.selectExaminePhysicalDetailList(examinePhysicalDetail);
+        List<ExaminePhysicalDetailVo> list = examinePhysicalDetailService.selectExaminePhysicalDetailVoList(examinePhysicalDetailVo);
         return getDataTable(list);
     }
 

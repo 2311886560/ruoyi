@@ -1,9 +1,14 @@
 package com.ruoyi.examine.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.examine.domain.vo.ExaminePhysicalDetailVo;
 import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.ExaminePhysicalDetailMapper;
 import com.ruoyi.examine.domain.ExaminePhysicalDetail;
@@ -45,6 +50,16 @@ public class ExaminePhysicalDetailServiceImpl implements IExaminePhysicalDetailS
     public List<ExaminePhysicalDetail> selectExaminePhysicalDetailList(ExaminePhysicalDetail examinePhysicalDetail)
     {
         return examinePhysicalDetailMapper.selectExaminePhysicalDetailList(examinePhysicalDetail);
+    }
+
+    @Override
+    public List<ExaminePhysicalDetailVo> selectExaminePhysicalDetailVoList(ExaminePhysicalDetailVo examinePhysicalDetailVo)
+    {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        SysUser user = loginUser.getUser();
+        examinePhysicalDetailVo.setRetiredUserId(user.getUserId());
+        List<ExaminePhysicalDetailVo> examinePhysicalDetailVoList = examinePhysicalDetailMapper.selectExaminePhysicalDetailVoList(examinePhysicalDetailVo);
+        return examinePhysicalDetailVoList;
     }
 
     /**

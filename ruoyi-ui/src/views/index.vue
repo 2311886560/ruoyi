@@ -16,9 +16,7 @@
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>个人体检数据</h2>
-        <p>
-          <b>最近体检记录</b>
-        </p>
+        <home-table></home-table>
       </el-col>
     </el-row>
   </div>
@@ -26,8 +24,12 @@
 
 <script>
 import { getInfo } from '@/api/login'
+import HomeTable from './examine/examinePhysical/index'
 export default {
   name: "Index",
+  components:{
+    HomeTable,
+  },
   data() {
     return {
       // 版本号

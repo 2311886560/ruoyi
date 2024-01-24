@@ -54,6 +54,24 @@
         </where>
     </select>
 
+    <select id="selectExaminePhysicalDetailVoList" parameterType="com.ruoyi.examine.domain.vo.ExaminePhysicalDetailVo"
+            resultType="com.ruoyi.examine.domain.vo.ExaminePhysicalDetailVo">
+        select
+        detail.name,
+        detail.value,
+        detail.reference_value referenceValue,
+        detail.examine_time examineTime,
+        detail.remark,
+        detail.status
+        from examine_physical_detail detail
+        <where>
+            <if test="examineId != null ">and detail.examine_id = #{examineId}</if>
+            <if test="name != null and name != ''">and detail.name like concat('%', #{name}, '%')</if>
+            <if test="status != null and status != ''">and detail.status = #{status}</if>
+            <if test="delFlag != null and delFlag != ''">and detail.del_flag = #{delFlag}</if>
+        </where>
+    </select>
+
     <select id="selectExaminePhysicalDetailById" parameterType="Long" resultMap="ExaminePhysicalDetailResult">
         <include refid="selectExaminePhysicalDetailVo"/>
         where id = #{id}

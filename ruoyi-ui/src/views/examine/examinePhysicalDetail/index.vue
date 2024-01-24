@@ -1,21 +1,13 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="体检项名称" prop="name">
+      <el-form-item label="体检项目" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入体检项名称"
+          placeholder="请输入体检项目"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="体检时间" prop="examineTime">
-        <el-date-picker clearable
-          v-model="queryParams.examineTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择体检时间">
-        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -23,78 +15,17 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
     <el-table v-loading="loading" :data="examinePhysicalDetailList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="体检数据明细ID" align="center" prop="id" />
-      <el-table-column label="体检数据ID" align="center" prop="examineId" />
-      <el-table-column label="体检项ID" align="center" prop="itemId" />
-      <el-table-column label="体检项名称" align="center" prop="name" />
-      <el-table-column label="体检值" align="center" prop="value" />
+      <el-table-column label="体检项目" align="center" prop="name" />
       <el-table-column label="参考值" align="center" prop="referenceValue" />
+      <el-table-column label="体检结果" align="center" prop="value" />
       <el-table-column label="体检时间" align="center" prop="examineTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.examineTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.examineTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-          >删除</el-button>
-        </template>
-      </el-table-column>
     </el-table>
 
     <pagination

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.examine.domain.ExaminePhysicalDetail;
+import com.ruoyi.examine.domain.vo.ExaminePhysicalDetailVo;
 
 /**
  * 数据明细Mapper接口
@@ -28,6 +29,7 @@ public interface ExaminePhysicalDetailMapper
      * @return 数据明细集合
      */
     public List<ExaminePhysicalDetail> selectExaminePhysicalDetailList(ExaminePhysicalDetail examinePhysicalDetail);
+    public List<ExaminePhysicalDetailVo> selectExaminePhysicalDetailVoList(ExaminePhysicalDetailVo examinePhysicalDetailVo);
 
     /**
      * 新增数据明细
