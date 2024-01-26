@@ -64,7 +64,16 @@
         detail.remark,
         detail.status
         from examine_physical_detail detail
+        left join examine_physical physical on detail.examine_id = physical.id
+        left join examine_item item on detail.item_id = item.id
         <where>
+            physical.process_status = 1
+            and physical.status = 1
+            and physical.del_flag = 0
+            <if test="retiredUserId != null ">and physical.retired_user_id = #{retiredUserId}</if>
+            and item.show_user = 0
+            and item.status = 1
+            and item.del_flag = 0
             <if test="examineId != null ">and detail.examine_id = #{examineId}</if>
             <if test="name != null and name != ''">and detail.name like concat('%', #{name}, '%')</if>
             <if test="status != null and status != ''">and detail.status = #{status}</if>
