@@ -61,6 +61,7 @@
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row)">详情</el-button>
           <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
+          <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-edit" @click="handleAuth(scope.row)">审核</el-button>
           <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -107,7 +108,7 @@
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-divider content-position="center">商品信息</el-divider>
+        <el-divider content-position="center">体检信息</el-divider>
         <el-row :gutter="10" class="mb8" v-if="openType !== 'details'">
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-plus" size="mini"
@@ -162,18 +163,46 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <!-- 审核对话框 -->
+    <form-dialog @onSubmit="onSubmit" ref="formDialog" title="审核" status="6">
+      <template v-slot:formContent>
+        <el-form :model="authForm" label-width="100px" ref="authForm">
+          <el-form-item label="审核结果" prop="processStatus">
+            <el-select style="width: 100%;" v-model="authForm.authStatus"
+                       placeholder="请选择审核状态">
+              <el-option v-for="item in dict.type.examine_physical_auth_status" :key="item.value" :label="item.label"
+                         :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="审核意见:" prop="reason" :rules="[{required: true,message:'原因不能为空',trigger:'blur'}]">
+            <el-input
+              type="textarea"
+              v-model="authForm.reason"
+              placeholder="请输入审核意见"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              maxlength="200"
+            />
+          </el-form-item>
+        </el-form>
+      </template>
+    </form-dialog>
   </div>
 </template>
 
 <script>
 import { listExaminePhysical, getExaminePhysical, delExaminePhysical, addExaminePhysical, updateExaminePhysical } from "@/api/examine/examinePhysical";
+import { addExaminePhysicalAuthLog } from "@/api/examine/examinePhysicalAuthLog";
 import { listExamineItem } from "@/api/examine/examineItem";
 import { listUser } from "@/api/system/user";
 import { getInfo } from '@/api/login'
+import FormDialog from '@/components/FormDialog'
 
 export default {
   name: "ExaminePhysical",
-  dicts: ['examine_physical_process_status', 'examine_item_default_status', 'examine_item_show_user'],
+  dicts: ['examine_physical_process_status', 'examine_item_default_status', 'examine_item_show_user', 'examine_physical_auth_status'],
+  components:{
+    FormDialog
+  },
   data() {
     return {
       // 遮罩层
@@ -225,6 +254,13 @@ export default {
       retiredUserOptions: [],
       // 可选的体检项目列表
       examineItemOptions: {},
+      // 审核
+      authVisible: false,
+      authForm:{
+        examineId: null,
+        authStatus: null,
+        reason: null
+      },
     };
   },
   created() {
@@ -234,6 +270,26 @@ export default {
     this.getUserOption();
   },
   methods: {
+    /** 提交审核按钮 */
+    onSubmit(status) {
+      let data = {}
+      let text = '审核成功'
+      data = {...this.authForm}
+      let requestUrl = addExaminePhysicalAuthLog
+      requestUrl(data).then((res) => {
+        if (res.code === 200){
+          this.$modal.msgSuccess(text);
+          this.close();
+        }
+      }).finally(() => {
+        this.buttonLoading = false;
+      });
+    },
+    /** 审核按钮 */
+    handleAuth(row){
+      this.authForm.examineId = row.id
+      this.$refs.formDialog.visible = true
+    },
     onChangeExamineItem(e, row) {
       let obj = this.examineItemOptions.find((item) => item.value === e)
       row.name = obj.name
@@ -356,19 +412,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.form.examinePhysicalDetailList = this.examinePhysicalDetailList;
-          if (this.form.id != null) {
-            updateExaminePhysical(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addExaminePhysical(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
+          let text = this.form.id != null ? '修改成功' : '新增成功'
+          let requestUrl = this.form.id != null ? updateExaminePhysical : addExaminePhysical
+          requestUrl(this.form).then(response => {
+            this.$modal.msgSuccess(text);
+            this.open = false;
+            this.getList();
+          });
         }
       });
     },
