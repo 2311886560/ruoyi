@@ -3,23 +3,19 @@ package com.ruoyi.examine.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.enums.CommonDelFlag;
 import com.ruoyi.common.enums.CommonStatus;
 import com.ruoyi.common.utils.DateUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.examine.domain.ExaminePhysicalDetail;
 import com.ruoyi.examine.domain.vo.ExaminePhysicalVo;
 import com.ruoyi.examine.mapper.ExaminePhysicalDetailMapper;
-import com.ruoyi.examine.service.IExaminePhysicalDetailService;
+import com.ruoyi.system.mapper.SysUserMapper;
 import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.ExaminePhysicalMapper;
-import com.ruoyi.examine.domain.ExaminePhysical;
 import com.ruoyi.examine.service.IExaminePhysicalService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +34,8 @@ public class ExaminePhysicalServiceImpl implements IExaminePhysicalService
     private ExaminePhysicalMapper examinePhysicalMapper;
     @Resource
     private ExaminePhysicalDetailMapper examinePhysicalDetailMapper;
+    @Resource
+    private SysUserMapper sysUserMapper;
 
     /**
      * 查询数据信息
@@ -67,6 +65,18 @@ public class ExaminePhysicalServiceImpl implements IExaminePhysicalService
     public List<ExaminePhysicalVo> selectExaminePhysicalList(ExaminePhysicalVo examinePhysicalVo)
     {
         List<ExaminePhysicalVo> examinePhysicalVoList = examinePhysicalMapper.selectExaminePhysicalList(examinePhysicalVo);
+        if (StringUtils.isNotEmpty(examinePhysicalVoList)){
+            examinePhysicalVoList.forEach(item -> {
+                if(StringUtils.isNotNull(item.getMedicalUserId())) {
+                    SysUser sysUser = sysUserMapper.selectUserById(item.getMedicalUserId());
+                    item.setMedicalUserName(sysUser.getNickName());
+                }
+                if(StringUtils.isNotNull(item.getRetiredUserId())) {
+                    SysUser sysUser = sysUserMapper.selectUserById(item.getRetiredUserId());
+                    item.setRetiredUserName(sysUser.getNickName());
+                }
+            });
+        }
         return examinePhysicalVoList;
     }
 

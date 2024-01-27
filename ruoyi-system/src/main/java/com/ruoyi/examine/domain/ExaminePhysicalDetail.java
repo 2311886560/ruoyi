@@ -28,7 +28,7 @@ public class ExaminePhysicalDetail extends BaseEntity
 
     /** 体检项ID */
     @Excel(name = "体检项ID")
-    private String itemId;
+    private Long itemId;
 
     /** 体检项名称 */
     @Excel(name = "体检项名称")

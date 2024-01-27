@@ -99,7 +99,7 @@ create table examine_physical_detail
 (
     id              bigint(20) not null auto_increment comment '体检数据明细ID',
     examine_id      bigint(20)   default null comment '体检数据ID',
-    item_id         varchar(100) default null comment '体检项ID',
+    item_id         bigint(20)   default null comment '体检项ID',
     name            varchar(100) default null comment '体检项名称',
     value           varchar(100) default '0' comment '体检值',
     reference_value varchar(100) default '0' comment '参考值',

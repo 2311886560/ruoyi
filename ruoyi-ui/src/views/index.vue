@@ -3,28 +3,26 @@
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>老干部体检信息管理系统</h2>
-        <p>
-          <b>当前版本:</b> <span>v{{ version }}</span>
-        </p>
+<!--        <p>-->
+<!--          <b>当前版本:</b> <span>v{{ version }}</span>-->
+<!--        </p>-->
       </el-col>
     </el-row>
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>欢迎“{{ userInfo.nickName }}”</h2>
+        <h2>欢迎你--“{{ userInfo.nickName }}”</h2>
       </el-col>
     </el-row>
-    <el-row :gutter="20">
-      <el-col :sm="24" :lg="12" style="padding-left: 20px">
+    <el-row :gutter="20" style="width: 100%">
         <h2>个人体检数据</h2>
         <home-table></home-table>
-      </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
 import { getInfo } from '@/api/login'
-import HomeTable from './examine/examinePhysical/index'
+import HomeTable from './examine/examinePhysicalDetail/index'
 export default {
   name: "Index",
   components:{

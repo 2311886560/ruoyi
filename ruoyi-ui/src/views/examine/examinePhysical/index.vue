@@ -40,8 +40,10 @@
 
     <el-table v-loading="loading" :data="examinePhysicalList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="医务人员用户ID" align="center" prop="medicalUserId" />
-      <el-table-column label="老干部用户ID" align="center" prop="retiredUserId" />
+<!--      <el-table-column label="医务人员用户ID" align="center" prop="medicalUserId" />-->
+      <el-table-column label="医务人员" align="center" prop="medicalUserName" />
+<!--      <el-table-column label="老干部用户ID" align="center" prop="retiredUserId" />-->
+      <el-table-column label="老干部" align="center" prop="retiredUserName" />
       <el-table-column label="体检标题" align="center" prop="title" />
       <el-table-column label="体检内容" align="center" prop="content" />
       <el-table-column label="体检时间" align="center" prop="examineTime" width="180">
@@ -57,8 +59,9 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row)">详情</el-button>
+          <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
+          <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -94,13 +97,13 @@
             value-format="yyyy-MM-dd" placeholder="请选择体检时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="审核状态" prop="processStatus">
-          <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.processStatus"
-            placeholder="请选择审核状态">
-            <el-option v-for="item in dict.type.examine_physical_process_status" :key="item.value" :label="item.label"
-              :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="审核状态" prop="processStatus">-->
+<!--          <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.processStatus"-->
+<!--            placeholder="请选择审核状态">-->
+<!--            <el-option v-for="item in dict.type.examine_physical_process_status" :key="item.value" :label="item.label"-->
+<!--              :value="item.value"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
@@ -233,6 +236,7 @@ export default {
   methods: {
     onChangeExamineItem(e, row) {
       let obj = this.examineItemOptions.find((item) => item.value === e)
+      row.name = obj.name
       row.referenceValue = obj.referenceValue
     },
     // 查询登录用户信息
@@ -263,6 +267,7 @@ export default {
           let c = { label: item.name, value: item.id, ...item }
           return c;
         })
+        console.log("this.examineItemOptions--", this.examineItemOptions)
       })
     },
     /** 查询数据信息列表 */
@@ -320,7 +325,7 @@ export default {
       this.reset();
       this.open = true;
       this.openType = 'add';
-      this.title = "添加数据信息";
+      this.title = "添加体检数据";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -331,7 +336,19 @@ export default {
         this.examinePhysicalDetailList = response.data.examinePhysicalDetailList;
         this.open = true;
         this.openType = 'update';
-        this.title = "修改数据信息";
+        this.title = "修改体检数据";
+      });
+    },
+    /** 详情按钮操作 */
+    handleDetails(row) {
+      this.reset();
+      const id = row.id || this.ids
+      getExaminePhysical(id).then(response => {
+        this.form = response.data;
+        this.examinePhysicalDetailList = response.data.examinePhysicalDetailList;
+        this.open = true;
+        this.openType = 'details';
+        this.title = "体检数据信息";
       });
     },
     /** 提交按钮 */

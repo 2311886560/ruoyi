@@ -4,8 +4,8 @@
       <el-form-item label="体检项名称" prop="name">
         <el-input v-model="queryParams.name" placeholder="请输入体检项名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="性别限制" prop="sexStatus">
-        <el-select v-model="queryParams.sexStatus" placeholder="请选择性别限制" clearable>
+      <el-form-item label="性别推荐" prop="sexStatus">
+        <el-select v-model="queryParams.sexStatus" placeholder="请选择性别推荐" clearable>
           <el-option v-for="dict in dict.type.examine_item_sex_status" :key="dict.value" :label="dict.label"
             :value="dict.value" />
         </el-select>
@@ -47,7 +47,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="体检项名称" align="center" prop="name" />
       <el-table-column label="参考值" align="center" prop="referenceValue" />
-      <el-table-column label="性别限制" align="center" prop="sexStatus">
+      <el-table-column label="性别推荐" align="center" prop="sexStatus">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.examine_item_sex_status" :value="scope.row.sexStatus" />
         </template>
