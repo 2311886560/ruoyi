@@ -220,7 +220,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="24">
             <el-form-item label="所属企业">
               <el-select style="width: 100%;" v-model="form.entId" placeholder="请选择企业">
@@ -229,7 +229,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row>
           <el-col :span="24">
             <el-form-item label="身份证号码">

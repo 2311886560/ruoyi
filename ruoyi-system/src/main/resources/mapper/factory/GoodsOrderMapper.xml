@@ -82,7 +82,7 @@
                 and goods_order.status = #{status}
             </if>
             <if test="salerEntId != null ">
-                and goods_order.saler_ent_id = #{salerEntId}
+#                 and goods_order.saler_ent_id = #{salerEntId}
             </if>
             <if test="buyerUserId != null ">
                 and goods_order.buyer_user_id = #{buyerUserId}
@@ -235,7 +235,7 @@
         (select COUNT(1) from goods_order t1
             <where>
                 <if test="salerEntId != null ">
-                    and t1.saler_ent_id = #{salerEntId}
+#                     and t1.saler_ent_id = #{salerEntId}
                 </if>
                 <if test="buyerUserId != null ">
                     and t1.buyer_user_id = #{buyerUserId}
@@ -251,7 +251,7 @@
         left join goods_info on order_sub.goods_id = goods_info.id
         <where>
             <if test="salerEntId != null ">
-                and goods_order.saler_ent_id = #{salerEntId}
+#                 and goods_order.saler_ent_id = #{salerEntId}
             </if>
             <if test="buyerUserId != null ">
                 and goods_order.buyer_user_id = #{buyerUserId}
