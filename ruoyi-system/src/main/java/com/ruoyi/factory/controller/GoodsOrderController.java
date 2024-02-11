@@ -74,8 +74,8 @@ public class GoodsOrderController extends BaseController {
 //    @PreAuthorize("@ss.hasPermi('factory:order:add')")
     @Log(title = "商品订单", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody GoodsOrder goodsOrder) {
-        return toAjax(goodsOrderService.insertGoodsOrder(goodsOrder));
+    public AjaxResult add(@RequestBody GoodsOrderVo goodsOrderVo) {
+        return toAjax(goodsOrderService.insertGoodsOrder(goodsOrderVo));
     }
 
     /**
@@ -84,8 +84,8 @@ public class GoodsOrderController extends BaseController {
 //    @PreAuthorize("@ss.hasPermi('factory:order:edit')")
     @Log(title = "商品订单", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody GoodsOrder goodsOrder) {
-        return toAjax(goodsOrderService.updateGoodsOrder(goodsOrder));
+    public AjaxResult edit(@RequestBody GoodsOrderVo goodsOrderVo) {
+        return toAjax(goodsOrderService.updateGoodsOrder(goodsOrderVo));
     }
 
     /**

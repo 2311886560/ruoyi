@@ -1,5 +1,6 @@
 package com.ruoyi.factory.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
@@ -65,46 +66,58 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
     /**
      * 新增商品订单主
      *
-     * @param goodsOrder 商品订单主
+     * @param goodsOrderVo 商品订单主
      * @return 结果
      */
     @Transactional
     @Override
-    public int insertGoodsOrder(GoodsOrder goodsOrder) {
+    public int insertGoodsOrder(GoodsOrderVo goodsOrderVo) {
         // 获取当前登录用户信息
         SysUser user = SecurityUtils.getLoginUser().getUser();
+        Date nowDate = DateUtils.getNowDate();
         // 卖方用户采用当前登录者的用户
-        goodsOrder.setSalerUserId(user.getUserId());
+        goodsOrderVo.setSalerUserId(user.getUserId());
+        if (UserType.FACTORY_USER.getCode().equals(user.getUserType())) {
+            // 用户为工厂客户，自己为买方用户
+            goodsOrderVo.setBuyerUserId(user.getUserId());
+        }
         // 设置默认值
-        if (StringUtils.isEmpty(goodsOrder.getStatus())) {
-            goodsOrder.setStatus(CommonStatus.NORMAL.getCode());
+        if (StringUtils.isEmpty(goodsOrderVo.getStatus())) {
+            goodsOrderVo.setStatus(CommonStatus.NORMAL.getCode());
         }
-        if (StringUtils.isEmpty(goodsOrder.getDelFlag())) {
-            goodsOrder.setDelFlag(CommonDelFlag.UNDELETED.getCode());
+        if (StringUtils.isEmpty(goodsOrderVo.getDelFlag())) {
+            goodsOrderVo.setDelFlag(CommonDelFlag.UNDELETED.getCode());
         }
-        goodsOrder.setCreateBy(user.getUserName());
-        goodsOrder.setCreateTime(DateUtils.getNowDate());
-        int rows = goodsOrderMapper.insertGoodsOrder(goodsOrder);
-        insertGoodsOrderSub(goodsOrder);
+        // 取当前时间作为订单时间
+        goodsOrderVo.setOrderTime(nowDate);
+
+        goodsOrderVo.setCreateBy(user.getUserName());
+        goodsOrderVo.setCreateTime(nowDate);
+        goodsOrderVo.setUpdateBy(user.getUserName());
+        goodsOrderVo.setUpdateTime(nowDate);
+        int rows = goodsOrderMapper.insertGoodsOrder(goodsOrderVo);
+        insertGoodsOrderSub(goodsOrderVo);
         return rows;
     }
 
     /**
      * 修改商品订单主
      *
-     * @param goodsOrder 商品订单主
+     * @param goodsOrderVo 商品订单主
      * @return 结果
      */
     @Transactional
     @Override
-    public int updateGoodsOrder(GoodsOrder goodsOrder) {
+    public int updateGoodsOrder(GoodsOrderVo goodsOrderVo) {
         // 获取当前登录用户信息
         SysUser user = SecurityUtils.getLoginUser().getUser();
-        goodsOrder.setUpdateBy(user.getUserName());
-        goodsOrder.setUpdateTime(DateUtils.getNowDate());
-        goodsOrderMapper.deleteGoodsOrderSubByOrderId(goodsOrder.getId());
-        insertGoodsOrderSub(goodsOrder);
-        return goodsOrderMapper.updateGoodsOrder(goodsOrder);
+        Date nowDate = DateUtils.getNowDate();
+
+        goodsOrderVo.setUpdateBy(user.getUserName());
+        goodsOrderVo.setUpdateTime(nowDate);
+        goodsOrderMapper.deleteGoodsOrderSubByOrderId(goodsOrderVo.getId());
+        insertGoodsOrderSub(goodsOrderVo);
+        return goodsOrderMapper.updateGoodsOrder(goodsOrderVo);
     }
 
     /**
@@ -136,11 +149,11 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
     /**
      * 新增商品订单子信息
      *
-     * @param goodsOrder 商品订单主对象
+     * @param goodsOrderVo 商品订单主对象
      */
-    public void insertGoodsOrderSub(GoodsOrder goodsOrder) {
-        List<GoodsOrderSub> goodsOrderSubList = goodsOrder.getGoodsOrderSubList();
-        Long id = goodsOrder.getId();
+    public void insertGoodsOrderSub(GoodsOrderVo goodsOrderVo) {
+        List<GoodsOrderSub> goodsOrderSubList = goodsOrderVo.getGoodsOrderSubList();
+        Long id = goodsOrderVo.getId();
         if (StringUtils.isNotNull(goodsOrderSubList)) {
             List<GoodsOrderSub> list = new ArrayList<GoodsOrderSub>();
             for (GoodsOrderSub goodsOrderSub : goodsOrderSubList) {

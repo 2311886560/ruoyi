@@ -24,54 +24,43 @@ public class GoodsOrder extends BaseEntity
     private Long id;
 
     /** 订单编号 */
-    @Excel(name = "订单编号")
+    @Excel(name = "订单编号", sort = 1)
     private String orderCode;
 
     /** 订单标题 */
-    @Excel(name = "订单标题")
+    @Excel(name = "订单标题", sort = 2)
     private String orderTitle;
 
     /** 卖方企业 */
-    @Excel(name = "卖方企业")
+//    @Excel(name = "卖方企业")
     private Long salerEntId;
 
-    /** 买方员工 */
-    @Excel(name = "买方员工")
+    /** 购买用户 */
+//    @Excel(name = "购买用户")
     private Long buyerUserId;
 
     /** 卖方员工 */
-    @Excel(name = "卖方员工")
+//    @Excel(name = "员工")
     private Long salerUserId;
 
     /** 订单时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "订单时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "订单时间", width = 30, dateFormat = "yyyy-MM-dd", sort = 5)
     private Date orderTime;
 
-    /** 确认时间 */
+    /** 截止时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "确认时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "截止时间", width = 30, dateFormat = "yyyy-MM-dd", sort = 6)
     private Date confirmTime;
 
     /** 物流编号 */
-    @Excel(name = "物流编号")
+    @Excel(name = "物流编号", sort = 7)
     private String logisticsCode;
 
     /** 0待完成；1已完成，9拒绝 */
+    @Excel(name = "订单状态", readConverterExp = "0=待完成,1=已完成,9=拒绝", sort = 8)
     private String status;
 
     /** 删除状态：0=未删除，1=已删除 */
     private String delFlag;
-
-    /** 商品订单子信息 */
-    private List<GoodsOrderSub> goodsOrderSubList;
-
-    /** 卖方企业名称 */
-    private String salerEntName;
-
-    /** 买方用户名称 */
-    private String buyerUserName;
-
-    /** 卖方用户名称 */
-    private String salerUserName;
 }

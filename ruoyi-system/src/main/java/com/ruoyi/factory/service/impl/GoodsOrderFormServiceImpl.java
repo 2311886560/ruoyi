@@ -62,6 +62,7 @@ public class GoodsOrderFormServiceImpl implements IGoodsOrderFormService {
             enterpriseBaseList.forEach(item -> {
                 GoodsOrderFormVo orderFormVo = new GoodsOrderFormVo();
                 orderFormVo.setSalerEntId(item.getId());
+                orderFormVo.setGoodsId(vo.getGoodsId());
                 orderFormVo.setBeginTime(vo.getBeginTime());
                 orderFormVo.setEndTime(vo.getEndTime());
                 List<GoodsOrderFormVo> goodsOrderFormVoList = goodsOrderMapper.selectGoodsOrderFormList(orderFormVo);

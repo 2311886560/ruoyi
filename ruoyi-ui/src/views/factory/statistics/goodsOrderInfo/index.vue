@@ -1,8 +1,14 @@
 <template>
   <div class="container">
     <div class="upper-container">
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="68px">
-        <el-form-item label-width="auto">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="120px">
+        <el-form-item label="商品" prop="orderCode" label-width="auto">
+          <el-select v-model="queryParams.goodsId" placeholder="请选择商品"
+                     clearable filterable>
+            <el-option v-for="item in goodsInfoOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="时间" label-width="auto">
           <el-date-picker @change="handleQuery" v-model="fieldDate" type="monthrange" align="right" format="yyyy-MM"
             value-format="yyyy/MM/dd" unlink-panels range-separator="至" start-placeholder="开始月份" end-placeholder="结束月份">
           </el-date-picker>
@@ -66,6 +72,7 @@ import LineChart from '@/views/dashboard/LineChart'
 // import PieChart from '../components/PieChart'
 // import BarChart from '../components/BarChart'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import {listGoodsInfo} from "@/api/factory/goodsInfo";
 
 export default {
   naem: 'goodsOrderInfo',
@@ -104,14 +111,27 @@ export default {
       queryParams: {
         beginTime: null,
         endTime: null,
-      }
+        goodsId: null,
+      },
+      // 可选的商品列表
+      goodsInfoOptions: {},
     }
   },
   created() {
     this.loading = true
     this.getList()
+    this.getGoodsInfoOption();
   },
   methods: {
+    // 查询商品列表
+    getGoodsInfoOption() {
+      listGoodsInfo({ pageNum: 1, pageSize: 999 }).then(response => {
+        this.goodsInfoOptions = response.rows.map((item, index, arr) => {
+          let c = { label: item.name, value: item.id, ...item }
+          return c;
+        })
+      })
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -135,9 +155,13 @@ export default {
         // 获取当前年份
         var currentYear = currentDate.getFullYear();
         // 构造当前年的第一天日期
-        var firstDayOfYear = new Date(currentYear, 0, 1);
+        // var firstDayOfYear = new Date(currentYear, 0, 1);
+        var dt = new Date();
+        dt.setMonth(dt.getMonth() - 6);
+        var firstDayOfYear = dt;
         // 构造当前年的最后一天日期
-        var lastDayOfYear = new Date(currentYear, 11, 31);
+        // var lastDayOfYear = new Date(currentYear, 11, 31);
+        var lastDayOfYear = currentDate;
         this.$set(this, "fieldDate", [])
         // this.fieldDate = []
         let date = []

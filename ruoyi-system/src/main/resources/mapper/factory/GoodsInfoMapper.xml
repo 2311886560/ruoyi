@@ -47,7 +47,6 @@
         <where>
             goods.del_flag = 0
             <if test="entId != null ">
-#                 and goods.ent_id = #{entId}
             </if>
             <if test="name != null  and name != ''">
                 and goods.name like concat('%', #{name}, '%')

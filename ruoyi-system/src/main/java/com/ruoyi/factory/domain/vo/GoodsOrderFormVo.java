@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 @Data
 public class GoodsOrderFormVo {
 
+    /** 商品id */
+    private Long goodsId;
 
     /** 卖方企业 */
     private Long salerEntId;

@@ -31,18 +31,18 @@ public interface IGoodsOrderService {
     /**
      * 新增商品订单主
      *
-     * @param goodsOrder 商品订单主
+     * @param goodsOrderVo 商品订单主
      * @return 结果
      */
-    public int insertGoodsOrder(GoodsOrder goodsOrder);
+    public int insertGoodsOrder(GoodsOrderVo goodsOrderVo);
 
     /**
      * 修改商品订单主
      *
-     * @param goodsOrder 商品订单主
+     * @param goodsOrderVo 商品订单主
      * @return 结果
      */
-    public int updateGoodsOrder(GoodsOrder goodsOrder);
+    public int updateGoodsOrder(GoodsOrderVo goodsOrderVo);
 
     /**
      * 批量删除商品订单主

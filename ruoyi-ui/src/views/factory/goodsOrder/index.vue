@@ -13,7 +13,7 @@
                      :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item label="购买客户" prop="buyerUserId">
+      <el-form-item v-if="userInfo.userType !== '21'" label="购买客户" prop="buyerUserId">
         <el-select v-model="queryParams.buyerUserId" placeholder="请选择购买客户" clearable style="width: 240px">
           <el-option v-for="item in userOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
@@ -38,6 +38,10 @@
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">删除
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出
         </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -97,16 +101,16 @@
         <el-form-item label="订单标题" prop="orderTitle">
           <el-input :disabled="openType === 'details'" v-model="form.orderTitle" placeholder="请输入订单标题" maxlength="30" />
         </el-form-item>
-        <el-form-item label="订单时间" prop="orderTime">
-          <el-date-picker :disabled="openType === 'details'" clearable v-model="form.orderTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择订单时间">
-          </el-date-picker>
-        </el-form-item>
+<!--        <el-form-item label="订单时间" prop="orderTime">-->
+<!--          <el-date-picker :disabled="openType === 'details'" clearable v-model="form.orderTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择订单时间">-->
+<!--          </el-date-picker>-->
+<!--        </el-form-item>-->
 <!--        <el-form-item label="卖方企业" prop="salerEntId">-->
 <!--          <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.salerEntId" placeholder="请选择卖方企业">-->
 <!--            <el-option v-for="item in entOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>-->
 <!--          </el-select>-->
 <!--        </el-form-item>-->
-        <el-form-item label="购买客户" prop="buyerUserId">
+        <el-form-item v-if="userInfo.userType !== '21'" label="购买客户" prop="buyerUserId">
           <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.buyerUserId" placeholder="请选择购买客户">
             <el-option v-for="item in userOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
@@ -313,7 +317,7 @@ export default {
     },
     // 查询商品列表
     getGoodsInfoOption() {
-      listGoodsInfo({ pageNum: 1, pageSize: 999, entId: this.form.salerEntId }).then(response => {
+      listGoodsInfo({ pageNum: 1, pageSize: 999 }).then(response => {
         this.goodsInfoOptions = response.rows.map((item, index, arr) => {
           let c = { label: item.name, value: item.id, ...item }
           return c;
@@ -469,7 +473,7 @@ export default {
     handleExport() {
       this.download('factory/order/export', {
         ...this.queryParams
-      }, `order_${new Date().getTime()}.xlsx`)
+      }, `订单列表_${new Date().getTime()}.xlsx`)
     }
   }
 };

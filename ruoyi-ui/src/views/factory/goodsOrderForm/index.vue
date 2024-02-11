@@ -1,7 +1,13 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label-width="auto">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="商品" prop="orderCode" label-width="auto">
+        <el-select v-model="queryParams.goodsId" placeholder="请选择商品"
+                   clearable filterable>
+          <el-option v-for="item in goodsInfoOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="时间" label-width="auto">
         <el-date-picker @change="handleQuery" v-model="fieldDate" type="monthrange" align="right" format="yyyy-MM"
           value-format="yyyy-MM-dd" unlink-panels range-separator="至" start-placeholder="开始月份" end-placeholder="结束月份">
         </el-date-picker>
@@ -86,6 +92,7 @@ import { listEnterpriseBase } from "@/api/factory/enterpriseBase";
 import { listUser } from "@/api/system/user";
 import { getInfo } from '@/api/login'
 import { formatNumber } from "@/utils/util";
+import {listGoodsInfo} from "@/api/factory/goodsInfo";
 
 export default {
   name: "OrderForm",
@@ -126,6 +133,7 @@ export default {
         orderTime: null,
         confirmTime: null,
         logisticsCode: null,
+        goodsId: null,
       },
       // 时间段
       fieldDate: [],
@@ -141,12 +149,15 @@ export default {
       userInfo: {
         userType: '00'
       },
+      // 可选的商品列表
+      goodsInfoOptions: {},
     };
   },
   created() {
     this.getList();
     this.getEntOption();
     this.getUserOption();
+    this.getGoodsInfoOption();
     this.getUserInfo();
   },
   methods: {
@@ -158,6 +169,15 @@ export default {
     getUserInfo() {
       getInfo().then(response => {
         this.userInfo = response.user;
+      })
+    },
+    // 查询商品列表
+    getGoodsInfoOption() {
+      listGoodsInfo({ pageNum: 1, pageSize: 999 }).then(response => {
+        this.goodsInfoOptions = response.rows.map((item, index, arr) => {
+          let c = { label: item.name, value: item.id, ...item }
+          return c;
+        })
       })
     },
     // 查询用户列表
@@ -272,7 +292,7 @@ export default {
     handleExport() {
       this.download('factory/orderForm/export', {
         ...this.queryParams
-      }, `order_${new Date().getTime()}.xlsx`)
+      }, `财务报表_${new Date().getTime()}.xlsx`)
     }
   }
 };

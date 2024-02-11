@@ -82,7 +82,7 @@
                 and goods_order.status = #{status}
             </if>
             <if test="salerEntId != null ">
-#                 and goods_order.saler_ent_id = #{salerEntId}
+
             </if>
             <if test="buyerUserId != null ">
                 and goods_order.buyer_user_id = #{buyerUserId}
@@ -235,13 +235,15 @@
         (select COUNT(1) from goods_order t1
             <where>
                 <if test="salerEntId != null ">
-#                     and t1.saler_ent_id = #{salerEntId}
                 </if>
                 <if test="buyerUserId != null ">
                     and t1.buyer_user_id = #{buyerUserId}
                 </if>
                 <if test="salerUserId != null ">
                     and t1.saler_user_id = #{salerUserId}
+                </if>
+                <if test="goodsId != null ">
+                    and exists (select 1 from goods_order_sub t2 where t2.order_id = t1.id and t2.goods_id = #{goodsId} )
                 </if>
                 AND date_format(t1.order_time,'%Y-%m') = DATE_FORMAT( goods_order.order_time, '%Y-%m' )
             </where>
@@ -251,13 +253,16 @@
         left join goods_info on order_sub.goods_id = goods_info.id
         <where>
             <if test="salerEntId != null ">
-#                 and goods_order.saler_ent_id = #{salerEntId}
+
             </if>
             <if test="buyerUserId != null ">
                 and goods_order.buyer_user_id = #{buyerUserId}
             </if>
             <if test="salerUserId != null ">
                 and goods_order.saler_user_id = #{salerUserId}
+            </if>
+            <if test="goodsId != null ">
+                and order_sub.goods_id = #{goodsId}
             </if>
             <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
                 AND date_format(goods_order.order_time,'%y%m') &gt;= date_format(#{beginTime},'%y%m')
