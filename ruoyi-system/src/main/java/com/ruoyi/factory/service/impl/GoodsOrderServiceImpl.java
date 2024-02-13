@@ -42,7 +42,7 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
      * @return 商品订单主
      */
     @Override
-    public GoodsOrder selectGoodsOrderById(Long id) {
+    public GoodsOrderVo selectGoodsOrderById(Long id) {
         return goodsOrderMapper.selectGoodsOrderById(id);
     }
 

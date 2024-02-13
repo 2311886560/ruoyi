@@ -20,7 +20,7 @@ public interface GoodsOrderMapper
      * @param id 商品订单主键
      * @return 商品订单
      */
-    public GoodsOrder selectGoodsOrderById(Long id);
+    public GoodsOrderVo selectGoodsOrderById(Long id);
 
     /**
      * 查询商品订单 列表

@@ -20,6 +20,10 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <result property="produceStatus" column="produce_status"/>
+        <result property="deliveryTime" column="delivery_time"/>
+        <result property="deliveryAddress" column="delivery_address"/>
+        <result property="contactPhone" column="contact_phone"/>
     </resultMap>
 
     <resultMap id="GoodsOrderGoodsOrderSubResult" type="com.ruoyi.factory.domain.vo.GoodsOrderVo"
@@ -58,7 +62,10 @@
                create_by,
                create_time,
                update_by,
-               update_time
+               produce_status,
+               delivery_time,
+               delivery_address,
+               contact_phone
         from goods_order
     </sql>
 
@@ -118,6 +125,10 @@
                a.create_time,
                a.update_by,
                a.update_time,
+               a.produce_status,
+               a.delivery_time,
+               a.delivery_address,
+               a.contact_phone,
                b.id           as sub_id,
                b.order_id     as sub_order_id,
                b.goods_id     as sub_goods_id,
@@ -153,6 +164,10 @@
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
+            <if test="produceStatus != null">produce_status,</if>
+            <if test="deliveryTime != null">delivery_time,</if>
+            <if test="deliveryAddress != null">delivery_address,</if>
+            <if test="contactPhone != null">contact_phone,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderCode != null">#{orderCode},</if>
@@ -169,6 +184,10 @@
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="produceStatus != null">#{produceStatus},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+            <if test="deliveryAddress != null">#{deliveryAddress},</if>
+            <if test="contactPhone != null">#{contactPhone},</if>
         </trim>
     </insert>
 
@@ -189,6 +208,10 @@
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="produceStatus != null">produce_status = #{produceStatus},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+            <if test="deliveryAddress != null">delivery_address = #{deliveryAddress},</if>
+            <if test="contactPhone != null">contact_phone = #{contactPhone},</if>
         </trim>
         where id = #{id}
     </update>

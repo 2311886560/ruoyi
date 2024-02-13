@@ -18,7 +18,7 @@ public interface IGoodsOrderService {
      * @param id 商品订单主主键
      * @return 商品订单主
      */
-    public GoodsOrder selectGoodsOrderById(Long id);
+    public GoodsOrderVo selectGoodsOrderById(Long id);
 
     /**
      * 查询商品订单主列表
