@@ -1,5 +1,6 @@
 package com.ruoyi.factory.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -95,8 +96,10 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
         goodsOrderVo.setCreateTime(nowDate);
         goodsOrderVo.setUpdateBy(user.getUserName());
         goodsOrderVo.setUpdateTime(nowDate);
+        // 状态流转
+        this.nextGoodsOrderStatus(goodsOrderVo);
         int rows = goodsOrderMapper.insertGoodsOrder(goodsOrderVo);
-        insertGoodsOrderSub(goodsOrderVo);
+        this.insertGoodsOrderSub(goodsOrderVo);
         return rows;
     }
 
@@ -115,8 +118,10 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
 
         goodsOrderVo.setUpdateBy(user.getUserName());
         goodsOrderVo.setUpdateTime(nowDate);
+        // 状态流转
+        this.nextGoodsOrderStatus(goodsOrderVo);
         goodsOrderMapper.deleteGoodsOrderSubByOrderId(goodsOrderVo.getId());
-        insertGoodsOrderSub(goodsOrderVo);
+        this.insertGoodsOrderSub(goodsOrderVo);
         return goodsOrderMapper.updateGoodsOrder(goodsOrderVo);
     }
 
@@ -169,6 +174,30 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
             }
             if (list.size() > 0) {
                 goodsOrderMapper.batchGoodsOrderSub(list);
+            }
+        }
+    }
+
+    /**
+     * 订单状态自动流转
+     *
+     * @param goodsOrderVo 商品订单主对象
+     */
+    public void nextGoodsOrderStatus(GoodsOrderVo goodsOrderVo) {
+        if (!StringUtils.equals(goodsOrderVo.getStatus(), "0")) {
+            return;
+        }
+        List<GoodsOrderSub> goodsOrderSubList = goodsOrderVo.getGoodsOrderSubList();
+        if (StringUtils.isNotNull(goodsOrderSubList)) {
+            BigDecimal bigDecimal = BigDecimal.ZERO;
+            for (GoodsOrderSub goodsOrderSub : goodsOrderSubList) {
+                if (StringUtils.isNull(goodsOrderSub.getOrderAmount())) {
+                    bigDecimal = bigDecimal.add(goodsOrderSub.getOrderAmount());
+                }
+            }
+            // 大于300
+            if (bigDecimal.compareTo(new BigDecimal("300")) > 0) {
+                goodsOrderVo.setStatus("1");
             }
         }
     }
