@@ -39,3 +39,11 @@ INSERT INTO `sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type
                                                 `create_time`, `update_by`, `update_time`, `remark`)
 VALUES (6, '生产完成', '5', 'sys_goods_order_produce_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
         '2023-11-11 18:29:17', '');
+
+
+
+INSERT INTO `sys_menu` (`menu_name`, `parent_id`, `order_num`, `path`, `component`,
+                                           `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`,
+                                           `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES ('客户购买数量报表', 0, 0, 'goodsOrderSubForm', 'factory/goodsOrderSubForm/index', NULL, 1, 0, 'C', '0', '0', '',
+        'list', 'admin', '2023-10-24 00:05:12', 'admin', '2023-10-24 00:12:35', '');

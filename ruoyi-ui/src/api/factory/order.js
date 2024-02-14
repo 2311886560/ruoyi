@@ -9,6 +9,15 @@ export function listOrder(query) {
   })
 }
 
+// 查询客户购买商品数量报表列表
+export function listOrderSubForm(query) {
+  return request({
+    url: '/factory/orderForm/subList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询商品订单财务报表列表
 export function listOrderForm(query) {
   return request({

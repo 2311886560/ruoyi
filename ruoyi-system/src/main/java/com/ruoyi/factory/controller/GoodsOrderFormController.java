@@ -38,6 +38,16 @@ public class GoodsOrderFormController extends BaseController {
     }
 
     /**
+     * 查询商品订单财务报表列表
+     */
+    @GetMapping("/subList")
+    public TableDataInfo subList(GoodsOrderFormVo goodsOrderFormVo) {
+        startPage();
+        List<GoodsOrderFormVo> list = goodsOrderFormService.selectGoodsOrderSubFormList(goodsOrderFormVo);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出商品订单财务报表列表
      */
     @Log(title = "财务报表", businessType = BusinessType.EXPORT)

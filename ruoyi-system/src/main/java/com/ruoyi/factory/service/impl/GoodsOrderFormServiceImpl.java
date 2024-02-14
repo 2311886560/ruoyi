@@ -7,10 +7,13 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.factory.domain.EnterpriseBase;
+import com.ruoyi.factory.domain.GoodsInfo;
 import com.ruoyi.factory.domain.vo.GoodsOrderFormVo;
 import com.ruoyi.factory.mapper.EnterpriseBaseMapper;
+import com.ruoyi.factory.mapper.GoodsInfoMapper;
 import com.ruoyi.factory.mapper.GoodsOrderMapper;
 import com.ruoyi.factory.service.IGoodsOrderFormService;
+import com.ruoyi.system.mapper.SysUserMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,6 +26,10 @@ import java.util.Optional;
 public class GoodsOrderFormServiceImpl implements IGoodsOrderFormService {
     @Resource
     private GoodsOrderMapper goodsOrderMapper;
+    @Resource
+    private SysUserMapper sysUserMapper;
+    @Resource
+    private GoodsInfoMapper goodsInfoMapper;
     @Resource
     private EnterpriseBaseMapper enterpriseBaseMapper;
 
@@ -37,6 +44,30 @@ public class GoodsOrderFormServiceImpl implements IGoodsOrderFormService {
         }
 
         List<GoodsOrderFormVo> goodsOrderFormVoList = goodsOrderMapper.selectGoodsOrderFormList(goodsOrder);
+        return goodsOrderFormVoList;
+    }
+
+    @Override
+    public List<GoodsOrderFormVo> selectGoodsOrderSubFormList(GoodsOrderFormVo goodsOrder) {
+        // 获取当前登录用户信息
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        if (UserType.FACTORY_USER.getCode().equals(user.getUserType())) {
+            // 用户为工厂客户，只允许查询自己购买的订单
+            goodsOrder.setBuyerUserId(user.getUserId());
+        }
+        List<GoodsOrderFormVo> goodsOrderFormVoList = goodsOrderMapper.selectGoodsOrderSubFormList(goodsOrder);
+        if (StringUtils.isNotEmpty(goodsOrderFormVoList)) {
+            for (GoodsOrderFormVo orderFormVo : goodsOrderFormVoList) {
+                if (StringUtils.isNotNull(orderFormVo.getBuyerUserId())) {
+                    SysUser sysUser = sysUserMapper.selectUserById(orderFormVo.getBuyerUserId());
+                    orderFormVo.setBuyerUserName(sysUser.getNickName());
+                }
+                if (StringUtils.isNotNull(orderFormVo.getGoodsId())) {
+                    GoodsInfo goodsInfo = goodsInfoMapper.selectGoodsInfoById(orderFormVo.getGoodsId());
+                    orderFormVo.setGoodsName(goodsInfo.getName());
+                }
+            }
+        }
         return goodsOrderFormVoList;
     }
 

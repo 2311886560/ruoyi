@@ -1,6 +1,12 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="客户" prop="buyerUserId" label-width="auto">
+        <el-select v-model="queryParams.buyerUserId" placeholder="请选择客户"
+                   clearable filterable>
+          <el-option v-for="item in userOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="商品" prop="goodsId" label-width="auto">
         <el-select v-model="queryParams.goodsId" placeholder="请选择商品"
                    clearable filterable>
@@ -18,76 +24,27 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8" v-if="userInfo.userType !== '21'">
-      <el-col :span="1.5">
-        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+<!--    <el-row :gutter="10" class="mb8">-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>-->
+<!--      </el-col>-->
+<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
+<!--    </el-row>-->
 
     <el-table v-loading="loading" :data="orderFormList" @selection-change="handleSelectionChange">
       <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="订单时间" align="center" prop="orderTime" />
-      <el-table-column label="成本" align="center" prop="orderCodeTotal" />
-      <el-table-column label="利润" align="center" prop="profitPriceTotal" />
-      <el-table-column label="销售价" align="center" prop="salesPriceTotal" />
+      <el-table-column label="客户名称" align="center" prop="buyerUserName" />
+      <el-table-column label="商品名称" align="center" prop="goodsName" />
+      <el-table-column label="购买数量" align="center" prop="goodsAmountTotal" />
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
-
-    <!-- 添加或修改对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="订单状态">
-          <el-select :disabled="openType === 'details'" v-model="form.status" placeholder="请选择订单状态">
-            <el-option v-for="item in dict.type.sys_goods_order_status" :key="item.value" :label="item.label"
-              :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="订单编号" prop="orderCode">
-          <el-input :disabled="openType === 'details'" v-model="form.orderCode" placeholder="请输入订单编号" maxlength="30" />
-        </el-form-item>
-        <el-form-item label="订单标题" prop="orderTitle">
-          <el-input :disabled="openType === 'details'" v-model="form.orderTitle" placeholder="请输入订单标题" maxlength="30" />
-        </el-form-item>
-        <el-form-item label="订单时间" prop="orderTime">
-          <el-date-picker :disabled="openType === 'details'" clearable v-model="form.orderTime" type="date"
-            value-format="yyyy-MM-dd" placeholder="请选择订单时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="卖方企业" prop="salerEntId">
-          <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.salerEntId"
-            placeholder="请选择卖方企业">
-            <el-option v-for="item in entOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="购买客户" prop="buyerUserId">
-          <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.buyerUserId"
-            placeholder="请选择购买客户">
-            <el-option v-for="item in userOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="确认时间" prop="confirmTime">
-          <el-date-picker :disabled="openType === 'details'" clearable v-model="form.confirmTime" type="date"
-            value-format="yyyy-MM-dd" placeholder="请选择确认时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="物流编号" prop="logisticsCode">
-          <el-input :disabled="openType === 'details'" v-model="form.logisticsCode" placeholder="请输入物流编号"
-            maxlength="30" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer" v-if="openType !== 'details'">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listOrderForm, getOrder } from "@/api/factory/order";
+import {listOrderSubForm, getOrder} from "@/api/factory/order";
 import { listEnterpriseBase } from "@/api/factory/enterpriseBase";
 import { listUser } from "@/api/system/user";
 import { getInfo } from '@/api/login'
@@ -95,7 +52,7 @@ import { formatNumber } from "@/utils/util";
 import {listGoodsInfo} from "@/api/factory/goodsInfo";
 
 export default {
-  name: "OrderForm",
+  name: "OrderSubForm",
   dicts: ['sys_goods_order_status'],
   data() {
     return {
@@ -214,15 +171,17 @@ export default {
         // 构造当前年的最后一天日期
         var lastDayOfYear = new Date(currentYear, 11, 31);
         this.$set(this, "fieldDate", [])
-        // this.fieldDate = []
-        this.fieldDate[0] = firstDayOfYear.toLocaleDateString()
-        this.fieldDate[1] = lastDayOfYear.toLocaleDateString()
-        this.queryParams.beginTime = firstDayOfYear.toLocaleDateString();
-        this.queryParams.endTime = lastDayOfYear.toLocaleDateString();
+        this.fieldDate = []
+        this.queryParams.beginTime = null
+        this.queryParams.endTime = null
+        // this.fieldDate[0] = firstDayOfYear.toLocaleDateString()
+        // this.fieldDate[1] = lastDayOfYear.toLocaleDateString()
+        // this.queryParams.beginTime = firstDayOfYear.toLocaleDateString();
+        // this.queryParams.endTime = lastDayOfYear.toLocaleDateString();
       }
       this.$set(this, "fieldDate", this.fieldDate)
 
-      listOrderForm(this.queryParams).then(response => {
+      listOrderSubForm(this.queryParams).then(response => {
         this.orderFormList = response.rows;
         this.total = response.total;
         this.loading = false;

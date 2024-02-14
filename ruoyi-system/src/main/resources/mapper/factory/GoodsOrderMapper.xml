@@ -297,4 +297,33 @@
         GROUP BY DATE_FORMAT( goods_order.order_time, '%Y-%m' )
         ORDER BY DATE_FORMAT( goods_order.order_time, '%Y-%m' )
     </select>
+
+    <select id="selectGoodsOrderSubFormList" resultType="com.ruoyi.factory.domain.vo.GoodsOrderFormVo">
+        select sum(order_sub.order_amount) as goodsAmountTotal, goods_order.buyer_user_id as buyerUserId, order_sub.goods_id as goodsId
+        from goods_order
+        left join goods_order_sub order_sub on order_sub.order_id = goods_order.id
+        <where>
+            goods_order.logistics_code is not null
+            and goods_order.buyer_user_id is not null
+            <if test="salerEntId != null ">
+
+            </if>
+            <if test="buyerUserId != null ">
+                and goods_order.buyer_user_id = #{buyerUserId}
+            </if>
+            <if test="salerUserId != null ">
+                and goods_order.saler_user_id = #{salerUserId}
+            </if>
+            <if test="goodsId != null ">
+                and order_sub.goods_id = #{goodsId}
+            </if>
+            <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(goods_order.order_time,'%y%m') &gt;= date_format(#{beginTime},'%y%m')
+            </if>
+            <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(goods_order.order_time,'%y%m') &lt;= date_format(#{endTime},'%y%m')
+            </if>
+        </where>
+        GROUP BY goods_order.buyer_user_id, order_sub.goods_id
+    </select>
 </mapper>

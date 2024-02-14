@@ -53,7 +53,7 @@
       <el-table-column label="订单标题" align="center" prop="orderTitle" />
 <!--      <el-table-column label="卖方企业" align="center" prop="salerEntName" />-->
       <el-table-column label="购买客户" align="center" prop="buyerUserName" />
-      <el-table-column label="员工" align="center" prop="salerUserName" />
+<!--      <el-table-column label="员工" align="center" prop="salerUserName" />-->
       <el-table-column label="订单时间" align="center" prop="orderTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.orderTime, '{y}-{m}-{d}') }}</span>
@@ -107,10 +107,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="订单编号" prop="orderCode">
-          <el-input :disabled="openType === 'details' && checkUpdateInfo(form)" v-model="form.orderCode" placeholder="请输入订单编号" maxlength="30" />
+          <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.orderCode" placeholder="请输入订单编号" maxlength="30" />
         </el-form-item>
         <el-form-item label="订单标题" prop="orderTitle">
-          <el-input :disabled="openType === 'details' && checkUpdateInfo(form)" v-model="form.orderTitle" placeholder="请输入订单标题" maxlength="30" />
+          <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.orderTitle" placeholder="请输入订单标题" maxlength="30" />
         </el-form-item>
 <!--        <el-form-item label="订单时间" prop="orderTime">-->
 <!--          <el-date-picker :disabled="openType === 'details'" clearable v-model="form.orderTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择订单时间">-->
@@ -122,31 +122,31 @@
 <!--          </el-select>-->
 <!--        </el-form-item>-->
         <el-form-item v-if="userInfo.userType !== '21'" label="购买客户" prop="buyerUserId">
-          <el-select :disabled="openType === 'details' && checkUpdateInfo(form)" style="width: 100%;" v-model="form.buyerUserId" placeholder="请选择购买客户">
+          <el-select :disabled="openType === 'details' || checkUpdateInfo(form)" style="width: 100%;" v-model="form.buyerUserId" placeholder="请选择购买客户">
             <el-option v-for="item in userOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="截止时间" prop="confirmTime">
-          <el-date-picker :disabled="openType === 'details' && checkUpdateInfo(form)" clearable v-model="form.confirmTime" type="date" value-format="yyyy-MM-dd"
+          <el-date-picker :disabled="openType === 'details' || checkUpdateInfo(form)" clearable v-model="form.confirmTime" type="date" value-format="yyyy-MM-dd"
             placeholder="请选择截止时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="交货时间" prop="deliveryTime">
-          <el-date-picker :disabled="openType === 'details' && checkUpdateInfo(form)" clearable v-model="form.deliveryTime" type="date" value-format="yyyy-MM-dd"
+          <el-date-picker :disabled="openType === 'details' || checkUpdateInfo(form)" clearable v-model="form.deliveryTime" type="date" value-format="yyyy-MM-dd"
                           placeholder="请选择交货时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="交货地址" prop="deliveryAddress">
-          <el-input :disabled="openType === 'details' && checkUpdateInfo(form)" v-model="form.deliveryAddress" placeholder="请输入交货地址" maxlength="50" />
+          <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.deliveryAddress" placeholder="请输入交货地址" maxlength="50" />
         </el-form-item>
         <el-form-item label="联系方式" prop="contactPhone">
-          <el-input :disabled="openType === 'details' && checkUpdateInfo(form)" v-model="form.contactPhone" placeholder="请输入联系方式" maxlength="30" />
+          <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.contactPhone" placeholder="请输入联系方式" maxlength="30" />
         </el-form-item>
         <el-form-item label="物流编号" prop="logisticsCode" v-if="form.status === '1' && form.produceStatus === '5'">
-          <el-input :disabled="openType === 'details' && checkUpdateInfo(form)" v-model="form.logisticsCode" placeholder="请输入物流编号" maxlength="30" />
+          <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.logisticsCode" placeholder="请输入物流编号" maxlength="30" />
         </el-form-item>
         <el-divider content-position="center">商品信息</el-divider>
-        <el-row :gutter="10" class="mb8" v-if="openType !== 'details' && checkUpdateInfo(form)">
+        <el-row :gutter="10" class="mb8" v-if="openType !== 'details' && !checkUpdateInfo(form)">
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAddGoodsOrderSub">添加</el-button>
           </el-col>
@@ -161,7 +161,7 @@
           <el-table-column label="序号" align="center" prop="index" width="50" />
           <el-table-column label="商品">
             <template slot-scope="scope">
-              <el-select :disabled="openType === 'details' && checkUpdateInfo(form)" style="width: 100%;" v-model="scope.row.goodsId" placeholder="请选择商品"
+              <el-select :disabled="openType === 'details' || checkUpdateInfo(form)" style="width: 100%;" v-model="scope.row.goodsId" placeholder="请选择商品"
                          clearable filterable @change="(e) => onChangeGoods(e, scope.row)">
                 <el-option v-for="item in goodsInfoOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
@@ -169,7 +169,7 @@
           </el-table-column>
           <el-table-column label="数量" prop="orderAmount" width="150">
             <template slot-scope="scope">
-              <el-input :disabled="openType === 'details' && checkUpdateInfo(form)" v-model="scope.row.orderAmount" @input="onChangeInput(scope.row, 'orderAmount')" maxlength="8" placeholder="请输入数量" />
+              <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="scope.row.orderAmount" @input="onChangeInput(scope.row, 'orderAmount')" maxlength="8" placeholder="请输入数量" />
             </template>
           </el-table-column>
           <el-table-column label="销售价" prop="salesPrice" width="150">
@@ -447,6 +447,9 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
+      if (!this.goodsOrderSubList || this.goodsOrderSubList.length < 1){
+        this.$modal.msgError("请选择商品");
+      }
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.form.goodsOrderSubList = this.goodsOrderSubList;

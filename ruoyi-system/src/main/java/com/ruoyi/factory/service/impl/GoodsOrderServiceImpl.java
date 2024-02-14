@@ -191,7 +191,7 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
         if (StringUtils.isNotNull(goodsOrderSubList)) {
             BigDecimal bigDecimal = BigDecimal.ZERO;
             for (GoodsOrderSub goodsOrderSub : goodsOrderSubList) {
-                if (StringUtils.isNull(goodsOrderSub.getOrderAmount())) {
+                if (StringUtils.isNotNull(goodsOrderSub.getOrderAmount())) {
                     bigDecimal = bigDecimal.add(goodsOrderSub.getOrderAmount());
                 }
             }

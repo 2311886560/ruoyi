@@ -88,4 +88,5 @@ public interface GoodsOrderMapper
     public int deleteGoodsOrderSubByOrderId(Long id);
 
     public List<GoodsOrderFormVo> selectGoodsOrderFormList(GoodsOrderFormVo goodsOrder);
+    public List<GoodsOrderFormVo> selectGoodsOrderSubFormList(GoodsOrderFormVo goodsOrder);
 }

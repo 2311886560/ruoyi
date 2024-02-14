@@ -43,5 +43,14 @@ public class GoodsOrderFormVo {
     /** 订单数量 */
     private BigDecimal orderNumberTotal;
 
+    /** 买方员工 */
+    private String buyerUserName;
+
+    /** 商品名称 */
+    private String goodsName;
+
+    /** 商品总数量 */
+    private BigDecimal goodsAmountTotal;
+
 
 }
