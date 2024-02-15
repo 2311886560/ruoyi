@@ -48,6 +48,9 @@
             goods.del_flag = 0
             <if test="entId != null ">
             </if>
+            <if test="id != null">
+                and goods.id = #{id}
+            </if>
             <if test="name != null  and name != ''">
                 and goods.name like concat('%', #{name}, '%')
             </if>

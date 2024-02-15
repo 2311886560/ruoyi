@@ -8,6 +8,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.factory.domain.EnterpriseBase;
 import com.ruoyi.factory.domain.GoodsInfo;
+import com.ruoyi.factory.domain.vo.GoodsInfoVo;
 import com.ruoyi.factory.domain.vo.GoodsOrderFormVo;
 import com.ruoyi.factory.mapper.EnterpriseBaseMapper;
 import com.ruoyi.factory.mapper.GoodsInfoMapper;
@@ -152,6 +153,62 @@ public class GoodsOrderFormServiceImpl implements IGoodsOrderFormService {
         jsonObject.put("patrolChartDataByNumber", patrolChartDataByNumber);
         jsonObject.put("patrolChartDataByOrderCode", patrolChartDataByOrderCode);
         jsonObject.put("patrolChartDataBySalesPrice", patrolChartDataBySalesPrice);
+        return jsonObject;
+    }
+
+    @Override
+    public JSONObject statisticsGoodsInfo(GoodsOrderFormVo vo) {
+        JSONObject jsonObject = new JSONObject();
+        List<String> times = DateUtils.getYearMonthArray(DateUtils.parseDate(vo.getBeginTime()), DateUtils.parseDate(vo.getEndTime()));
+        JSONObject patrolChartDataByGoodsAmount = new JSONObject();
+        patrolChartDataByGoodsAmount.put("xAxisName", "年月");
+        patrolChartDataByGoodsAmount.put("xAxis", times);
+
+        List<JSONObject> dataList = new ArrayList<>();
+        // 先查询所有的商品列表
+        GoodsInfo goodsInfo = new GoodsInfo();
+        goodsInfo.setId(vo.getGoodsId());
+        List<GoodsInfoVo> goodsInfoVoList = goodsInfoMapper.selectGoodsInfoList(goodsInfo);
+        if (StringUtils.isNotEmpty(goodsInfoVoList)) {
+            goodsInfoVoList.forEach(item -> {
+                GoodsOrderFormVo orderFormVo = new GoodsOrderFormVo();
+                orderFormVo.setGoodsId(item.getId());
+                orderFormVo.setBeginTime(vo.getBeginTime());
+                orderFormVo.setEndTime(vo.getEndTime());
+                List<GoodsOrderFormVo> goodsOrderFormVoList = goodsOrderMapper.selectGoodsOrderFormList(orderFormVo);
+                JSONObject dataJson = new JSONObject();
+                dataJson.put("name", item.getName());
+                dataJson.put("type", "bar");
+                dataJson.put("data", goodsOrderFormVoList);
+                dataList.add(dataJson);
+            });
+        }
+        if (StringUtils.isNotEmpty(dataList)) {
+            List<JSONObject> dataByGoodsAmountList = new ArrayList<>();
+            dataList.forEach(data->{
+                List<BigDecimal> itemDataByGoodsAmountList = new ArrayList<>();
+                if (StringUtils.isNotEmpty(times)){
+                    times.forEach(time->{
+                        List<GoodsOrderFormVo> goodsOrderFormVoList = (List<GoodsOrderFormVo>) data.get("data");
+                        Optional<GoodsOrderFormVo> result = goodsOrderFormVoList.stream()
+                                .filter(item -> StringUtils.equals(item.getOrderTime(), time))
+                                .findFirst();
+                        if (result.isPresent()) {
+                            itemDataByGoodsAmountList.add(result.get().getGoodsAmountTotal());
+                        } else {
+                            itemDataByGoodsAmountList.add(BigDecimal.ZERO);
+                        }
+                    });
+                }
+                JSONObject dataJsonByGoodsAmount = new JSONObject();
+                dataJsonByGoodsAmount.put("name", data.get("name"));
+                dataJsonByGoodsAmount.put("type", data.get("type"));
+                dataJsonByGoodsAmount.put("data", itemDataByGoodsAmountList);
+                dataByGoodsAmountList.add(dataJsonByGoodsAmount);
+            });
+            patrolChartDataByGoodsAmount.put("data", dataByGoodsAmountList);
+        }
+        jsonObject.put("patrolChartDataByGoodsAmount", patrolChartDataByGoodsAmount);
         return jsonObject;
     }
 }

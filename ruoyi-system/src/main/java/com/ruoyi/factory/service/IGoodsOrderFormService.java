@@ -11,4 +11,6 @@ public interface IGoodsOrderFormService {
     public List<GoodsOrderFormVo> selectGoodsOrderSubFormList(GoodsOrderFormVo goodsOrderFormVo);
 
     public JSONObject statisticsOrder(GoodsOrderFormVo goodsOrderFormVo);
+
+    public JSONObject statisticsGoodsInfo(GoodsOrderFormVo goodsOrderFormVo);
 }

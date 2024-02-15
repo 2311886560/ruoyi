@@ -57,8 +57,8 @@ public class GoodsOrder extends BaseEntity
     @Excel(name = "物流编号", sort = 7)
     private String logisticsCode;
 
-    /** 0待完成；1已完成,9拒绝 */
-    @Excel(name = "订单状态", readConverterExp = "0=待完成,1=已完成,9=拒绝", sort = 8)
+    /** 审核状态：0=待审核,1=审核通过,9=审核不通过 */
+    @Excel(name = "订单状态", readConverterExp = "0=待审核,1=审核通过,9=审核不通过", sort = 8)
     private String status;
 
     /** 删除状态：0=未删除,1=已删除 */

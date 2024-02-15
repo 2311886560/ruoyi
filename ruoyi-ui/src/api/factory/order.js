@@ -35,6 +35,15 @@ export function statisticsOrder(query) {
     params: query
   })
 }
+
+// 统计销售商品
+export function statisticsGoodsInfo(query) {
+  return request({
+    url: '/factory/orderForm/statisticsGoodsInfo',
+    method: 'get',
+    params: query
+  })
+}
 statisticsOrder
 // 查询商品订单详细
 export function getOrder(id) {

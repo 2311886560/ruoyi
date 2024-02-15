@@ -66,4 +66,13 @@ public class GoodsOrderFormController extends BaseController {
         JSONObject jsonObject = goodsOrderFormService.statisticsOrder(goodsOrderFormVo);
         return success(jsonObject);
     }
+
+    /**
+     * 统计销售商品
+     */
+    @GetMapping("/statisticsGoodsInfo")
+    public AjaxResult statisticsGoodsInfo(GoodsOrderFormVo goodsOrderFormVo) {
+        JSONObject jsonObject = goodsOrderFormService.statisticsGoodsInfo(goodsOrderFormVo);
+        return success(jsonObject);
+    }
 }

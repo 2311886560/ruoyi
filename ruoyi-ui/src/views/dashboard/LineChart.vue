@@ -69,11 +69,24 @@ export default {
       this.setOptions()
     },
     setOptions({ expectedData, actualData } = {}) {
+      // 先清空
+      this.chart.clear()
+
       let seriesName = ""
+      let series = []
       actualData = this.barData.data[0].data
       if (this.barData.data){
-        seriesName = this.barData.data[0].name
+        for (let i = 0; i < this.barData.data.length; i++) {
+          console.log("------------this.barData.data[i]",this.barData.data[i])
+          series.push({
+            name: this.barData.data[i].name,
+            type: 'line',
+            stack: 'Total',
+            data: this.barData.data[i].data
+          })
+        }
       }
+      console.log("------------111",series)
       this.chart.setOption({
         xAxis: {
           data: this.barData.xAxis,
@@ -105,28 +118,29 @@ export default {
         legend: {
           data: ['expected', 'actual']
         },
+        series: series,
         // series: this.barData.data,
-        series: [
-        {
-          name: seriesName,
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
-                color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
-              }
-            }
-          },
-          data: actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
-        }]
+        // series: [
+        // {
+        //   name: seriesName,
+        //   smooth: true,
+        //   type: 'line',
+        //   itemStyle: {
+        //     normal: {
+        //       color: '#3888fa',
+        //       lineStyle: {
+        //         color: '#3888fa',
+        //         width: 2
+        //       },
+        //       areaStyle: {
+        //         color: '#f3f8ff'
+        //       }
+        //     }
+        //   },
+        //   data: actualData,
+        //   animationDuration: 2800,
+        //   animationEasing: 'quadraticOut'
+        // }]
       })
     }
   }

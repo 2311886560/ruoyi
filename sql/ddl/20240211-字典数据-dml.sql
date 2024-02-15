@@ -47,3 +47,9 @@ INSERT INTO `sys_menu` (`menu_name`, `parent_id`, `order_num`, `path`, `componen
                                            `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
 VALUES ('客户购买数量报表', 0, 0, 'goodsOrderSubForm', 'factory/goodsOrderSubForm/index', NULL, 1, 0, 'C', '0', '0', '',
         'list', 'admin', '2023-10-24 00:05:12', 'admin', '2023-10-24 00:12:35', '');
+
+INSERT INTO `sys_menu` (`menu_name`, `parent_id`, `order_num`, `path`, `component`,
+                                           `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`,
+                                           `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES ('商品销售统计', 0, 0, 'goodsInfoStatistics', 'factory/statistics/goodsInfoStatistics/index', NULL, 1, 0, 'C', '0', '0', '',
+        'list', 'admin', '2023-10-24 00:05:12', 'admin', '2023-10-24 00:12:35', '');
