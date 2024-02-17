@@ -74,7 +74,7 @@
     <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="体检标题" prop="title">
-          <el-input v-model="form.title" placeholder="请输入体检标题" />
+          <el-input :disabled="openType === 'details'" v-model="form.title" placeholder="请输入体检标题" />
         </el-form-item>
         <el-form-item label="医务人员" prop="medicalUserId">
           <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="form.medicalUserId"
@@ -106,7 +106,7 @@
 <!--          </el-select>-->
 <!--        </el-form-item>-->
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input :disabled="openType === 'details'" v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-divider content-position="center">体检信息</el-divider>
         <el-row :gutter="10" class="mb8" v-if="openType !== 'details'">
@@ -158,7 +158,7 @@
           </el-table-column>
         </el-table>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" v-if="openType !== 'details'">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
