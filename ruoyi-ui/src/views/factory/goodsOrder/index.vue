@@ -143,13 +143,13 @@
           <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.contactPhone" placeholder="请输入联系方式" maxlength="30" />
         </el-form-item>
         <el-form-item label="物流编号" prop="logisticsCode" v-if="form.status === '1' && form.produceStatus === '5'">
-          <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.logisticsCode" placeholder="请输入物流编号" maxlength="30" />
+          <el-input :disabled="openType === 'details'" v-model="form.logisticsCode" placeholder="请输入物流编号" maxlength="30" />
         </el-form-item>
         <el-form-item label="订单发票" prop="orderInvoice" v-if="form.status === '1' && form.produceStatus === '5'">
-          <image-upload :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.orderInvoice" :limit="3" />
+          <image-upload :disabled="openType === 'details'" v-model="form.orderInvoice" :limit="3" />
         </el-form-item>
         <el-form-item label="付款凭证" prop="paymentVoucher" v-if="form.status === '1' && form.produceStatus === '5'">
-          <image-upload :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.paymentVoucher" :limit="3" />
+          <image-upload :disabled="openType === 'details'" v-model="form.paymentVoucher" :limit="3" />
         </el-form-item>
         <el-divider content-position="center">商品信息</el-divider>
         <el-row :gutter="10" class="mb8" v-if="openType !== 'details' && !checkUpdateInfo(form)">
@@ -163,7 +163,7 @@
         </el-row>
         <el-table :data="goodsOrderSubList" :row-class-name="rowGoodsOrderSubIndex"
           @selection-change="handleGoodsOrderSubSelectionChange" ref="goodsOrderSub">
-          <el-table-column type="selection" width="50" align="center" />
+          <el-table-column v-if="openType !== 'details' && !checkUpdateInfo(form)" type="selection" width="50" align="center" />
           <el-table-column label="序号" align="center" prop="index" width="50" />
           <el-table-column label="商品">
             <template slot-scope="scope">
