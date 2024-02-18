@@ -97,7 +97,7 @@
     <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="订单状态" prop="status">
-          <el-select :disabled="openType === 'details'" v-model="form.status" placeholder="请选择订单状态">
+          <el-select :disabled="openType === 'details' || ['11', '21'].includes(userInfo.userType) > 0" v-model="form.status" placeholder="请选择订单状态">
             <el-option v-for="item in dict.type.sys_goods_order_status" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
