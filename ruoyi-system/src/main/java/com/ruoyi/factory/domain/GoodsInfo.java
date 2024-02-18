@@ -57,4 +57,8 @@ public class GoodsInfo extends BaseEntity
     /** 删除状态：0=未删除，1=已删除 */
     private String delFlag;
 
+    /** 商品图片 */
+//    @Excel(name = "商品图片")
+    private String goodsPicture;
+
 }

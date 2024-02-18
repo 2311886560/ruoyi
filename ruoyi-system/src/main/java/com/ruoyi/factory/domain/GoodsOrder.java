@@ -78,6 +78,14 @@ public class GoodsOrder extends BaseEntity
     private String deliveryAddress;
 
     /** 联系方式 */
-    @Excel(name = "订单标题", sort = 10)
+    @Excel(name = "联系方式", sort = 10)
     private String contactPhone;
+
+    /** 订单发票 */
+//    @Excel(name = "订单发票", sort = 10)
+    private String orderInvoice;
+
+    /** 付款凭证 */
+//    @Excel(name = "付款凭证", sort = 10)
+    private String paymentVoucher;
 }

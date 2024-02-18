@@ -33,6 +33,11 @@
 
     <el-table v-loading="loading" :data="goodsInfoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="商品图片" align="center" prop="goodsPicture" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.goodsPicture" :width="50" :height="50" />
+        </template>
+      </el-table-column>
 <!--      <el-table-column label="工厂名称" align="center" prop="entName" />-->
       <el-table-column label="商品" align="center" prop="name" />
 <!--      <el-table-column label="类型" align="center" prop="goodsType" />-->
@@ -59,6 +64,9 @@
     <!-- 添加或修改商品信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="商品图片" prop="goodsPicture">
+          <image-upload v-model="form.goodsPicture" limit="1" />
+        </el-form-item>
         <el-form-item label="商品" prop="name">
           <el-input v-model="form.name" placeholder="请输入商品" maxlength="30" />
         </el-form-item>
@@ -188,7 +196,8 @@ export default {
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null
+        updateTime: null,
+        goodsPicture: null,
       };
       this.resetForm("form");
     },

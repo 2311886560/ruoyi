@@ -19,6 +19,7 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <result property="goodsPicture" column="goods_picture"/>
     </resultMap>
 
     <sql id="selectGoodsInfoVo">
@@ -35,7 +36,8 @@
                create_by,
                create_time,
                update_by,
-               update_time
+               update_time,
+               goods_picture
         from goods_info
     </sql>
 
@@ -97,6 +99,7 @@
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
+            <if test="goodsPicture != null">goods_picture,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="entId != null">#{entId},</if>
@@ -112,6 +115,7 @@
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="goodsPicture != null">#{goodsPicture},</if>
         </trim>
     </insert>
 
@@ -131,6 +135,7 @@
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="goodsPicture != null">goods_picture = #{goodsPicture},</if>
         </trim>
         where id = #{id}
     </update>

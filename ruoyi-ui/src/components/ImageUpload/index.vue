@@ -16,10 +16,11 @@
       :file-list="fileList"
       :on-preview="handlePictureCardPreview"
       :class="{hide: this.fileList.length >= this.limit}"
+      :disabled="disabled"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
-    
+
     <!-- 上传提示 -->
     <div class="el-upload__tip" slot="tip" v-if="showTip">
       请上传
@@ -67,6 +68,11 @@ export default {
     isShowTip: {
       type: Boolean,
       default: true
+    },
+    // 是否禁用
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

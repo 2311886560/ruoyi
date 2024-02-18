@@ -24,6 +24,8 @@
         <result property="deliveryTime" column="delivery_time"/>
         <result property="deliveryAddress" column="delivery_address"/>
         <result property="contactPhone" column="contact_phone"/>
+        <result property="orderInvoice" column="order_invoice"/>
+        <result property="paymentVoucher" column="payment_voucher"/>
     </resultMap>
 
     <resultMap id="GoodsOrderGoodsOrderSubResult" type="com.ruoyi.factory.domain.vo.GoodsOrderVo"
@@ -65,7 +67,9 @@
                produce_status,
                delivery_time,
                delivery_address,
-               contact_phone
+               contact_phone,
+               order_invoice,
+               payment_voucher
         from goods_order
     </sql>
 
@@ -129,6 +133,8 @@
                a.delivery_time,
                a.delivery_address,
                a.contact_phone,
+               a.order_invoice,
+               a.payment_voucher,
                b.id           as sub_id,
                b.order_id     as sub_order_id,
                b.goods_id     as sub_goods_id,
@@ -168,6 +174,8 @@
             <if test="deliveryTime != null">delivery_time,</if>
             <if test="deliveryAddress != null">delivery_address,</if>
             <if test="contactPhone != null">contact_phone,</if>
+            <if test="orderInvoice != null">order_invoice,</if>
+            <if test="paymentVoucher != null">payment_voucher,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderCode != null">#{orderCode},</if>
@@ -188,6 +196,8 @@
             <if test="deliveryTime != null">#{deliveryTime},</if>
             <if test="deliveryAddress != null">#{deliveryAddress},</if>
             <if test="contactPhone != null">#{contactPhone},</if>
+            <if test="orderInvoice != null">#{orderInvoice},</if>
+            <if test="paymentVoucher != null">#{paymentVoucher},</if>
         </trim>
     </insert>
 
@@ -212,6 +222,8 @@
             <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
             <if test="deliveryAddress != null">delivery_address = #{deliveryAddress},</if>
             <if test="contactPhone != null">contact_phone = #{contactPhone},</if>
+            <if test="orderInvoice != null">order_invoice = #{orderInvoice},</if>
+            <if test="paymentVoucher != null">payment_voucher = #{paymentVoucher},</if>
         </trim>
         where id = #{id}
     </update>
