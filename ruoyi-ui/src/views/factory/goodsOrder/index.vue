@@ -146,10 +146,10 @@
           <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.logisticsCode" placeholder="请输入物流编号" maxlength="30" />
         </el-form-item>
         <el-form-item label="订单发票" prop="orderInvoice" v-if="form.status === '1' && form.produceStatus === '5'">
-          <image-upload :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.orderInvoice" limit="3" />
+          <image-upload :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.orderInvoice" :limit="3" />
         </el-form-item>
         <el-form-item label="付款凭证" prop="paymentVoucher" v-if="form.status === '1' && form.produceStatus === '5'">
-          <image-upload :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.paymentVoucher" limit="3" />
+          <image-upload :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.paymentVoucher" :limit="3" />
         </el-form-item>
         <el-divider content-position="center">商品信息</el-divider>
         <el-row :gutter="10" class="mb8" v-if="openType !== 'details' && !checkUpdateInfo(form)">
@@ -399,7 +399,9 @@ export default {
         produceStatus: null,
         deliveryTime: null,
         deliveryAddress: null,
-        contactPhone: null
+        contactPhone: null,
+        orderInvoice: null,
+        paymentVoucher: null
       };
       this.goodsOrderSubList = [];
       this.resetForm("form");

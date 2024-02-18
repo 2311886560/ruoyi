@@ -65,7 +65,7 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="商品图片" prop="goodsPicture">
-          <image-upload v-model="form.goodsPicture" limit="1" />
+          <image-upload v-model="form.goodsPicture" :limit="1" />
         </el-form-item>
         <el-form-item label="商品" prop="name">
           <el-input v-model="form.name" placeholder="请输入商品" maxlength="30" />
