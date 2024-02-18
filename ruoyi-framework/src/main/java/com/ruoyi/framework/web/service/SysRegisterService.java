@@ -76,7 +76,13 @@ public class SysRegisterService
         }
         else
         {
-            sysUser.setNickName(username);
+            // 额外信息
+            sysUser.setNickName(registerBody.getNickName());
+            sysUser.setEmail(registerBody.getEmail());
+            sysUser.setPhonenumber(registerBody.getPhonenumber());
+            sysUser.setSex(registerBody.getSex());
+
+            // 密码加密
             sysUser.setPassword(SecurityUtils.encryptPassword(password));
             // 默认注册的为客户
             sysUser.setUserType(UserType.FACTORY_USER.getCode());

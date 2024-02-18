@@ -1,10 +1,13 @@
 package com.ruoyi.common.core.domain.model;
 
+import lombok.Data;
+
 /**
  * 用户登录对象
  * 
  * @author ruoyi
  */
+@Data
 public class LoginBody
 {
     /**
@@ -27,43 +30,23 @@ public class LoginBody
      */
     private String uuid;
 
-    public String getUsername()
-    {
-        return username;
-    }
+    /**
+     * 用户昵称
+     */
+    private String nickName;
 
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
+    /**
+     * 用户邮箱
+     */
+    private String email;
 
-    public String getPassword()
-    {
-        return password;
-    }
+    /**
+     * 手机号码
+     */
+    private String phonenumber;
 
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode(String code)
-    {
-        this.code = code;
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid(String uuid)
-    {
-        this.uuid = uuid;
-    }
+    /**
+     * 用户性别
+     */
+    private String sex;
 }

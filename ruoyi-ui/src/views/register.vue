@@ -2,6 +2,21 @@
   <div class="register">
     <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form">
       <h3 class="title">工厂管理系统</h3>
+      <el-form-item label="用户昵称" prop="nickName">
+        <el-input v-model="registerForm.nickName" maxlength="30" />
+      </el-form-item>
+      <el-form-item label="手机号码" prop="phonenumber">
+        <el-input v-model="registerForm.phonenumber" maxlength="11" />
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="registerForm.email" maxlength="50" />
+      </el-form-item>
+      <el-form-item label="性别">
+        <el-radio-group v-model="registerForm.sex">
+          <el-radio label="0">男</el-radio>
+          <el-radio label="1">女</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item prop="username">
         <el-input v-model="registerForm.username" type="text" auto-complete="off" placeholder="账号">
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
@@ -82,6 +97,9 @@ export default {
     return {
       codeUrl: "",
       registerForm: {
+        nickName: "",
+        email: "",
+        phonenumber: "",
         username: "",
         password: "",
         confirmPassword: "",
@@ -89,6 +107,25 @@ export default {
         uuid: ""
       },
       registerRules: {
+        nickName: [
+          { required: true, message: "用户昵称不能为空", trigger: "blur" }
+        ],
+        email: [
+          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址",
+            trigger: ["blur", "change"]
+          }
+        ],
+        phonenumber: [
+          { required: true, message: "手机号码不能为空", trigger: "blur" },
+          {
+            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+            message: "请输入正确的手机号码",
+            trigger: "blur"
+          }
+        ],
         username: [
           { required: true, trigger: "blur", message: "请输入您的账号" },
           { min: 2, max: 20, message: '用户账号长度必须介于 2 和 20 之间', trigger: 'blur' }
