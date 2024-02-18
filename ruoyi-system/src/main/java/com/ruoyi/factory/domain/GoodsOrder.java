@@ -70,10 +70,11 @@ public class GoodsOrder extends BaseEntity
 
     /** 交货时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-//    @Excel(name = "交货时间", width = 30, dateFormat = "yyyy-MM-dd", sort = 6)
+    @Excel(name = "交货时间", width = 30, dateFormat = "yyyy-MM-dd", sort = 10)
     private Date deliveryTime;
 
     /** 交货地址 */
+    @Excel(name = "交货地址", sort = 10)
     private String deliveryAddress;
 
     /** 联系方式 */
