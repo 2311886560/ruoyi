@@ -21,6 +21,12 @@
 <!--      <el-form-item label="物流编号" prop="logisticsCode">-->
 <!--        <el-input v-model="queryParams.logisticsCode" placeholder="请输入物流编号" maxlength="30" clearable @keyup.enter.native="handleQuery" />-->
 <!--      </el-form-item>-->
+      <el-form-item label="商品" prop="goodsId" label-width="auto">
+        <el-select v-model="queryParams.goodsId" placeholder="请选择商品"
+                   clearable filterable>
+          <el-option v-for="item in goodsInfoOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -284,7 +290,7 @@ export default {
         ],
       },
       // 可选的商品列表
-      goodsInfoOptions: {},
+      goodsInfoOptions: [],
       // 企业选项
       entOptions: [],
       // 用户选项

@@ -110,6 +110,9 @@
             <if test="logisticsCode != null and logisticsCode != ''">
                 and logistics_code = #{logisticsCode}
             </if>
+            <if test="goodsId != null ">
+                and exists (select 1 from goods_order_sub t1 where t1.order_id = goods_order.id and t1.goods_id = #{goodsId} )
+            </if>
         </where>
     </select>
 
@@ -264,26 +267,28 @@
     </insert>
 
     <select id="selectGoodsOrderFormList" resultType="com.ruoyi.factory.domain.vo.GoodsOrderFormVo">
+        select t1.*,
+        (select COUNT(1) from goods_order d1
+        <where>
+            <if test="salerEntId != null ">
+            </if>
+            <if test="buyerUserId != null ">
+                and d1.buyer_user_id = #{buyerUserId}
+            </if>
+            <if test="salerUserId != null ">
+                and d1.saler_user_id = #{salerUserId}
+            </if>
+            <if test="goodsId != null ">
+                and exists (select 1 from goods_order_sub d2 where d2.order_id = d1.id and d2.goods_id = #{goodsId} )
+            </if>
+            AND date_format(d1.order_time,'%Y-%m') = DATE_FORMAT( t1.orderTime, '%Y-%m' )
+        </where>
+        ) as orderNumberTotal
+        from (
         select DATE_FORMAT( goods_order.order_time, '%Y-%m' ) as orderTime,
         sum(order_sub.order_amount) as goodsAmountTotal,
         sum(order_sub.total_price) as salesPriceTotal, sum(goods_info.cost_price) as orderCodeTotal,
-        sum(order_sub.total_price) - sum(goods_info.cost_price) as profitPriceTotal,
-        (select COUNT(1) from goods_order t1
-            <where>
-                <if test="salerEntId != null ">
-                </if>
-                <if test="buyerUserId != null ">
-                    and t1.buyer_user_id = #{buyerUserId}
-                </if>
-                <if test="salerUserId != null ">
-                    and t1.saler_user_id = #{salerUserId}
-                </if>
-                <if test="goodsId != null ">
-                    and exists (select 1 from goods_order_sub t2 where t2.order_id = t1.id and t2.goods_id = #{goodsId} )
-                </if>
-                AND date_format(t1.order_time,'%Y-%m') = DATE_FORMAT( goods_order.order_time, '%Y-%m' )
-            </where>
-        ) as orderNumberTotal
+        sum(order_sub.total_price) - sum(goods_info.cost_price) as profitPriceTotal
         from goods_order
         left join goods_order_sub order_sub on order_sub.order_id = goods_order.id
         left join goods_info on order_sub.goods_id = goods_info.id
@@ -310,6 +315,8 @@
         </where>
         GROUP BY DATE_FORMAT( goods_order.order_time, '%Y-%m' )
         ORDER BY DATE_FORMAT( goods_order.order_time, '%Y-%m' )
+        ) t1
+
     </select>
 
     <select id="selectGoodsOrderSubFormList" resultType="com.ruoyi.factory.domain.vo.GoodsOrderFormVo">

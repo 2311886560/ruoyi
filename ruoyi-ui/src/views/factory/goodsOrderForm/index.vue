@@ -150,7 +150,7 @@ export default {
         userType: '00'
       },
       // 可选的商品列表
-      goodsInfoOptions: {},
+      goodsInfoOptions: [],
     };
   },
   created() {

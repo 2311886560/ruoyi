@@ -25,4 +25,7 @@ public class GoodsOrderVo extends GoodsOrder {
     /** 卖方用户名称 */
     @Excel(name = "员工", sort = 4)
     private String salerUserName;
+
+    /** 商品id */
+    private Long goodsId;
 }
