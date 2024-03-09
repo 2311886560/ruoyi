@@ -92,6 +92,8 @@
           <el-button v-if="userInfo.userType !== '10' && !checkUpdateInfo(scope.row)" size="mini" type="text" icon="el-icon-delete"
             @click="handleDelete(scope.row)">删除
           </el-button>
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleMessage(scope.row)">留言板
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -203,6 +205,27 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+
+
+    <!-- 商品订单消息 -->
+    <el-dialog title="订单留言板" :visible.sync="openMessage" width="600px" append-to-body>
+      <div class="chat-scroller">
+        <div class="chat-container" ref="chatContainer">
+          <div class="bubble" v-for="(message, index) in messagesList" :key="index">
+            {{ message }}
+          </div>
+        </div>
+      </div>
+      <el-form ref="formMessage" :model="formMessage" label-width="80px" style="margin-top: 30px;">
+        <el-form-item label="消息内容" prop="messageContent">
+          <el-input v-model="formMessage.messageContent" placeholder="请输入消息内容" maxlength="256" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFormMessage">发 送</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -241,6 +264,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 是否显示
+      openMessage: false,
       // 是否显示弹出层
       openType: 'details',
       // 查询参数
@@ -259,6 +284,8 @@ export default {
       },
       // 表单参数
       form: {},
+      // 表单参数
+      formMessage: {},
       // 表单校验
       rules: {
         status: [
@@ -299,6 +326,7 @@ export default {
       userInfo: {
         userType: '00'
       },
+      messagesList: ['1111', '2222', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333']
     };
   },
   created() {
@@ -307,6 +335,9 @@ export default {
     this.getEntOption();
     this.getUserOption();
     this.getUserInfo();
+  },
+  mounted() {
+    this.scrollToBottom();
   },
   methods: {
     checkUpdateInfo(row) {
@@ -459,6 +490,13 @@ export default {
         this.title = "商品订单信息";
       });
     },
+    /** 留言板按钮操作 */
+    handleMessage(row) {
+      this.openMessage = true;
+      this.resetForm("formMessage");
+      this.formMessage = {};
+
+    },
     /** 提交按钮 */
     submitForm() {
       if (!this.goodsOrderSubList || this.goodsOrderSubList.length < 1){
@@ -529,7 +567,34 @@ export default {
       this.download('factory/order/export', {
         ...this.queryParams
       }, `订单列表_${new Date().getTime()}.xlsx`)
-    }
+    },
+
+    scrollToBottom() {
+      this.$nextTick(() => {
+        this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
+      });
+    },
   }
 };
 </script>
+
+<style scoped lang="scss">
+.chat-scroller {
+  width: 100%;
+  height: 400px;
+  border: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.bubble {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+}
+</style>
