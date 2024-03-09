@@ -82,7 +82,7 @@
           <dict-tag :options="dict.type.sys_goods_order_produce_status" :value="scope.row.produceStatus" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row)">详情
           </el-button>
@@ -92,7 +92,7 @@
           <el-button v-if="userInfo.userType !== '10' && !checkUpdateInfo(scope.row)" size="mini" type="text" icon="el-icon-delete"
             @click="handleDelete(scope.row)">删除
           </el-button>
-          <el-button size="mini" type="text" icon="el-icon-view" @click="handleMessage(scope.row)">留言板
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleMessage(scope.row)">留言
           </el-button>
         </template>
       </el-table-column>
@@ -212,11 +212,17 @@
     <el-dialog title="订单留言板" :visible.sync="openMessage" width="600px" append-to-body>
       <div class="chat-scroller">
         <div class="chat-container" ref="chatContainer">
-          <div class="bubble" v-for="(message, index) in messagesList" :key="index">
-            {{ message }}
+          <div class="bubble" v-for="(item, index) in messagesList" :key="index">
+            <div style="display: flex; justify-content: space-between;">
+              <b>{{ item.userName }}</b><span>{{ parseTime(item.createTime) }}</span>
+            </div>
+            <div style="margin-left: 20px; margin-top: 30px;">
+              {{ item.messageContent }}
+            </div>
           </div>
         </div>
       </div>
+      共：{{ messagesList.length }} 条消息
       <el-form ref="formMessage" :model="formMessage" label-width="80px" style="margin-top: 30px;">
         <el-form-item label="消息内容" prop="messageContent">
           <el-input v-model="formMessage.messageContent" placeholder="请输入消息内容" maxlength="256" />
@@ -231,6 +237,7 @@
 
 <script>
 import { listOrder, getOrder, delOrder, addOrder, updateOrder } from "@/api/factory/order";
+import {addOrderMessage, listOrderMessage} from "@/api/factory/orderMessage";
 import { listGoodsInfo } from "@/api/factory/goodsInfo";
 import { listEnterpriseBase } from "@/api/factory/enterpriseBase";
 import { listUser } from "@/api/system/user";
@@ -326,7 +333,7 @@ export default {
       userInfo: {
         userType: '00'
       },
-      messagesList: ['1111', '2222', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333', '3333']
+      messagesList: []
     };
   },
   created() {
@@ -492,10 +499,15 @@ export default {
     },
     /** 留言板按钮操作 */
     handleMessage(row) {
-      this.openMessage = true;
+      this.messagesList = []
       this.resetForm("formMessage");
-      this.formMessage = {};
-
+      this.formMessage = {
+        orderId: row.id
+      };
+      listOrderMessage({ pageNum: 1, pageSize: 999, orderId: row.id }).then(response => {
+        this.messagesList = response.rows;
+        this.openMessage = true;
+      })
     },
     /** 提交按钮 */
     submitForm() {
@@ -519,6 +531,17 @@ export default {
             });
           }
         }
+      });
+    },
+    /** 提交按钮 */
+    submitFormMessage() {
+      if (!this.formMessage.messageContent) {
+        this.$modal.msgError("请填写消息内容");
+      }
+      addOrderMessage(this.formMessage).then(response => {
+        this.$modal.msgSuccess("发送成功");
+        this.openMessage = false;
+        this.getList();
       });
     },
     /** 删除按钮操作 */
