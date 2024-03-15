@@ -8,9 +8,12 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.CommonDelFlag;
 import com.ruoyi.common.enums.CommonStatus;
 import com.ruoyi.common.enums.UserType;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.factory.domain.GoodsInfo;
 import com.ruoyi.factory.domain.vo.GoodsOrderVo;
+import com.ruoyi.factory.mapper.GoodsInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,8 @@ import javax.annotation.Resource;
 public class GoodsOrderServiceImpl implements IGoodsOrderService {
     @Resource
     private GoodsOrderMapper goodsOrderMapper;
+    @Resource
+    private GoodsInfoMapper goodsInfoMapper;
 
     /**
      * 查询商品订单主
@@ -98,9 +103,13 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
         goodsOrderVo.setUpdateTime(nowDate);
         // 状态流转
         this.nextGoodsOrderStatus(goodsOrderVo);
-        int rows = goodsOrderMapper.insertGoodsOrder(goodsOrderVo);
+        // 扣减库存
+        if (StringUtils.equals(goodsOrderVo.getStatus(), "2")) {
+            this.subGoodsOrderSub(goodsOrderVo);
+        }
+        int i = goodsOrderMapper.insertGoodsOrder(goodsOrderVo);
         this.insertGoodsOrderSub(goodsOrderVo);
-        return rows;
+        return i;
     }
 
     /**
@@ -120,9 +129,15 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
         goodsOrderVo.setUpdateTime(nowDate);
         // 状态流转
         this.nextGoodsOrderStatus(goodsOrderVo);
+        // 扣减库存
+        if (StringUtils.equals(goodsOrderVo.getStatus(), "2")) {
+            this.subGoodsOrderSub(goodsOrderVo);
+        }
         goodsOrderMapper.deleteGoodsOrderSubByOrderId(goodsOrderVo.getId());
         this.insertGoodsOrderSub(goodsOrderVo);
-        return goodsOrderMapper.updateGoodsOrder(goodsOrderVo);
+        int i = goodsOrderMapper.updateGoodsOrder(goodsOrderVo);
+
+        return i;
     }
 
     /**
@@ -156,6 +171,7 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
      *
      * @param goodsOrderVo 商品订单主对象
      */
+    @Transactional
     public void insertGoodsOrderSub(GoodsOrderVo goodsOrderVo) {
         List<GoodsOrderSub> goodsOrderSubList = goodsOrderVo.getGoodsOrderSubList();
         Long id = goodsOrderVo.getId();
@@ -183,6 +199,7 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
      *
      * @param goodsOrderVo 商品订单主对象
      */
+    @Transactional
     public void nextGoodsOrderStatus(GoodsOrderVo goodsOrderVo) {
         if (!StringUtils.equals(goodsOrderVo.getStatus(), "0")) {
             return;
@@ -195,9 +212,44 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
                     bigDecimal = bigDecimal.add(goodsOrderSub.getOrderAmount());
                 }
             }
-            // 大于300
-            if (bigDecimal.compareTo(new BigDecimal("300")) > 0) {
+//            // 大于300
+//            if (bigDecimal.compareTo(new BigDecimal("300")) > 0) {
+//                goodsOrderVo.setStatus("1");
+//            }
+            // 小于300自动审核通过
+            if (bigDecimal.compareTo(new BigDecimal("300")) < 0) {
                 goodsOrderVo.setStatus("1");
+            }
+        }
+    }
+
+    /**
+     * 订单状态扣减库存
+     *
+     * @param goodsOrderVo 商品订单主对象
+     */
+    @Transactional
+    public void subGoodsOrderSub(GoodsOrderVo goodsOrderVo) {
+        if (!StringUtils.equals(goodsOrderVo.getStatus(), "2")) {
+            return;
+        }
+        List<GoodsOrderSub> goodsOrderSubList = goodsOrderVo.getGoodsOrderSubList();
+        if (StringUtils.isNotNull(goodsOrderSubList)) {
+            for (GoodsOrderSub goodsOrderSub : goodsOrderSubList) {
+                BigDecimal orderAmount = goodsOrderSub.getOrderAmount();
+                if (StringUtils.isNotNull(orderAmount)) {
+                    GoodsInfo goodsInfo = goodsInfoMapper.selectGoodsInfoById(goodsOrderSub.getGoodsId());
+                    if (StringUtils.isNull(goodsInfo)) {
+                        throw new ServiceException("商品"+ goodsOrderSub.getGoodsId() +"不存在");
+                    }
+                    BigDecimal inventory = goodsInfo.getInventory();
+                    if (inventory.compareTo(orderAmount) >= 0) {
+                        goodsInfo.setInventory(inventory.subtract(orderAmount));
+                        goodsInfoMapper.updateGoodsInfo(goodsInfo);
+                    } else {
+                        throw new ServiceException("商品"+ goodsInfo.getName() +"库存不足");
+                    }
+                }
             }
         }
     }

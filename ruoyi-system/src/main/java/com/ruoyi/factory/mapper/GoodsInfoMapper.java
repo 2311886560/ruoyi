@@ -23,10 +23,10 @@ public interface GoodsInfoMapper
     /**
      * 查询商品信息列表
      *
-     * @param goodsInfo 商品信息
+     * @param goodsInfoVo 商品信息
      * @return 商品信息集合
      */
-    public List<GoodsInfoVo> selectGoodsInfoList(GoodsInfo goodsInfo);
+    public List<GoodsInfoVo> selectGoodsInfoList(GoodsInfoVo goodsInfoVo);
 
     /**
      * 新增商品信息

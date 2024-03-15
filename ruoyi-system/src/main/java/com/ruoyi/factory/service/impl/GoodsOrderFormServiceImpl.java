@@ -166,9 +166,9 @@ public class GoodsOrderFormServiceImpl implements IGoodsOrderFormService {
 
         List<JSONObject> dataList = new ArrayList<>();
         // 先查询所有的商品列表
-        GoodsInfo goodsInfo = new GoodsInfo();
-        goodsInfo.setId(vo.getGoodsId());
-        List<GoodsInfoVo> goodsInfoVoList = goodsInfoMapper.selectGoodsInfoList(goodsInfo);
+        GoodsInfoVo goodsInfoVo = new GoodsInfoVo();
+        goodsInfoVo.setId(vo.getGoodsId());
+        List<GoodsInfoVo> goodsInfoVoList = goodsInfoMapper.selectGoodsInfoList(goodsInfoVo);
         if (StringUtils.isNotEmpty(goodsInfoVoList)) {
             goodsInfoVoList.forEach(item -> {
                 GoodsOrderFormVo orderFormVo = new GoodsOrderFormVo();

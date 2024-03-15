@@ -12,5 +12,10 @@ public class GoodsInfoVo extends GoodsInfo {
      */
     private String entName;
 
+    /**
+     * 显示警告数据
+     */
+    private String showWarn;
+
 
 }

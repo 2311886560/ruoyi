@@ -46,6 +46,14 @@ public class GoodsInfo extends BaseEntity
     @Excel(name = "销售价", readConverterExp = "默=认售价")
     private BigDecimal salesPrice;
 
+    /** 最高库存量 */
+    @Excel(name = "最高库存量")
+    private BigDecimal maxInventory;
+
+    /** 最低库存量 */
+    @Excel(name = "最低库存量")
+    private BigDecimal minInventory;
+
     /** 库存量 */
     @Excel(name = "库存量")
     private BigDecimal inventory;

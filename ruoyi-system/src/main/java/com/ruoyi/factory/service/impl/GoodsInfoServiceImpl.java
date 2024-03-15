@@ -44,12 +44,12 @@ public class GoodsInfoServiceImpl implements IGoodsInfoService {
     /**
      * 查询商品信息列表
      *
-     * @param goodsInfo 商品信息
+     * @param goodsInfoVo 商品信息
      * @return 商品信息
      */
     @Override
-    public List<GoodsInfoVo> selectGoodsInfoList(GoodsInfo goodsInfo) {
-        return goodsInfoMapper.selectGoodsInfoList(goodsInfo);
+    public List<GoodsInfoVo> selectGoodsInfoList(GoodsInfoVo goodsInfoVo) {
+        return goodsInfoMapper.selectGoodsInfoList(goodsInfoVo);
     }
 
     /**

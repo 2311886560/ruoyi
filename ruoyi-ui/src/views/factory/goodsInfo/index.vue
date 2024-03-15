@@ -49,6 +49,8 @@
 <!--      <el-table-column label="品牌" align="center" prop="goodsBrand" />-->
       <el-table-column label="成本价" align="center" prop="costPrice" />
       <el-table-column label="销售价" align="center" prop="salesPrice" />
+      <el-table-column label="最高库存量" align="center" prop="maxInventory" />
+      <el-table-column label="最低库存量" align="center" prop="minInventory" />
       <el-table-column label="库存量" align="center" prop="inventory" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -63,7 +65,7 @@
 
     <!-- 添加或修改商品信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="商品图片" prop="goodsPicture">
           <image-upload v-model="form.goodsPicture" :limit="1" />
         </el-form-item>
@@ -83,6 +85,12 @@
         </el-form-item>
         <el-form-item label="销售价" prop="salesPrice">
           <el-input v-model="form.salesPrice" @input="onChangeInput(form, 'salesPrice')" placeholder="请输入销售价" maxlength="8" />
+        </el-form-item>
+        <el-form-item label="最高库存量" prop="maxInventory">
+          <el-input v-model="form.maxInventory" @input="onChangeInput(form, 'maxInventory')" placeholder="请输入最高库存量" maxlength="8" />
+        </el-form-item>
+        <el-form-item label="最低库存量" prop="minInventory">
+          <el-input v-model="form.minInventory" @input="onChangeInput(form, 'minInventory')" placeholder="请输入最低库存量" maxlength="8" />
         </el-form-item>
         <el-form-item label="库存量" prop="inventory">
           <el-input v-model="form.inventory" @input="onChangeInput(form, 'inventory')" placeholder="请输入库存量" maxlength="8" />
@@ -133,6 +141,8 @@ export default {
         goodsBrand: null,
         costPrice: null,
         salesPrice: null,
+        maxInventory: null,
+        minInventory: null,
         inventory: null,
         status: null,
       },
@@ -151,6 +161,12 @@ export default {
         ],
         salesPrice: [
           { required: true, message: "销售价不能为空", trigger: "change" }
+        ],
+        maxInventory: [
+          { required: true, message: "最高库存量不能为空", trigger: "change" }
+        ],
+        minInventory: [
+          { required: true, message: "最低库存量不能为空", trigger: "change" }
         ],
         inventory: [
           { required: true, message: "库存量不能为空", trigger: "change" }
@@ -190,6 +206,8 @@ export default {
         goodsBrand: null,
         costPrice: null,
         salesPrice: null,
+        maxInventory: null,
+        minInventory: null,
         inventory: null,
         status: "1",
         delFlag: "0",

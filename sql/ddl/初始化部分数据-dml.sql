@@ -60,17 +60,17 @@ VALUES ('订单状态', 'sys_goods_order_status', '0', 'admin', '2023-11-11 18:2
 INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
                                                 `css_class`, `list_class`, `is_default`, `status`, `create_by`,
                                                 `create_time`, `update_by`, `update_time`, `remark`)
-VALUES (1, '待完成', '0', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+VALUES (1, '待审核', '0', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
         '2023-11-11 18:29:17', '');
 INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
                                                 `css_class`, `list_class`, `is_default`, `status`, `create_by`,
                                                 `create_time`, `update_by`, `update_time`, `remark`)
-VALUES (2, '已完成', '1', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+VALUES (2, '审核通过', '1', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
         '2023-11-11 18:29:17', '');
 INSERT INTO `factory_database`.`sys_dict_data` (`dict_sort`, `dict_label`, `dict_value`, `dict_type`,
                                                 `css_class`, `list_class`, `is_default`, `status`, `create_by`,
                                                 `create_time`, `update_by`, `update_time`, `remark`)
-VALUES (3, '拒绝', '9', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
+VALUES (3, '审核不通过', '9', 'sys_goods_order_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12', 'admin',
         '2023-11-11 18:29:17', '');
 
 -- 程序目录和数据最后再一起导出

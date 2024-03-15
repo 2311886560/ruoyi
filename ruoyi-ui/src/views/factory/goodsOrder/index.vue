@@ -54,7 +54,7 @@
     </el-row>
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
+<!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="订单编号" align="center" prop="orderCode" />
       <el-table-column label="订单标题" align="center" prop="orderTitle" />
 <!--      <el-table-column label="卖方企业" align="center" prop="salerEntName" />-->
@@ -86,10 +86,10 @@
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row)">详情
           </el-button>
-          <el-button v-if="(['11', '21'].includes(userInfo.userType) > 0 && !checkUpdateInfo(scope.row)) || userInfo.userType === '00' || userInfo.userType === '10'" size="mini" type="text" icon="el-icon-edit"
+          <el-button v-if="showUpdateOrDelete(scope.row)" size="mini" type="text" icon="el-icon-edit"
             @click="handleUpdate(scope.row)">修改
           </el-button>
-          <el-button v-if="userInfo.userType !== '10' && !checkUpdateInfo(scope.row)" size="mini" type="text" icon="el-icon-delete"
+          <el-button v-if="showUpdateOrDelete(scope.row)" size="mini" type="text" icon="el-icon-delete"
             @click="handleDelete(scope.row)">删除
           </el-button>
           <el-button size="mini" type="text" icon="el-icon-view" @click="handleMessage(scope.row)">留言
@@ -104,13 +104,15 @@
     <!-- 添加或修改商品订单主对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <!-- 订单管理员控制订单状态 -->
+        <!-- 工厂负责人控制生产状态 -->
         <el-form-item label="订单状态" prop="status">
-          <el-select :disabled="openType === 'details' || ['11', '21'].includes(userInfo.userType) > 0" v-model="form.status" placeholder="请选择订单状态">
+          <el-select :disabled="openType === 'details' || ['10', '21'].includes(userInfo.userType) > -1" v-model="form.status" placeholder="请选择订单状态">
             <el-option v-for="item in dict.type.sys_goods_order_status" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="生产状态" prop="produceStatus" v-if="form.status === '1'">
-          <el-select :disabled="openType === 'details'" v-model="form.produceStatus" placeholder="请选择生产状态">
+        <el-form-item label="生产状态" prop="produceStatus" v-if="['1', '2'].includes(form.status) > -1">
+          <el-select :disabled="openType === 'details' || ['11', '21'].includes(userInfo.userType) > -1" v-model="form.produceStatus" placeholder="请选择生产状态">
             <el-option v-for="item in dict.type.sys_goods_order_produce_status" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
@@ -150,13 +152,13 @@
         <el-form-item label="联系方式" prop="contactPhone">
           <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.contactPhone" placeholder="请输入联系方式" maxlength="30" />
         </el-form-item>
-        <el-form-item label="物流编号" prop="logisticsCode" v-if="form.status === '1' && form.produceStatus === '5'">
+        <el-form-item label="物流编号" prop="logisticsCode" v-if="['1', '2'].includes(form.status) > -1 && form.produceStatus === '5'">
           <el-input :disabled="openType === 'details'" v-model="form.logisticsCode" placeholder="请输入物流编号" maxlength="30" />
         </el-form-item>
-        <el-form-item label="订单发票" prop="orderInvoice" v-if="form.status === '1' && form.produceStatus === '5'">
+        <el-form-item label="订单发票" prop="orderInvoice" v-if="['1', '2'].includes(form.status) > -1 && form.produceStatus === '5'">
           <image-upload :disabled="openType === 'details'" v-model="form.orderInvoice" :limit="3" />
         </el-form-item>
-        <el-form-item label="付款凭证" prop="paymentVoucher" v-if="form.status === '1' && form.produceStatus === '5'">
+        <el-form-item label="付款凭证" prop="paymentVoucher" v-if="['1', '2'].includes(form.status) > -1 && form.produceStatus === '5'">
           <image-upload :disabled="openType === 'details'" v-model="form.paymentVoucher" :limit="3" />
         </el-form-item>
         <el-divider content-position="center">商品信息</el-divider>
@@ -347,6 +349,21 @@ export default {
     this.scrollToBottom();
   },
   methods: {
+    showUpdateOrDelete(row) {
+      if (['2', '10'].includes(row.status) > -1) {
+        // 完成或退货状态不显示
+        return false
+      }
+      if (['21'].includes(this.userInfo.userType) > -1) {
+        // 工厂客户
+        if (row.status === '0') {
+          return true
+        } else {
+          return false
+        }
+      }
+      return true
+    },
     checkUpdateInfo(row) {
       if (row.status === 0 || row.status === '0') {
         return false

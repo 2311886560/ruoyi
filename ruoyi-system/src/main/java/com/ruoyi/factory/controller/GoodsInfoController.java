@@ -47,10 +47,10 @@ public class GoodsInfoController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('factory:goodsInfo:list')")
     @GetMapping("/list")
-    public TableDataInfo list(GoodsInfo goodsInfo)
+    public TableDataInfo list(GoodsInfoVo goodsInfoVo)
     {
         startPage();
-        List<GoodsInfoVo> list = goodsInfoService.selectGoodsInfoList(goodsInfo);
+        List<GoodsInfoVo> list = goodsInfoService.selectGoodsInfoList(goodsInfoVo);
         return getDataTable(list);
     }
 
@@ -60,9 +60,9 @@ public class GoodsInfoController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('factory:goodsInfo:export')")
     @Log(title = "商品信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, GoodsInfo goodsInfo)
+    public void export(HttpServletResponse response, GoodsInfoVo goodsInfoVo)
     {
-        List<GoodsInfoVo> list = goodsInfoService.selectGoodsInfoList(goodsInfo);
+        List<GoodsInfoVo> list = goodsInfoService.selectGoodsInfoList(goodsInfoVo);
         ExcelUtil<GoodsInfoVo> util = new ExcelUtil<GoodsInfoVo>(GoodsInfoVo.class);
         util.exportExcel(response, list, "商品信息数据");
     }

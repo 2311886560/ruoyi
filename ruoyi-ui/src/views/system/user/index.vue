@@ -82,6 +82,11 @@
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
+          <el-table-column label="头像" align="center" prop="avatar" width="100">
+            <template slot-scope="scope">
+              <image-preview :src="scope.row.avatar" :width="50" :height="50" />
+            </template>
+          </el-table-column>
           <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
           <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible"
             :show-overflow-tooltip="true" />
@@ -133,6 +138,13 @@
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="头像" prop="avatar">
+              <image-upload v-model="form.avatar" :limit="1" />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="用户昵称" prop="nickName">
