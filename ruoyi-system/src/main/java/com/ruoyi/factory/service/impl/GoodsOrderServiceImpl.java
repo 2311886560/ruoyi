@@ -173,6 +173,9 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
      */
     @Transactional
     public void insertGoodsOrderSub(GoodsOrderVo goodsOrderVo) {
+        // 获取当前登录用户信息
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        Date nowDate = DateUtils.getNowDate();
         List<GoodsOrderSub> goodsOrderSubList = goodsOrderVo.getGoodsOrderSubList();
         Long id = goodsOrderVo.getId();
         if (StringUtils.isNotNull(goodsOrderSubList)) {
@@ -186,6 +189,13 @@ public class GoodsOrderServiceImpl implements IGoodsOrderService {
                 if (StringUtils.isEmpty(goodsOrderSub.getDelFlag())) {
                     goodsOrderSub.setDelFlag(CommonDelFlag.UNDELETED.getCode());
                 }
+                if (StringUtils.isEmpty(goodsOrderSub.getCreateBy())) {
+                    goodsOrderSub.setCreateBy(user.getUserName());
+                    goodsOrderSub.setCreateTime(nowDate);
+                }
+
+                goodsOrderSub.setUpdateBy(user.getUserName());
+                goodsOrderSub.setUpdateTime(nowDate);
                 list.add(goodsOrderSub);
             }
             if (list.size() > 0) {

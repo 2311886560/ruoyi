@@ -24,18 +24,21 @@
       </el-form-item>
     </el-form>
 
-<!--    <el-row :gutter="10" class="mb8">-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>-->
-<!--      </el-col>-->
-<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
-<!--    </el-row>-->
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>
+      </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    </el-row>
 
     <el-table v-loading="loading" :data="orderFormList" @selection-change="handleSelectionChange">
       <!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="客户名称" align="center" prop="buyerUserName" />
       <el-table-column label="商品名称" align="center" prop="goodsName" />
       <el-table-column label="购买数量" align="center" prop="goodsAmountTotal" />
+      <el-table-column label="成本" align="center" prop="goodsCostPriceTotal" />
+      <el-table-column label="销售价" align="center" prop="goodsSalesPriceTotal" />
+      <el-table-column label="利润" align="center" prop="goodsProfitPriceTotal" />
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
@@ -249,9 +252,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('factory/orderForm/export', {
+      this.download('factory/orderForm/exportSubList', {
         ...this.queryParams
-      }, `财务报表_${new Date().getTime()}.xlsx`)
+      }, `订单财务报表数据_${new Date().getTime()}.xlsx`)
     }
   }
 };

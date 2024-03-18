@@ -6,13 +6,17 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.factory.domain.vo.GoodsOrderFormVo;
+import com.ruoyi.factory.domain.vo.GoodsOrderSubExcel;
 import com.ruoyi.factory.service.IGoodsOrderFormService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,10 +56,28 @@ public class GoodsOrderFormController extends BaseController {
      */
     @Log(title = "财务报表", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, GoodsOrderFormVo goodsOrder) {
-        List<GoodsOrderFormVo> list = goodsOrderFormService.selectGoodsOrderFormList(goodsOrder);
+    public void export(HttpServletResponse response, GoodsOrderFormVo goodsOrderFormVo) {
+        List<GoodsOrderFormVo> list = goodsOrderFormService.selectGoodsOrderFormList(goodsOrderFormVo);
         ExcelUtil<GoodsOrderFormVo> util = new ExcelUtil<GoodsOrderFormVo>(GoodsOrderFormVo.class);
         util.exportExcel(response, list, "财务报表数据");
+    }
+
+    /**
+     * 导出商品订单财务报表列表
+     */
+    @PostMapping("/exportSubList")
+    public void exportSubList(HttpServletResponse response, GoodsOrderFormVo goodsOrder) {
+        List<GoodsOrderFormVo> list = goodsOrderFormService.selectGoodsOrderSubFormList(goodsOrder);
+        List<GoodsOrderSubExcel> excelList = new ArrayList<>();
+        if (StringUtils.isNotEmpty(list)) {
+            for (GoodsOrderFormVo goodsOrderFormVo : list) {
+                GoodsOrderSubExcel goodsOrderSubExcel = new GoodsOrderSubExcel();
+                BeanUtils.copyProperties(goodsOrderFormVo, goodsOrderSubExcel);
+                excelList.add(goodsOrderSubExcel);
+            }
+        }
+        ExcelUtil<GoodsOrderSubExcel> util = new ExcelUtil<GoodsOrderSubExcel>(GoodsOrderSubExcel.class);
+        util.exportExcel(response, excelList, "订单财务报表数据");
     }
 
     /**

@@ -52,5 +52,14 @@ public class GoodsOrderFormVo {
     /** 商品总数量 */
     private BigDecimal goodsAmountTotal;
 
+    /** 商品总成本价 */
+    private BigDecimal goodsCostPriceTotal;
+
+    /** 商品总销售价 */
+    private BigDecimal goodsSalesPriceTotal;
+
+    /** 商品总利润 */
+    private BigDecimal goodsProfitPriceTotal;
+
 
 }

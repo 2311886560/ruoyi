@@ -57,13 +57,27 @@
             </div>
           </el-card>
         </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-card shadow="never" class="chart-card">
+              <template #header>
+                <div class="card-header">
+                  销售数量(时间-销售数量)
+                </div>
+              </template>
+              <div v-loading="loading">
+                <LineChart height="300px" :propSeriesData="patrolChartDataByGoodsAmount" />
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { statisticsOrder } from "@/api/factory/order";
+import { statisticsGoodsInfo, statisticsOrder } from "@/api/factory/order";
 
 require('echarts/theme/macarons')
 import BarChart from '@/views/dashboard/BarChart'
@@ -99,6 +113,14 @@ export default {
       },
       // 资金统计(时间-订单的成本价)统计图数据
       patrolChartDataBySalesPrice: {
+        xAxis: [],
+        data: [{
+          name: '',
+          data: []
+        }]
+      },
+      // 销售数量(时间-销售数量)
+      patrolChartDataByGoodsAmount: {
         xAxis: [],
         data: [{
           name: '',
@@ -176,6 +198,9 @@ export default {
         this.patrolChartDataByNumber = { ...response.data.patrolChartDataByNumber };
         this.patrolChartDataByOrderCode = { ...response.data.patrolChartDataByOrderCode };
         this.patrolChartDataBySalesPrice = { ...response.data.patrolChartDataBySalesPrice };
+      }).finally(() => { this.loading = false })
+      statisticsGoodsInfo(this.queryParams).then(response => {
+        this.patrolChartDataByGoodsAmount = { ...response.data.patrolChartDataByGoodsAmount };
       }).finally(() => { this.loading = false })
     },
   }

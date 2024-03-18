@@ -287,7 +287,7 @@
         from (
         select DATE_FORMAT( goods_order.order_time, '%Y-%m' ) as orderTime,
         sum(order_sub.order_amount) as goodsAmountTotal,
-        sum(order_sub.total_price) as salesPriceTotal, sum(goods_info.cost_price) as orderCodeTotal,
+        sum(order_sub.sales_price) as salesPriceTotal, sum(goods_info.cost_price) as orderCodeTotal,
         sum(order_sub.total_price) - sum(goods_info.cost_price) as profitPriceTotal
         from goods_order
         left join goods_order_sub order_sub on order_sub.order_id = goods_order.id
@@ -320,9 +320,14 @@
     </select>
 
     <select id="selectGoodsOrderSubFormList" resultType="com.ruoyi.factory.domain.vo.GoodsOrderFormVo">
-        select sum(order_sub.order_amount) as goodsAmountTotal, goods_order.buyer_user_id as buyerUserId, order_sub.goods_id as goodsId
+        select
+        sum(order_sub.order_amount) as goodsAmountTotal,
+        sum(order_sub.sales_price) as goodsSalesPriceTotal, sum(goods_info.cost_price) as goodsCostPriceTotal,
+        sum(order_sub.total_price) - sum(goods_info.cost_price) as goodsProfitPriceTotal,
+        goods_order.buyer_user_id as buyerUserId, order_sub.goods_id as goodsId
         from goods_order
         left join goods_order_sub order_sub on order_sub.order_id = goods_order.id
+        left join goods_info on order_sub.goods_id = goods_info.id
         <where>
             goods_order.logistics_code is not null
             and goods_order.buyer_user_id is not null

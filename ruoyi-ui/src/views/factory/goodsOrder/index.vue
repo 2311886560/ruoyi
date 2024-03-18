@@ -107,12 +107,12 @@
         <!-- 订单管理员控制订单状态 -->
         <!-- 工厂负责人控制生产状态 -->
         <el-form-item label="订单状态" prop="status">
-          <el-select :disabled="openType === 'details' || ['10', '21'].includes(userInfo.userType) > -1" v-model="form.status" placeholder="请选择订单状态">
+          <el-select :disabled="openType === 'details' || ['10', '21'].includes(userInfo.userType)" v-model="form.status" placeholder="请选择订单状态">
             <el-option v-for="item in dict.type.sys_goods_order_status" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="生产状态" prop="produceStatus" v-if="['1', '2'].includes(form.status) > -1">
-          <el-select :disabled="openType === 'details' || ['11', '21'].includes(userInfo.userType) > -1" v-model="form.produceStatus" placeholder="请选择生产状态">
+        <el-form-item label="生产状态" prop="produceStatus" v-if="['1', '2'].includes(form.status)">
+          <el-select :disabled="openType === 'details' || ['11', '21'].includes(userInfo.userType)" v-model="form.produceStatus" placeholder="请选择生产状态">
             <el-option v-for="item in dict.type.sys_goods_order_produce_status" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
@@ -152,13 +152,13 @@
         <el-form-item label="联系方式" prop="contactPhone">
           <el-input :disabled="openType === 'details' || checkUpdateInfo(form)" v-model="form.contactPhone" placeholder="请输入联系方式" maxlength="30" />
         </el-form-item>
-        <el-form-item label="物流编号" prop="logisticsCode" v-if="['1', '2'].includes(form.status) > -1 && form.produceStatus === '5'">
+        <el-form-item label="物流编号" prop="logisticsCode" v-if="['1', '2'].includes(form.status) && form.produceStatus === '5'">
           <el-input :disabled="openType === 'details'" v-model="form.logisticsCode" placeholder="请输入物流编号" maxlength="30" />
         </el-form-item>
-        <el-form-item label="订单发票" prop="orderInvoice" v-if="['1', '2'].includes(form.status) > -1 && form.produceStatus === '5'">
+        <el-form-item label="订单发票" prop="orderInvoice" v-if="['1', '2'].includes(form.status) && form.produceStatus === '5'">
           <image-upload :disabled="openType === 'details'" v-model="form.orderInvoice" :limit="3" />
         </el-form-item>
-        <el-form-item label="付款凭证" prop="paymentVoucher" v-if="['1', '2'].includes(form.status) > -1 && form.produceStatus === '5'">
+        <el-form-item label="付款凭证" prop="paymentVoucher" v-if="['1', '2'].includes(form.status) && form.produceStatus === '5'">
           <image-upload :disabled="openType === 'details'" v-model="form.paymentVoucher" :limit="3" />
         </el-form-item>
         <el-divider content-position="center">商品信息</el-divider>
@@ -350,11 +350,12 @@ export default {
   },
   methods: {
     showUpdateOrDelete(row) {
-      if (['2', '10'].includes(row.status) > -1) {
+      console.log(['2', '10'].includes(row.status)+'::::::::')
+      if (['2', '10'].includes(row.status)) {
         // 完成或退货状态不显示
         return false
       }
-      if (['21'].includes(this.userInfo.userType) > -1) {
+      if (['21'].includes(this.userInfo.userType)) {
         // 工厂客户
         if (row.status === '0') {
           return true
@@ -611,7 +612,7 @@ export default {
 
     scrollToBottom() {
       this.$nextTick(() => {
-        this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
+        // this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
       });
     },
   }
