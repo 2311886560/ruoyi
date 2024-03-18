@@ -15,14 +15,19 @@
       </el-col> -->
       <!--用户数据-->
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
           <el-form-item label="用户名称" prop="userName">
             <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable style="width: 240px"
               @keyup.enter.native="handleQuery" />
           </el-form-item>
-          <el-form-item label="用户昵称" prop="nickName">
-            <el-input v-model="queryParams.nickName" placeholder="请输入用户昵称" maxlength="30" clearable style="width: 240px"
-              @keyup.enter.native="handleQuery" />
+<!--          <el-form-item label="用户昵称" prop="nickName">-->
+<!--            <el-input v-model="queryParams.nickName" placeholder="请输入用户昵称" maxlength="30" clearable style="width: 240px"-->
+<!--              @keyup.enter.native="handleQuery" />-->
+<!--          </el-form-item>-->
+          <el-form-item label="所属干休所" prop="retiredId">
+            <el-select v-model="queryParams.retiredId" placeholder="请选择所属干休所" clearable style="width: 240px">
+              <el-option v-for="item in retiredOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="手机号码" prop="phonenumber">
             <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" clearable style="width: 240px"
@@ -123,7 +128,7 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="用户昵称" prop="nickName">
@@ -341,7 +346,8 @@ export default {
         phonenumber: undefined,
         status: undefined,
         deptId: undefined,
-        userType: undefined
+        userType: undefined,
+        retiredId: undefined
       },
       // 列信息
       columns: [
@@ -398,6 +404,10 @@ export default {
     }
   },
   created() {
+    const retiredId = this.$route.query && this.$route.query.retiredId;
+    if (retiredId) {
+      this.queryParams.retiredId = retiredId
+    }
     this.getList();
     this.getDeptTree();
     this.getConfigKey("sys.user.initPassword").then(response => {
@@ -503,7 +513,7 @@ export default {
       this.dateRange = [];
       this.resetForm("queryForm");
       this.queryParams.deptId = undefined;
-      this.$refs.tree.setCurrentKey(null);
+      // this.$refs.tree.setCurrentKey(null);
       this.handleQuery();
     },
     // 多选框选中数据

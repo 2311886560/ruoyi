@@ -47,6 +47,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button size="mini" type="text" icon="el-icon-view" @click="toUserList(scope.row)">人员
+          </el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改
           </el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除
@@ -251,7 +253,10 @@ export default {
       this.download('system/retired/export', {
         ...this.queryParams
       }, `retired_${new Date().getTime()}.xlsx`)
-    }
+    },
+    toUserList(row) {
+      this.$router.push("/system/user?retiredId=" + row.id, {retiredId: row.id});
+    },
   }
 };
 </script>
