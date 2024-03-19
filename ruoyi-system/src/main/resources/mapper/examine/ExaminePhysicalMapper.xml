@@ -45,8 +45,8 @@
         <where>
             <if test="medicalUserId != null ">and medical_user_id = #{medicalUserId}</if>
             <if test="retiredUserId != null ">and retired_user_id = #{retiredUserId}</if>
-            <if test="title != null  and title != ''">and title = #{title}</if>
-            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="title != null  and title != ''">and title like concat('%', #{title}, '%')</if>
+            <if test="content != null  and content != ''">and content like concat('%', #{content}, '%')</if>
             <if test="examineTime != null ">and examine_time = #{examineTime}</if>
             <if test="processStatus != null  and processStatus != ''">and process_status = #{processStatus}</if>
             <if test="status != null  and status != ''">and status = #{status}</if>

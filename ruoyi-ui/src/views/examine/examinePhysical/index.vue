@@ -12,11 +12,25 @@
       <el-form-item label="体检标题" prop="title">
         <el-input v-model="queryParams.title" placeholder="请输入体检标题" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <!-- <el-form-item label="体检时间" prop="examineTime">
+      <el-form-item label="老干部" prop="retiredUserId">
+        <el-select v-model="queryParams.retiredUserId" placeholder="请选择老干部" clearable style="width: 240px">
+          <el-option v-for="item in retiredUserOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="体检内容" prop="content">
+        <el-input v-model="queryParams.content" placeholder="请输入体检内容" clearable @keyup.enter.native="handleQuery" />
+      </el-form-item>
+      <el-form-item label="体检时间" prop="examineTime">
         <el-date-picker clearable v-model="queryParams.examineTime" type="date" value-format="yyyy-MM-dd"
           placeholder="请选择体检时间">
         </el-date-picker>
-      </el-form-item> -->
+      </el-form-item>
+      <el-form-item label="审核" prop="processStatus">
+        <el-select v-model="queryParams.processStatus" placeholder="请选择审核" clearable style="width: 240px">
+          <el-option v-for="dict in dict.type.examine_physical_process_status" :key="dict.value" :label="dict.label"
+                     :value="dict.value" />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
