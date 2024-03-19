@@ -13,7 +13,7 @@
         <el-input v-model="queryParams.title" placeholder="请输入体检标题" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="老干部" prop="retiredUserId">
-        <el-select v-model="queryParams.retiredUserId" placeholder="请选择老干部" clearable style="width: 240px">
+        <el-select v-model="queryParams.retiredUserId" placeholder="请选择老干部" filterable clearable style="width: 240px">
           <el-option v-for="item in retiredUserOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
@@ -332,7 +332,7 @@ export default {
     },
     // 查询用户列表
     getUserOption() {
-      listUser({ pageNum: 1, pageSize: 999, userType: '11' }).then(response => {
+      listUser({ pageNum: 1, pageSize: 999, userType: '10' }).then(response => {
         this.medicalUserOptions = response.rows.map((item, index, arr) => {
           let c = { label: item.nickName, value: item.userId }
           return c;
@@ -438,26 +438,26 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
+      if (!this.examinePhysicalDetailList || this.examinePhysicalDetailList.length === 0){
+        return this.$message.error("请选择体检数据明细信息");
+      }
+      for (let i = 0; i < this.examinePhysicalDetailList.length; i++) {
+        let item = this.examinePhysicalDetailList[i]
+        if (!item.itemId) {
+          return this.$message.error("请完善第 " + (i + 1) + " 行体检数据明细信息的体检项目");
+        }
+        if (!item.value) {
+          return this.$message.error("请完善第 " + (i + 1) + " 行体检数据明细信息的体检结果");
+        }
+        // if (!item.value) {
+        //   this.$modal.msgError("请完善第 " + (i + 1) + " 行体检数据明细信息的体检结果");
+        // }
+
+        // 同步主表体检时间
+        this.examinePhysicalDetailList[i].examineTime = this.form.examineTime
+      }
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (!this.examinePhysicalDetailList || this.examinePhysicalDetailList.length === 0){
-            this.$modal.msgError("请选择体检数据明细信息");
-          }
-          for (let i = 0; i < this.examinePhysicalDetailList.length; i++) {
-            let item = this.examinePhysicalDetailList[i]
-            if (!item.itemId) {
-              this.$modal.msgError("请完善第 " + i + " 行体检数据明细信息的体检项目");
-            }
-            if (!item.value) {
-              this.$modal.msgError("请完善第 " + i + " 行体检数据明细信息的体检结果");
-            }
-            // if (!item.value) {
-            //   this.$modal.msgError("请完善第 " + i + " 行体检数据明细信息的体检结果");
-            // }
-
-            // 同步主表体检时间
-            this.examinePhysicalDetailList[i].examineTime = this.form.examineTime
-          }
           this.form.examinePhysicalDetailList = this.examinePhysicalDetailList;
           let text = this.form.id != null ? '修改成功' : '新增成功'
           let requestUrl = this.form.id != null ? updateExaminePhysical : addExaminePhysical
