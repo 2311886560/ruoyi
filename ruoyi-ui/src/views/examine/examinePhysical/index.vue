@@ -108,7 +108,7 @@
         <el-form-item label="备注" prop="remark">
           <el-input :disabled="openType === 'details'" v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-divider content-position="center">体检信息</el-divider>
+        <el-divider content-position="center">体检数据明细信息</el-divider>
         <el-row :gutter="10" class="mb8" v-if="openType !== 'details'">
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-plus" size="mini"
@@ -123,7 +123,7 @@
           @selection-change="handleExaminePhysicalDetailSelectionChange" ref="examinePhysicalDetail">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="序号" align="center" prop="index" width="50" />
-          <el-table-column label="体检项目" width="150">
+          <el-table-column label="体检项目" :render-header="addRedStar" prop="itemId" width="150">
             <template slot-scope="scope">
               <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="scope.row.itemId"
                 placeholder="请选择体检项目" clearable filterable @change="(e) => onChangeExamineItem(e, scope.row)">
@@ -137,17 +137,20 @@
               <span>{{ scope.row.referenceValue }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="体检结果" prop="value" width="150">
+          <el-table-column label="体检结果" :render-header="addRedStar" prop="value" width="150">
             <template slot-scope="scope">
               <el-input :disabled="openType === 'details'" v-model="scope.row.value" maxlength="10"
                 placeholder="请输入体检结果" />
             </template>
           </el-table-column>
-          <el-table-column label="体检时间" prop="examineTime" width="220">
+          <el-table-column label="体检时间" :render-header="addRedStar" prop="examineTime" width="220">
             <template slot-scope="scope">
-              <el-date-picker style="width: 100%;" :disabled="openType === 'details'" clearable v-model="scope.row.examineTime" type="datetime"
+              <el-date-picker style="width: 100%;" :disabled="true" clearable v-model="form.examineTime" type="datetime"
                 value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择体检时间">
               </el-date-picker>
+<!--              <el-date-picker style="width: 100%;" :disabled="openType === 'details'" clearable v-model="scope.row.examineTime" type="datetime"-->
+<!--                value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择体检时间">-->
+<!--              </el-date-picker>-->
             </template>
           </el-table-column>
           <el-table-column label="备注" prop="remark" width="250">
@@ -243,6 +246,18 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        title: [
+          { required: true, message: "体检标题不能为空", trigger: "change" }
+        ],
+        medicalUserId: [
+          { required: true, message: "医务人员不能为空", trigger: "change" }
+        ],
+        retiredUserId: [
+          { required: true, message: "老干部不能为空", trigger: "change" }
+        ],
+        examineTime: [
+          { required: true, message: "体检时间不能为空", trigger: "change" }
+        ],
       },
       // 用户信息
       userInfo: {
@@ -411,6 +426,24 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          if (!this.examinePhysicalDetailList || this.examinePhysicalDetailList.length === 0){
+            this.$modal.msgError("请选择体检数据明细信息");
+          }
+          for (let i = 0; i < this.examinePhysicalDetailList.length; i++) {
+            let item = this.examinePhysicalDetailList[i]
+            if (!item.itemId) {
+              this.$modal.msgError("请完善第 " + i + " 行体检数据明细信息的体检项目");
+            }
+            if (!item.value) {
+              this.$modal.msgError("请完善第 " + i + " 行体检数据明细信息的体检结果");
+            }
+            // if (!item.value) {
+            //   this.$modal.msgError("请完善第 " + i + " 行体检数据明细信息的体检结果");
+            // }
+
+            // 同步主表体检时间
+            this.examinePhysicalDetailList[i].examineTime = this.form.examineTime
+          }
           this.form.examinePhysicalDetailList = this.examinePhysicalDetailList;
           let text = this.form.id != null ? '修改成功' : '新增成功'
           let requestUrl = this.form.id != null ? updateExaminePhysical : addExaminePhysical
@@ -462,7 +495,14 @@ export default {
       this.download('system/examinePhysical/export', {
         ...this.queryParams
       }, `examinePhysical_${new Date().getTime()}.xlsx`)
-    }
+    },
+    // 给表头加必填符号*
+    addRedStar(h, { column }) {
+      return [
+        h("span", { style: "color: red" }, "*"),
+        h("span", " " + column.label),
+      ];
+    },
   }
 };
 </script>
