@@ -530,7 +530,7 @@ export default {
     /** 提交按钮 */
     submitForm() {
       if (!this.goodsOrderSubList || this.goodsOrderSubList.length < 1){
-        this.$modal.msgError("请选择商品");
+        return this.$message.error("请选择商品");
       }
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -554,7 +554,7 @@ export default {
     /** 提交按钮 */
     submitFormMessage() {
       if (!this.formMessage.messageContent) {
-        this.$modal.msgError("请填写消息内容");
+        return this.$message.error("请填写消息内容");
       }
       addOrderMessage(this.formMessage).then(response => {
         this.$modal.msgSuccess("发送成功");
