@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.math.BigDecimal;
+
 /**
  * 项对象 examine_item
  *
@@ -46,4 +48,16 @@ public class ExamineItem extends BaseEntity
 
     /** 删除状态：0=未删除，1=已删除 */
     private String delFlag;
+
+    /** 是否为自动检验：0=自动，1=不自动 */
+//    @Excel(name = "是否为自动检验：0=自动，1=不自动")
+    private String autoStatus;
+
+    /** 最高自动检验值 */
+//    @Excel(name = "最高自动检验值")
+    private BigDecimal maxAutoValue;
+
+    /** 最低自动检验值 */
+//    @Excel(name = "最低自动检验值")
+    private BigDecimal minAutoValue;
 }

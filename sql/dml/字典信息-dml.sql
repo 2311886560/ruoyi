@@ -52,7 +52,7 @@ VALUES (35, 1, '默认显示', '0', 'examine_item_default_status', NULL, 'defaul
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`,
                              `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`,
                              `update_time`, `remark`)
-VALUES (36, 2, '不默认', '2', 'examine_item_default_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12',
+VALUES (36, 2, '不默认', '1', 'examine_item_default_status', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12',
         'admin', '2023-11-11 18:29:17', '');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`,
                              `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`,
@@ -62,7 +62,7 @@ VALUES (37, 1, '显示个人中心', '0', 'examine_item_show_user', NULL, 'defau
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`,
                              `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`,
                              `update_time`, `remark`)
-VALUES (38, 2, '不显示', '2', 'examine_item_show_user', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12',
+VALUES (38, 2, '不显示', '1', 'examine_item_show_user', NULL, 'default', 'N', '0', 'admin', '2023-11-11 18:29:12',
         'admin', '2023-11-11 18:29:17', '');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`,
                              `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`,
