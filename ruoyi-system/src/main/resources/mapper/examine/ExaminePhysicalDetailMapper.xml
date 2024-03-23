@@ -19,6 +19,10 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <result property="autoStatus" column="auto_status"/>
+        <result property="maxAutoValue" column="max_auto_value"/>
+        <result property="minAutoValue" column="min_auto_value"/>
+        <result property="detection" column="detection"/>
     </resultMap>
 
     <sql id="selectExaminePhysicalDetailVo">
@@ -35,7 +39,11 @@
                create_by,
                create_time,
                update_by,
-               update_time
+               update_time,
+               auto_status,
+               max_auto_value,
+               min_auto_value,
+               detection
         from examine_physical_detail
     </sql>
 
@@ -103,6 +111,10 @@
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
+            <if test="autoStatus != null">auto_status,</if>
+            <if test="maxAutoValue != null">max_auto_value,</if>
+            <if test="minAutoValue != null">min_auto_value,</if>
+            <if test="detection != null">detection,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="examineId != null">#{examineId},</if>
@@ -118,6 +130,10 @@
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="autoStatus != null">#{autoStatus},</if>
+            <if test="maxAutoValue != null">#{maxAutoValue},</if>
+            <if test="minAutoValue != null">#{minAutoValue},</if>
+            <if test="detection != null">#{detection},</if>
         </trim>
     </insert>
 
@@ -137,6 +153,10 @@
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="autoStatus != null">auto_status = #{autoStatus},</if>
+            <if test="maxAutoValue != null">max_auto_value = #{maxAutoValue},</if>
+            <if test="minAutoValue != null">min_auto_value = #{minAutoValue},</if>
+            <if test="detection != null">detection = #{detection},</if>
         </trim>
         where id = #{id}
     </update>

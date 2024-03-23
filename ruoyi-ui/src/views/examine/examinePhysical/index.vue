@@ -74,9 +74,9 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row)">详情</el-button>
-          <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-edit" @click="handleAuth(scope.row)">审核</el-button>
-          <el-button v-if="userInfo.userType !== '10'" size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-if="userInfo.userType !== '10' && showUpdate(scope.row)" size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
+          <el-button v-if="userInfo.userType !== '10' && showUpdate(scope.row) && showAuth(scope.row)" size="mini" type="text" icon="el-icon-edit" @click="handleAuth(scope.row)">审核</el-button>
+          <el-button v-if="userInfo.userType !== '10' && showUpdate(scope.row)" size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -133,10 +133,11 @@
             </el-button>
           </el-col>
         </el-row>
-        <el-table :data="examinePhysicalDetailList" :row-class-name="rowExaminePhysicalDetailIndex"
-          @selection-change="handleExaminePhysicalDetailSelectionChange" ref="examinePhysicalDetail">
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="序号" align="center" prop="index" width="50" />
+        <el-table :data="examinePhysicalDetailList" ref="examinePhysicalDetail">
+<!--        <el-table :data="examinePhysicalDetailList" :row-class-name="rowExaminePhysicalDetailIndex"-->
+<!--          @selection-change="handleExaminePhysicalDetailSelectionChange" ref="examinePhysicalDetail">-->
+<!--          <el-table-column v-if="openType !== 'details'" type="selection" width="50" align="center" />-->
+<!--          <el-table-column label="序号" align="center" prop="index" width="50" />-->
           <el-table-column label="体检项目" :render-header="addRedStar" prop="itemId" width="150">
             <template slot-scope="scope">
               <el-select :disabled="openType === 'details'" style="width: 100%;" v-model="scope.row.itemId"
@@ -146,31 +147,38 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="参考值" prop="referenceValue" width="150">
+          <el-table-column label="参考值" width="150">
             <template slot-scope="scope">
-              <span>{{ scope.row.referenceValue }}</span>
+              <span v-if="scope.row.autoStatus === '0'">{{ scope.row.minAutoValue }} ~ {{ scope.row.maxAutoValue }}</span>
+              <span v-if="scope.row.autoStatus === '1'">{{ scope.row.referenceValue }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="体检结果" :render-header="addRedStar" prop="value" width="150">
+          <el-table-column label="体检结果" :render-header="addRedStar" prop="value" width="180">
             <template slot-scope="scope">
-              <el-input :disabled="openType === 'details'" v-model="scope.row.value" maxlength="10"
+              <el-input :disabled="openType === 'details'" @input="onChangeInputValue(scope.row, 'value')" v-model="scope.row.value" maxlength="10"
                 placeholder="请输入体检结果" />
             </template>
           </el-table-column>
-          <el-table-column label="体检时间" :render-header="addRedStar" prop="examineTime" width="220">
+          <el-table-column label="体检时间" :render-header="addRedStar" prop="examineTime" width="180">
             <template slot-scope="scope">
-              <el-date-picker style="width: 100%;" :disabled="true" clearable v-model="form.examineTime" type="datetime"
-                value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择体检时间">
+              <el-date-picker style="width: 100%;" :disabled="true" clearable v-model="form.examineTime" type="date"
+                value-format="yyyy-MM-dd" placeholder="请选择体检时间">
               </el-date-picker>
 <!--              <el-date-picker style="width: 100%;" :disabled="openType === 'details'" clearable v-model="scope.row.examineTime" type="datetime"-->
 <!--                value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择体检时间">-->
 <!--              </el-date-picker>-->
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" width="250">
+          <el-table-column label="备注" prop="remark" width="150">
             <template slot-scope="scope">
               <el-input :disabled="openType === 'details'" v-model="scope.row.remark" maxlength="10"
                 placeholder="请输入备注" />
+            </template>
+          </el-table-column>
+          <el-table-column label="检测" prop="detection" width="150">
+            <template slot-scope="scope">
+              <el-input :disabled="openType === 'details' || scope.row.autoStatus === '0'" v-model="scope.row.detection" maxlength="10"
+                placeholder="请输入检测" />
             </template>
           </el-table-column>
         </el-table>
@@ -184,14 +192,14 @@
     <form-dialog @onSubmit="onSubmit" ref="formDialog" title="审核" status="6">
       <template v-slot:formContent>
         <el-form :model="authForm" label-width="100px" ref="authForm">
-          <el-form-item label="审核结果" prop="processStatus">
+          <el-form-item label="审核结果" prop="authStatus" :rules="[{required: true, message:'审核结果不能为空', trigger:'change'}]">
             <el-select style="width: 100%;" v-model="authForm.authStatus"
-                       placeholder="请选择审核状态">
+                       placeholder="请选择审核结果">
               <el-option v-for="item in dict.type.examine_physical_auth_status" :key="item.value" :label="item.label"
                          :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="审核意见:" prop="reason" :rules="[{required: true,message:'原因不能为空',trigger:'blur'}]">
+          <el-form-item label="审核意见:" prop="reason" :rules="[{required: true,message:'原因不能为空',trigger:'change'}]">
             <el-input
               type="textarea"
               v-model="authForm.reason"
@@ -213,6 +221,7 @@ import { listExamineItem } from "@/api/examine/examineItem";
 import { listUser } from "@/api/system/user";
 import { getInfo } from '@/api/login'
 import FormDialog from '@/components/FormDialog'
+import { formatNumber } from "@/utils/util";
 
 export default {
   name: "ExaminePhysical",
@@ -299,6 +308,37 @@ export default {
     this.getUserOption();
   },
   methods: {
+    /** 动态判断限制输入框输入两位小数 */
+    onChangeInputValue(form, name){
+      if (form.autoStatus === '0') {
+        // 自动
+        form[name] = formatNumber(form[name]);
+        // 比较
+        if (Number(form[name]) >= Number(form.minAutoValue) && Number(form[name]) <= Number(form.maxAutoValue)) {
+          form.detection = '正常'
+        } else {
+          form.detection = '异常'
+        }
+      } else {
+        // 非自动，不做处理
+      }
+    },
+    showUpdate(row) {
+      if (row.processStatus !== '0') {
+        // 不为待审核状态禁止编辑
+        return false;
+      }
+
+      return true;
+    },
+    showAuth(row) {
+      if (this.userInfo.userType === '11') {
+        // 医务数据管理人员
+        return true;
+      }
+
+      return false;
+    },
     /** 提交审核按钮 */
     onSubmit(status) {
       let data = {}
@@ -308,6 +348,8 @@ export default {
       requestUrl(data).then((res) => {
         if (res.code === 200){
           this.$modal.msgSuccess(text);
+          this.$refs.formDialog.visible = false
+          this.getList();
           this.close();
         }
       }).finally(() => {
@@ -316,13 +358,18 @@ export default {
     },
     /** 审核按钮 */
     handleAuth(row){
-      this.authForm.examineId = row.id
+      this.authForm= {
+        examineId : row.id
+      }
       this.$refs.formDialog.visible = true
     },
     onChangeExamineItem(e, row) {
       let obj = this.examineItemOptions.find((item) => item.value === e)
       row.name = obj.name
       row.referenceValue = obj.referenceValue
+      row.autoStatus = obj.autoStatus
+      row.maxAutoValue = obj.maxAutoValue
+      row.minAutoValue = obj.minAutoValue
     },
     // 查询登录用户信息
     getUserInfo() {
@@ -387,6 +434,7 @@ export default {
         updateBy: null,
         updateTime: null
       };
+      this.examinePhysicalDetailList = []
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -472,7 +520,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除数据信息编号为"' + ids + '"的数据项？').then(function () {
+      this.$modal.confirm('是否确认删除已选择的数据项？').then(function () {
+      // this.$modal.confirm('是否确认删除数据信息编号为"' + ids + '"的数据项？').then(function () {
         return delExaminePhysical(ids);
       }).then(() => {
         this.getList();

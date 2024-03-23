@@ -1,5 +1,6 @@
 package com.ruoyi.examine.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -43,8 +44,8 @@ public class ExaminePhysicalDetail extends BaseEntity
     private String referenceValue;
 
     /** 体检时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "体检时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "体检时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date examineTime;
 
     /** 状态：0=失效，1=有效 */
@@ -53,4 +54,19 @@ public class ExaminePhysicalDetail extends BaseEntity
 
     /** 删除状态：0=未删除，1=已删除 */
     private String delFlag;
+
+    /** 是否为自动检验：0=自动，1=不自动 */
+//    @Excel(name = "是否为自动检验：0=自动，1=不自动")
+    private String autoStatus;
+
+    /** 最高自动检验值 */
+//    @Excel(name = "最高自动检验值")
+    private BigDecimal maxAutoValue;
+
+    /** 最低自动检验值 */
+//    @Excel(name = "最低自动检验值")
+    private BigDecimal minAutoValue;
+
+    /** 检测 */
+    private String detection;
 }

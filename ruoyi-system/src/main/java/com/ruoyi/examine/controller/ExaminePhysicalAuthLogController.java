@@ -23,7 +23,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 数据审核记录Controller
- * 
+ *
  * @author ruoyi
  * @date 2024-01-27
  */
@@ -37,7 +37,7 @@ public class ExaminePhysicalAuthLogController extends BaseController
     /**
      * 查询数据审核记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:list')")
+//    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:list')")
     @GetMapping("/list")
     public TableDataInfo list(ExaminePhysicalAuthLog examinePhysicalAuthLog)
     {
@@ -49,7 +49,7 @@ public class ExaminePhysicalAuthLogController extends BaseController
     /**
      * 导出数据审核记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:export')")
+//    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:export')")
     @Log(title = "数据审核记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ExaminePhysicalAuthLog examinePhysicalAuthLog)
@@ -62,7 +62,7 @@ public class ExaminePhysicalAuthLogController extends BaseController
     /**
      * 获取数据审核记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:query')")
+//    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +72,7 @@ public class ExaminePhysicalAuthLogController extends BaseController
     /**
      * 新增数据审核记录
      */
-    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:add')")
+//    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:add')")
     @Log(title = "数据审核记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ExaminePhysicalAuthLog examinePhysicalAuthLog)
@@ -83,7 +83,7 @@ public class ExaminePhysicalAuthLogController extends BaseController
     /**
      * 修改数据审核记录
      */
-    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:edit')")
     @Log(title = "数据审核记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ExaminePhysicalAuthLog examinePhysicalAuthLog)
@@ -94,7 +94,7 @@ public class ExaminePhysicalAuthLogController extends BaseController
     /**
      * 删除数据审核记录
      */
-    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:examinePhysicalAuthLog:remove')")
     @Log(title = "数据审核记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

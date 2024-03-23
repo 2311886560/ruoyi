@@ -46,7 +46,12 @@
     <el-table v-loading="loading" :data="examineItemList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="体检项名称" align="center" prop="name" />
-      <el-table-column label="参考值" align="center" prop="referenceValue" />
+<!--      <el-table-column label="参考值" align="center" prop="referenceValue" />-->
+      <el-table-column label="是否自动检验" align="center" prop="autoStatus">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.examine_item_auto_status" :value="scope.row.autoStatus" />
+        </template>
+      </el-table-column>
       <el-table-column label="性别推荐" align="center" prop="sexStatus">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.examine_item_sex_status" :value="scope.row.sexStatus" />
@@ -78,10 +83,22 @@
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="体检项名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入体检项名称" />
+          <el-input v-model="form.name" placeholder="请输入体检项名称" maxlength="20" />
         </el-form-item>
-        <el-form-item label="参考值" prop="referenceValue">
-          <el-input v-model="form.referenceValue" placeholder="请输入参考值" />
+        <el-form-item label="是否自动检验" prop="autoStatus">
+          <el-select v-model="form.autoStatus" placeholder="请选择是否自动检验" style="width: 100%;" clearable>
+            <el-option v-for="dict in dict.type.examine_item_auto_status" :key="dict.value" :label="dict.label"
+                       :value="dict.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="form.autoStatus === '0'" label="最高自动检验值" prop="maxAutoValue">
+          <el-input v-model="form.maxAutoValue" @input="onChangeInput(form, 'maxAutoValue')" placeholder="请输入最高自动检验值" maxlength="8" />
+        </el-form-item>
+        <el-form-item v-if="form.autoStatus === '0'" label="最低自动检验值" prop="minAutoValue">
+          <el-input v-model="form.minAutoValue" @input="onChangeInput(form, 'minAutoValue')" placeholder="请输入最低自动检验值" maxlength="8" />
+        </el-form-item>
+        <el-form-item v-if="form.autoStatus === '1'" label="参考值" prop="referenceValue">
+          <el-input v-model="form.referenceValue" placeholder="请输入参考值" maxlength="8" />
         </el-form-item>
         <el-form-item label="性别限制" prop="sexStatus">
           <el-select v-model="form.sexStatus" placeholder="请选择性别限制" style="width: 100%;" clearable>
@@ -115,10 +132,11 @@
 
 <script>
 import { listExamineItem, getExamineItem, delExamineItem, addExamineItem, updateExamineItem } from "@/api/examine/examineItem";
+import { formatNumber } from "@/utils/util";
 
 export default {
   name: "ExamineItem",
-  dicts: ['examine_item_sex_status', 'examine_item_default_status', 'examine_item_show_user'],
+  dicts: ['examine_item_sex_status', 'examine_item_default_status', 'examine_item_show_user', 'examine_item_auto_status'],
   data() {
     return {
       // 遮罩层
@@ -157,6 +175,15 @@ export default {
         name: [
           { required: true, message: "体检项名称不能为空", trigger: "change" }
         ],
+        autoStatus: [
+          { required: true, message: "是否自动检验不能为空", trigger: "change" }
+        ],
+        maxAutoValue: [
+          { required: true, message: "最高自动检验值不能为空", trigger: "change" }
+        ],
+        minAutoValue: [
+          { required: true, message: "最低自动检验值不能为空", trigger: "change" }
+        ],
         referenceValue: [
           { required: true, message: "参考值不能为空", trigger: "change" }
         ],
@@ -176,6 +203,10 @@ export default {
     this.getList();
   },
   methods: {
+    /** 限制输入框输入两位小数 */
+    onChangeInput(form, name){
+      form[name] = formatNumber(form[name]);
+    },
     /** 查询项列表 */
     getList() {
       this.loading = true;
@@ -204,7 +235,10 @@ export default {
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null
+        updateTime: null,
+        autoStatus: null,
+        maxAutoValue: null,
+        minAutoValue: null
       };
       this.resetForm("form");
     },
@@ -244,6 +278,12 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          if (this.form.autoStatus === '0') {
+            // 最高自动检验值要大于或等于最低自动检验值
+            if (this.form.maxAutoValue < this.form.minAutoValue) {
+              return this.$message.error("最高自动检验值要大于或等于最低自动检验值");
+            }
+          }
           if (this.form.id != null) {
             updateExamineItem(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");

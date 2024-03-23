@@ -6,17 +6,14 @@ import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.enums.CommonDelFlag;
-import com.ruoyi.common.enums.CommonStatus;
 import com.ruoyi.common.enums.ExaminePhysicalAuthStatusEnum;
-import com.ruoyi.common.enums.ExaminePhysicalStatusEnum;
+import com.ruoyi.common.enums.ExaminePhysicalProcessStatusEnum;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.MessageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.examine.domain.ExaminePhysical;
 import com.ruoyi.examine.mapper.ExaminePhysicalMapper;
-import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.examine.mapper.ExaminePhysicalAuthLogMapper;
@@ -91,9 +88,9 @@ public class ExaminePhysicalAuthLogServiceImpl implements IExaminePhysicalAuthLo
             ExaminePhysical examinePhysical = new ExaminePhysical();
             examinePhysical.setId(examinePhysicalAuthLog.getExamineId());
             if (StringUtils.equals(ExaminePhysicalAuthStatusEnum.WAIT_ACCEPT.getCode(), examinePhysicalAuthLog.getAuthStatus())) {
-                examinePhysical.setStatus(ExaminePhysicalStatusEnum.AUTH_SUCCESS.getCode());
+                examinePhysical.setProcessStatus(ExaminePhysicalProcessStatusEnum.AUTH_SUCCESS.getCode());
             } else {
-                examinePhysical.setStatus(ExaminePhysicalStatusEnum.AUTH_REFUSE.getCode());
+                examinePhysical.setProcessStatus(ExaminePhysicalProcessStatusEnum.AUTH_REFUSE.getCode());
             }
             examinePhysicalMapper.updateExaminePhysical(examinePhysical);
         }

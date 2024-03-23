@@ -22,7 +22,7 @@
 
 <script>
 import { getInfo } from '@/api/login'
-import HomeTable from './examine/examinePhysicalDetail/index'
+import HomeTable from './examine/examinePhysical/index'
 export default {
   name: "Index",
   components:{
