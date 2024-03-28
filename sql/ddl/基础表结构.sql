@@ -33,9 +33,9 @@ create table sys_user
 ) engine = innodb
   auto_increment = 100 comment = '用户信息表';
 
-# 基础用户数据，用户没有账号时重新执行这两个sql
+-- 基础用户数据，用户没有账号时重新执行这两个sql
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, 103, 'admin', '超级管理员', '00', 'admin@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-11-26 04:38:43', 'admin', '2023-10-08 23:37:01', '', '2023-11-26 04:38:43', '管理员');
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, 105, 'ry', '测试干部', '01', 'yonghu@qq.com', '15666666666', '1', '', '$2a$10$oveWWGpi9H8ZDdywiyVmKO1C7ZmIz1m/gxI77zAG.S2ao3BOJzdR.', '0', '0', '127.0.0.1', '2023-11-22 00:38:07', 'admin', '2023-10-08 23:37:01', 'admin', '2023-11-22 00:38:06', '测试员');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, 105, 'ry', '测试干部', '00', 'yonghu@qq.com', '15666666666', '1', '', '$2a$10$oveWWGpi9H8ZDdywiyVmKO1C7ZmIz1m/gxI77zAG.S2ao3BOJzdR.', '0', '0', '127.0.0.1', '2023-11-22 00:38:07', 'admin', '2023-10-08 23:37:01', 'admin', '2023-11-22 00:38:06', '测试员');
 
 -- 干休所信息表retired
 drop table if exists retired;
