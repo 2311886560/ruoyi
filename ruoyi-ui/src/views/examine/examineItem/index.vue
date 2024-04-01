@@ -280,7 +280,7 @@ export default {
         if (valid) {
           if (this.form.autoStatus === '0') {
             // 最高自动检验值要大于或等于最低自动检验值
-            if (this.form.maxAutoValue < this.form.minAutoValue) {
+            if (Number(this.form.maxAutoValue) < Number(this.form.minAutoValue)) {
               return this.$message.error("最高自动检验值要大于或等于最低自动检验值");
             }
           }
