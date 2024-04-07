@@ -1,4 +1,4 @@
-# 商品订单消息表
+-- 商品订单消息表
 CREATE TABLE `goods_order_message`
 (
     `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单子表id',

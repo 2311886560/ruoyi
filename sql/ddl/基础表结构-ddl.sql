@@ -1,4 +1,4 @@
-# 商品信息表结构
+-- 商品信息表结构
 CREATE TABLE `goods_info`
 (
     `id`          bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品id',
@@ -20,7 +20,7 @@ CREATE TABLE `goods_info`
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb4 COMMENT ='商品信息表';
 
-# 工厂基本信息
+-- 工厂基本信息
 CREATE TABLE `enterprise_base`
 (
     `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -48,7 +48,7 @@ CREATE TABLE `enterprise_base`
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb4 COMMENT ='工厂基本信息';
 
-# 商品订单主表
+-- 商品订单主表
 CREATE TABLE `goods_order`
 (
     `id`             bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单主表id',
@@ -71,7 +71,7 @@ CREATE TABLE `goods_order`
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb4 COMMENT ='商品订单主表';
 
-# 商品订单子表
+-- 商品订单子表
 CREATE TABLE `goods_order_sub`
 (
     `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单子表id',
