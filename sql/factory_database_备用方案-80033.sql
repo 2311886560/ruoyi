@@ -13,6 +13,7 @@
 
  Date: 15/04/2024 09:18:43
 */
+-- 80033与50727的差异在于utf8mb4_general_ci变成了utf8mb4_0900_ai_ci
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
